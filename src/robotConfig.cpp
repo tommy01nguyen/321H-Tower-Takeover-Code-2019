@@ -1,11 +1,15 @@
 #include "main.h"
 using namespace okapi;
 
+//Ports
 #define port_driveRF 5
 #define port_driveRB 7
 #define port_driveLF 15
 #define port_driveLB 2
 
+//Chassis Constants
+const int wheelD = 4;
+const int chassisL = 12;
 
 //Controllers
 Controller j_master = ControllerId::master;
@@ -23,6 +27,8 @@ MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
 MotorGroup mg_driveL({port_driveLB,port_driveLF});
 
 //Sensors
+pros::ADIEncoder encL('A', 'B', false);
+pros::ADIEncoder encR('C', 'D', false);
 
 //Okapi Chassis Controllers
 auto pidChassis = ChassisControllerFactory::create( //PID Controller

@@ -11,11 +11,11 @@ QLength tilesToInches(double tiles){ //Converts Tiles To Inches
   return tiles*24*inch ;
 }
 */
-void tareAllPosition(){
-  mg_driveL.tarePosition();
-  mg_driveR.tarePosition();
-}
 
+
+double getL_in(){
+  return wheelD;
+}
 
 bool isDriving(){
   static int count = 0;

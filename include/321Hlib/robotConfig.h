@@ -19,6 +19,10 @@ extern Motor m_driveLF;
 extern Motor m_driveLM;
 extern Motor m_driveLB;
 
+//Chassis Constants
+extern const int wheelD;
+extern const int chassisL;
+
 //Motor Groups;
 extern MotorGroup mg_driveR;
 extern MotorGroup mg_driveL;
@@ -31,9 +35,8 @@ extern ChassisControllerPID slowPidChassis;
 
 
 //Sensors
-extern Vision s_visionSensor;
-extern ADIButton s_catapultLimit; //Limit Switch
-extern pros::ADILineSensor s_intakeSensor; //Line Follower
+extern pros::ADIEncoder encL;
+extern pros::ADIEncoder encR;
 
 //Filter
 //extern okapi::EmaFilter f_intakeFilter;
