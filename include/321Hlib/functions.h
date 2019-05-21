@@ -4,7 +4,8 @@
 
 using namespace okapi;
 
-//double tileToIn(double tiles);
+double getL_in();
+double getR_in();
 void driveWall(int voltage);
 
 //QLength tilesToInches(double tiles);

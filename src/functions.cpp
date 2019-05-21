@@ -14,7 +14,10 @@ QLength tilesToInches(double tiles){ //Converts Tiles To Inches
 
 
 double getL_in(){
-  return wheelD;
+  return (wheelD*3.1415/360) * encL.get_value();
+}
+double getR_in(){
+  return (wheelD*3.1415/360) * encR.get_value();
 }
 
 bool isDriving(){
