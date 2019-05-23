@@ -6,3 +6,4 @@
 #include "321Hlib/SystemControl/systemControl.h"
 #include "321Hlib/SystemControl/intakeTask.h"
 #include "321Hlib/SystemControl/catapultTask.h"
+#include "321Hlib/odometry/odometry.h"

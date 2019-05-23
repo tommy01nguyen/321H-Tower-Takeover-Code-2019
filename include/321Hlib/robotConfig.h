@@ -20,7 +20,7 @@ extern Motor m_driveLM;
 extern Motor m_driveLB;
 
 //Chassis Constants
-extern const int wheelD;
+extern const int wheelDiam;
 extern const int chassisL;
 
 //Motor Groups;

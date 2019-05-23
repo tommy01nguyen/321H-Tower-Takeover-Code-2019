@@ -2,23 +2,7 @@
 
 using namespace okapi;
 
-class Odometry{
-  private:
-    double x, y, theta, perpL, prevL, prevR, prevTheta;
-
-  public:
-    Odometry();
-    double getX();
-    double getY();
-    double getTheta();
-    void setX(double xNew);
-    void setY(double yNew);
-    void setTheta(double thetaNew);
-    void resetState();
-    void update();
-};
-
-Odometry::Odometry(){
+Odometry::Odometry(double perpL){
   this->x = 0; //inches
   this->y = 0;
   this->theta = 0; //radians
@@ -26,31 +10,37 @@ Odometry::Odometry(){
   this->prevR = 0;
   this->prevTheta = 0;
 
-  this->perpL = 10; //Perpendicular distance to tracking wheels
+  this->perpLen = perpL; //Perpendicular distance to tracking wheels
 }
 
 void Odometry::update(){
-  //double curL, curR, dl, dr, curTheta, dTheta
+
   double curL = getL_in();
   double curR = getR_in();
 
+  //Change in left and right encoders
   double dl = curL - prevL;
   double dr = curR - prevR;
+  double ds = (dl + dr) / 2; //Assumes tracking wheels are equidistant from center point
+  //Change in angle
 
-  //find dx, dy
-  //ouble dx =
-
-  double curTheta = (dl - dr) / perpL ;
+  double curTheta = (dl - dr) / perpLen;
   double dTheta = curTheta - prevTheta;
 
+  //find x and y component of chord
+  double arcRadius = ds / dTheta; //  alt:(dr / dTheta) + (perpLen / 2); no need for ds
+  double chordLen = 2 * arcRadius * sin(dTheta / 2); //Hypotenuse
+  double dy = arcRadius * sin(dTheta); //Side Length 1
+  double dx = sqrt(pow(chordLen, 2) - pow(dy,2)); // Pythagorean Thereom
 
+  //update position
+  x += dx;
+  y += dy;
   theta += dTheta;
-
 
   prevL = curL;
   prevR = curR;
   prevTheta = curTheta;
-
 }
 
 double Odometry::getX(){
@@ -74,5 +64,8 @@ void Odometry::setTheta(double thetaNew){
 void Odometry::resetState(){
   this->x = 0;
   this->y = 0;
-  this -> theta = 0;
+  this->theta = 0;
+  this->prevL = 0;
+  this->prevR = 0;
+  this->prevTheta = 0;
 }

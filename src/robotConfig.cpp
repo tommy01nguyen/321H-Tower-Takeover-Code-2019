@@ -8,8 +8,8 @@ using namespace okapi;
 #define port_driveLB 2
 
 //Chassis Constants
-const int wheelD = 4;
-const int chassisL = 12;
+const int wheelDiam = 4;
+const int chassisLen = 12;
 
 //Controllers
 Controller j_master = ControllerId::master;
