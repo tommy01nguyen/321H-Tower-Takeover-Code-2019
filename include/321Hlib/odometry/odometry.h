@@ -6,10 +6,10 @@
 using namespace okapi;
 class Odometry{
   private:
-    double x, y, theta, perpLen, prevL, prevR, prevTheta;
+    double x, y, theta, prevL, prevR, prevM, prevTheta, perpLen, centerToBackWheelLen;
 
   public:
-    Odometry(double perpL);
+    Odometry(double perpLen, double centerToBackWheelLen);
     double getX();
     double getY();
     double getTheta();

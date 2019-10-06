@@ -3,8 +3,10 @@
 #include "321Hlib/robotConfig.h"
 #include "321Hlib/functions.h"
 #include "321Hlib/SystemControl/intakeTask.h"
-#include "321Hlib/SystemControl/catapultTask.h"
-#include "321Hlib/auton.h"
+#include "321Hlib/SystemControl/liftTask.h"
+#include "321Hlib/SystemControl/stackerTask.h"
+#include "321Hlib/SystemControl/driveTask.h"
+#include "321Hlib/Autons/auton.h"
 
 using namespace okapi;
 

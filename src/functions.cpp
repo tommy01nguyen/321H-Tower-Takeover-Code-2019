@@ -11,14 +11,22 @@ QLength tilesToInches(double tiles){ //Converts Tiles To Inches
   return tiles*24*inch ;
 }
 */
-
+void resetEncoders(){
+  encL.reset();
+  encR.reset();
+  encM.reset();
+}
 
 double getL_in(){
-  return (wheelDiam*3.1415/360) * encL.get_value();
+  return (trackWheelDiam * 3.1415 / 360 * encL.get());
 }
 double getR_in(){
-  return (wheelDiam*3.1415/360) * encR.get_value();
+  return (trackWheelDiam * 3.1415 / 360 * encR.get());
 }
+double getM_in(){
+  return (trackWheelDiam * 3.1415 / 360 * encM.get());
+}
+
 
 bool isDriving(){
   static int count = 0;

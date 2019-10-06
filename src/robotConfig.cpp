@@ -2,33 +2,45 @@
 using namespace okapi;
 
 //Ports
-#define port_driveRF 5
-#define port_driveRB 7
-#define port_driveLF 15
-#define port_driveLB 2
+//Dead: 1,3,10
+#define port_driveRF 12
+#define port_driveRB 11
+#define port_driveLF 2
+#define port_driveLB 7
+
+#define port_intake 1
+#define port_angler 19
+#define port_liftL 9
+#define port_liftR 20
 
 //Chassis Constants
-const int wheelDiam = 4;
-const int chassisLen = 12;
+double trackWheelDiam = 2.75;
+double chassisLen = 4.5;
 
 //Controllers
 Controller j_master = ControllerId::master;
 Controller j_partner = ControllerId::partner;
 
 //Motors | Port, Backward(true)/Forward , Gear Ratio, Encoder units
+Motor m_driveRF(port_driveRF, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_driveRB(port_driveRB, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_driveLF(port_driveLF, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_driveLB(port_driveLB, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 
-Motor m_driveRF(port_driveRF, false, AbstractMotor::gearset::blue , AbstractMotor::encoderUnits::degrees);
-Motor m_driveRB(port_driveRB, true, AbstractMotor::gearset::blue , AbstractMotor::encoderUnits::degrees);
-Motor m_driveLF(port_driveLF, true, AbstractMotor::gearset::blue , AbstractMotor::encoderUnits::degrees);
-Motor m_driveLB(port_driveLB, false, AbstractMotor::gearset::blue , AbstractMotor::encoderUnits::degrees);
+Motor m_intake(port_intake, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_angler(port_angler, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_liftL(port_liftL, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_liftR(port_liftR, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 
 //Motor Group | allows for moving all these motors at once
-MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
-MotorGroup mg_driveL({port_driveLB,port_driveLF});
+MotorGroup mg_driveR({-port_driveRB,port_driveRF});
+MotorGroup mg_driveL({port_driveLB,-port_driveLF});
+MotorGroup mg_lift({port_liftL, -port_liftR});
 
 //Sensors
-pros::ADIEncoder encL('A', 'B', false);
-pros::ADIEncoder encR('C', 'D', false);
+okapi::ADIEncoder encM('A', 'B', false); //currently doesnt exist on robot
+okapi::ADIEncoder encR('E', 'F', true);
+okapi::ADIEncoder encL('G', 'H', false);
 
 //Okapi Chassis Controllers
 auto pidChassis = ChassisControllerFactory::create( //PID Controller
@@ -58,4 +70,7 @@ auto fastChassisProfile = AsyncControllerFactory::motionProfile( //Faster
 
 
 void initializeRobot(){ //Initialize Robot Devices
+	encL.reset();
+	encR.reset();
+	encM.reset();
 }

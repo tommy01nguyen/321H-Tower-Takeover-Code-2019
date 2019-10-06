@@ -1,4 +1,4 @@
-#include "321Hlib/auton.h"
+#include "321Hlib/Autons/auton.h"
 /*
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -20,14 +20,14 @@ void autonomous() {
       break;
     case 2:
       break;
-    case 3://Far auton
-      flexible(autonSide);
+    case 3:
+
       break;
     case 4:
-      flexible(autonSide);
+
       break;
     case 5:
-      skills();
+
       break;
     case 0: //Do Nothing
       break;

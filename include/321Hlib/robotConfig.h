@@ -10,18 +10,19 @@ extern Controller j_master;
 extern Controller j_partner;
 
 //Motors
-extern Motor m_catapult;
+extern Motor m_angler;
+extern Motor m_liftL;
+extern Motor m_liftR;
 extern Motor m_intake;
+
 extern Motor m_driveRF;
-extern Motor m_driveRM;
 extern Motor m_driveRB;
 extern Motor m_driveLF;
-extern Motor m_driveLM;
 extern Motor m_driveLB;
 
 //Chassis Constants
-extern const int wheelDiam;
-extern const int chassisL;
+extern double trackWheelDiam;
+extern double chassisL;
 
 //Motor Groups;
 extern MotorGroup mg_driveR;
@@ -35,8 +36,9 @@ extern ChassisControllerPID slowPidChassis;
 
 
 //Sensors
-extern pros::ADIEncoder encL;
-extern pros::ADIEncoder encR;
+extern okapi::ADIEncoder encL;
+extern okapi::ADIEncoder encR;
+extern okapi::ADIEncoder encM;
 
 //Filter
 //extern okapi::EmaFilter f_intakeFilter;
