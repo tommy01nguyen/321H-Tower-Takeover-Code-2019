@@ -42,12 +42,24 @@ okapi::ADIEncoder encM('A', 'B', false); //currently doesnt exist on robot
 okapi::ADIEncoder encR('E', 'F', true);
 okapi::ADIEncoder encL('G', 'H', false);
 
+
+
 //Okapi Chassis Controllers
-auto pidChassis = ChassisControllerFactory::create( //PID Controller
+auto myChassis = ChassisControllerFactory::create( //PID Controller
 	{mg_driveL},{mg_driveR},
+	encR,encL,
 	IterativePosPIDController::Gains{.0011, 0, 0.0000008},
   IterativePosPIDController::Gains{0, 0, 0}, //Angle PID (Stay Straight PID)
-  IterativePosPIDController::Gains{.001, 0, 0.0000008},
+  IterativePosPIDController::Gains{0, 0, 0},
+  AbstractMotor::gearset::green,
+  {2.75_in, 10_in}
+);
+
+auto pidChassis = ChassisControllerFactory::create( //PID Controller
+	{mg_driveL},{mg_driveR},
+	IterativePosPIDController::Gains{.0011, 0, 0.0000008},//straight
+  IterativePosPIDController::Gains{0, 0, 0}, //Angle PID (Stay Straight PID)
+  IterativePosPIDController::Gains{.001, 0, 0.0000008}, //turns
   AbstractMotor::gearset::blue,
   {1.71_in, 13_in}
 );
