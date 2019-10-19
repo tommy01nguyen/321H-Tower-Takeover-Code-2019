@@ -19,6 +19,16 @@ void opcontrol() {
 
 	while (true) {
 		pidChassis.tank(j_master.getAnalog(ControllerAnalog::leftY), j_master.getAnalog(ControllerAnalog::rightY));
+		//Angler
+		if(j_master.getDigital(ControllerDigital::R1)){
+			m_angler.moveVoltage(-12000);
+		}
+		else if(j_master.getDigital(ControllerDigital::R2)){
+			m_angler.moveVoltage(12000);
+		}
+		else{
+			m_angler.moveVoltage(0);
+		}
 
 
 		if(partner == false){
@@ -71,28 +81,17 @@ void opcontrol() {
 			}
 
 			//Lift
-			if(j_partner.getDigital(ControllerDigital::R1)){
+			if(j_partner.getDigital(ControllerDigital::R2)){
 				m_liftL.moveVoltage(12000);
 				m_liftR.moveVoltage(12000);
 			}
-			else if(j_partner.getDigital(ControllerDigital::R2)){
+			else if(j_partner.getDigital(ControllerDigital::R1)){
 				m_liftL.moveVoltage(-12000);
 				m_liftR.moveVoltage(-12000);
 			}
 			else{
 				m_liftL.moveVoltage(0);
 				m_liftR.moveVoltage(0);
-			}
-
-			//Angler
-			if(j_partner.getDigital(ControllerDigital::X)){
-				m_angler.moveVoltage(12000);
-			}
-			else if(j_partner.getDigital(ControllerDigital::B)){
-				m_angler.moveVoltage(-12000);
-			}
-			else{
-				m_angler.moveVoltage(0);
 			}
 		}
 		pros::delay(200);
