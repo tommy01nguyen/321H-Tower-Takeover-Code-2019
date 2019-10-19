@@ -1,7 +1,22 @@
 #include "321Hlib/odometry/odometry.h"
 
 using namespace pros;
+/* Odometry Testing **goes in while loop in usercontrol
+	//Odometry myOdom(4.5,7.45); out of loop
 
+
+if(j_master.getDigital(ControllerDigital::B)){
+myOdom.update();
+delay(1000);
+}
+
+if(j_master.getDigital(ControllerDigital::A)){
+  myOdom.resetState();
+}
+delay(5);
+*/
+
+//Drive
 Odometry::Odometry(double perpLen, double centerToBackWheelLen){
   this->x = 0; //inches
   this->y = 0;
