@@ -4,17 +4,13 @@
 #include "systemControl.h"
 
 enum class intakeStates{
-  off, //0
-  in, //1...
-  out,
-  waitIn,
-  inWait,
-  waitOut,
-  waitOutSlow,
-  untilBallSensed,
-  untilFilled,
+  on,
+  waitOn,
+  onWait,
 };
 
 extern int intakeWaitTime;
+extern int intakeVoltage;
 void task_intakeControl(void*);
-void setIntakeState(intakeStates newIntakeState);
+void setIntakeState(intakeStates newState);
+void setIntakeState(intakeStates newState, int requestedWaitTime, int requestedVoltage);

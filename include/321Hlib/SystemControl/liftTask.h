@@ -4,12 +4,13 @@
 #include "systemControl.h"
 
 enum class liftStates{
-  off, //0
-  on, //1...
-  automatic,
-  loading,
-  fireLoad,
+  on,
+  waitOn,
+  onWait,
 };
 
+extern int liftWaitTime;
+extern int liftVoltage;
 void task_liftControl(void*);
-void setLiftState(liftStates newLiftState);
+void setLiftState(liftStates newState);
+void setLiftState(liftStates newState, int requestedWaitTime, int requestedVoltage);

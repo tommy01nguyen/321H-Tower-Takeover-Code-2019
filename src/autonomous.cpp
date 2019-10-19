@@ -16,7 +16,7 @@ void autonomous() {
 
   switch(autonNumber){ //ex: autonNumber 1 will make case 1 run
     case 1:
-      Flag3Cap2Park(autonSide, autonPark, autonDelay);
+      //autonOne(autonSide);
       break;
     case 2:
       break;
