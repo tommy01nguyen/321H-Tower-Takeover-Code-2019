@@ -6,32 +6,6 @@ int autonPark = 0;
 int autonDelay = 0;
 int page = 0;
 
-/*
-Pages:
-0 = homescreen
-Red Auton----
-1 = Red Auton 1
-2 = Red Auton 2
-3 = Red Auton 3
-4 = Red Auton 4
-5 = Red Auton 5
-Blue Auton----
-6 = Blue Auton 1
-7 = Blue Auton 2
-8 = Blue Auton 3
-9 = Blue Auton 4
-10 = Blue Auton 5
-
------------
-new:
-Scroll.
-Homepage : Red None Blue
-Red Page: Home Select Next
-Blue Page: Home Select Next
-
-Autons:
-*/
-
 void autonSelector(){
 
 }

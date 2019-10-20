@@ -27,15 +27,15 @@ Motor m_driveRB(port_driveRB, true, AbstractMotor::gearset::green , AbstractMoto
 Motor m_driveLF(port_driveLF, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 Motor m_driveLB(port_driveLB, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 
-Motor m_intake(port_intake, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
-Motor m_angler(port_angler, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
-Motor m_liftL(port_liftL, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
-Motor m_liftR(port_liftR, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_intake(port_intake, true, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_angler(port_angler, true, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_liftL(port_liftL, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_liftR(port_liftR, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 
 //Motor Group | allows for moving all these motors at once
 MotorGroup mg_driveR({-port_driveRB,port_driveRF});
 MotorGroup mg_driveL({port_driveLB,-port_driveLF});
-MotorGroup mg_lift({port_liftL, -port_liftR});
+MotorGroup mg_lift({-port_liftL, port_liftR});
 
 //Sensors
 okapi::ADIEncoder encM('A', 'B', false); //currently doesnt exist on robot
@@ -45,7 +45,7 @@ okapi::ADIEncoder encL('G', 'H', false);
 
 
 //Okapi Chassis Controllers
-auto myChassis = ChassisControllerFactory::create( //PID Controller
+auto encChassis = ChassisControllerFactory::create( //PID Controller
 	{mg_driveL},{mg_driveR},
 	encR,encL,
 	IterativePosPIDController::Gains{.0011, 0, 0.0000008},

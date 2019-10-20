@@ -31,6 +31,7 @@ extern MotorGroup mg_driveL;
 //Okapi Controllers
 extern AsyncMotionProfileController chassisProfile;
 extern AsyncMotionProfileController fastChassisProfile;
+extern ChassisControllerPID encChassis;
 extern ChassisControllerPID pidChassis;
 extern ChassisControllerPID slowPidChassis;
 
