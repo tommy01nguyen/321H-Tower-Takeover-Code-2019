@@ -6,10 +6,29 @@ using namespace okapi;
 void basicAuton(int side){
 
 //Back up, pushing preload into the zone, get out and align with the wall.
-pidChassis.moveDistance(-10_in);
+
+pidChassis.moveDistance(-12_in);
+pros::delay(100);
 pidChassis.moveDistance(10_in);
-if(side == red) mg_driveL.moveDistance(22_in); //Sweeping turn to get out of touching the wall.
-if(side == blue) mg_driveR.moveDistance(22_in);
+pros::delay(100);
+if(side == red) pidChassis.driveVector(8000, -100);//Sweeping turn to get out of touching the wall.
+if(side == blue) pidChassis.driveVector(8000, 100);
+pros::delay(900);
+pidChassis.stop();
+pros::delay(200);
+driveWall(-6000);
+pros::delay(500);
+pidChassis.moveDistance(-5_in);
+pros::delay(500);
+pidChassis.moveDistance(45_in);
+pros::delay(100);
+if(side == red) pidChassis.turnAngle(80_deg);
+if(side == blue) pidChassis.turnAngle(-90_deg);
+pros::delay(200);
+pidChassis.moveDistance(-50_in);
+pros::delay(200);
+pidChassis.moveDistance(20_in);
+/*
 pidChassis.moveDistance(-5_in); //Back up against the Wall
 
 
@@ -25,5 +44,5 @@ if(side == blue) pidChassis.turnAngle(35_deg);
 pidChassis.moveDistance(54_in); //Push into the zone
 pros::delay(500);
 pidChassis.moveDistance(-20_in); //Out
-
+*/
 }

@@ -3,14 +3,14 @@ using namespace okapi;
 
 //Ports
 //Dead: 1,3,10
-#define port_driveRF 12
+#define port_driveRF 13
 #define port_driveRB 11
 #define port_driveLF 2
 #define port_driveLB 7
 
-#define port_intake 1
+#define port_intake 8
 #define port_angler 19
-#define port_liftL 9
+#define port_liftL 5
 #define port_liftR 20
 
 //Chassis Constants

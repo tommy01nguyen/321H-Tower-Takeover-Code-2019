@@ -24,13 +24,16 @@ ControllerButton b_intakeOut(ControllerId::partner, ControllerDigital::L1);
 ControllerButton b_liftUp(ControllerId::partner, ControllerDigital::R1);
 ControllerButton b_liftDown(ControllerId::partner, ControllerDigital::R2);
 
+ControllerButton b_debug(ControllerDigital::A);
 
-//ControllerButton b_debug(ControllerId::partner, ControllerDigital::Y);
+
 void opcontrol() {
 	pros::lcd::initialize();
 
 	while (true) {
-
+		//if(b_debug.isPressed()){
+		//	autonomous();
+		//}
 
 		if(b_driveHold.isPressed()){ //Hold Position
 			mg_driveR.setBrakeMode(AbstractMotor::brakeMode::hold);
@@ -39,8 +42,8 @@ void opcontrol() {
 			mg_driveL.moveVelocity(0);
 		}
 			else if(b_driveSlower.isPressed()){
-					pidChassis.tank(j_partner.getAnalog(ControllerAnalog::leftY)*.65, //Tank Control half speed
-								 j_partner.getAnalog(ControllerAnalog::rightY)*.65);
+					pidChassis.tank(j_master.getAnalog(ControllerAnalog::leftY)*.65, //Tank Control half speed
+								 j_master.getAnalog(ControllerAnalog::rightY)*.65);
 			}
 					else{
 						if(mg_driveR.getBrakeMode() == AbstractMotor::brakeMode::hold){ //Change from Hold to Coast

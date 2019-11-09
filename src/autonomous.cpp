@@ -13,15 +13,17 @@
 using namespace okapi;
 
 void autonomous() {
-//Red -1, 1 blue
-autonSide = -1;
+//Red 1, -1 blue
+//autonSide = -1;
+
+//Case
+autonNumber = 1;
 
   switch(autonNumber){ //ex: autonNumber 1 will make case 1 run
     case 1:
-      basicAuton(autonSide);
+      basicAuton(-1);
       break;
     case 2:
-
       break;
     case 3:
       break;
