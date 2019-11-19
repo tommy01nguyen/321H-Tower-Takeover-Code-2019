@@ -11,9 +11,9 @@ extern Controller j_partner;
 
 //Motors
 extern Motor m_angler;
-extern Motor m_liftL;
-extern Motor m_liftR;
-extern Motor m_intake;
+extern Motor m_lift;
+extern Motor m_intakeR;
+extern Motor m_intakeL;
 
 extern Motor m_driveRF;
 extern Motor m_driveRB;
@@ -27,6 +27,7 @@ extern double chassisL;
 //Motor Groups;
 extern MotorGroup mg_driveR;
 extern MotorGroup mg_driveL;
+
 
 //Okapi Controllers
 extern AsyncMotionProfileController chassisProfile;

@@ -20,7 +20,8 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
     switch(currentIntakeState){
 
       case intakeStates::on:{  //Intake at velocity
-        m_intake.moveVoltage(intakeVoltage);
+        m_intakeL.moveVoltage(intakeVoltage);
+        m_intakeR.moveVoltage(intakeVoltage);
         break;
       }
 
@@ -32,9 +33,11 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
 
       case intakeStates::onWait:{ //Intake in and then stop
 
-        m_intake.moveVoltage(intakeVoltage);
+        m_intakeL.moveVoltage(intakeVoltage);
+        m_intakeR.moveVoltage(intakeVoltage);
         pros::delay(intakeWaitTime);
-        m_intake.moveVoltage(0);
+        m_intakeL.moveVoltage(0);
+        m_intakeR.moveVoltage(0);
         break;
       }
     }
