@@ -16,6 +16,8 @@ if(j_master.getDigital(ControllerDigital::A)){
 delay(5);
 */
 
+
+/*
 //Drive
 Odometry::Odometry(double perpLen, double centerToBackWheelLen){
   this->x = 0; //inches
@@ -132,3 +134,4 @@ void Odometry::resetState(){
   this->prevTheta = 0;
   resetEncoders();
 }
+*/

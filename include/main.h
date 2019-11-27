@@ -36,6 +36,9 @@
 
 #include "api.h"
 
+
+
+
 //#include "robotConfig.h"
 /**
  * You should add more #includes here
@@ -85,5 +88,13 @@ void opcontrol(void);
 //#include <iostream>
 
 #endif
-
+#include "321Hlib/Autons/auton.h"
+#include "321Hlib/functions.h"
+#include "321Hlib/robotConfig.h"
+#include "321Hlib/SystemControl/systemControl.h"
+#include "321Hlib/SystemControl/intakeTask.h"
+#include "321Hlib/SystemControl/liftTask.h"
+#include "321Hlib/SystemControl/stackerTask.h"
+#include "321Hlib/SystemControl/driveTask.h"
+#include "321Hlib/odometry/odometry.h"
 #endif  // _PROS_MAIN_H_
