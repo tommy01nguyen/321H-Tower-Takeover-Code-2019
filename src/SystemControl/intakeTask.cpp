@@ -1,14 +1,21 @@
 #include "321Hlib/SystemControl/intakeTask.h"
 
-static intakeStates currentIntakeState = intakeStates::on; //Defaulted Off
+static intakeStates currentintakeState = intakeStates::on; //Defaulted Off
 
 int intakeVoltage = 0;
 int intakeWaitTime = 0;
-void setIntakeState(intakeStates newState){ //Set State of intake
-  currentIntakeState = newState;
+
+void setintakeState(intakeStates newState){ //Set State of intake
+  currentintakeState = newState;
 }
-void setIntakeState(intakeStates newState, int requestedWaitTime, int requestedVoltage){
-  currentIntakeState = newState;
+
+void setintakeState(intakeStates newState, int requestedVoltage){
+  currentintakeState = newState;
+  intakeVoltage = requestedVoltage;
+}
+
+void setintakeState(intakeStates newState, int requestedWaitTime, int requestedVoltage){
+  currentintakeState = newState;
   intakeWaitTime = requestedWaitTime;
   intakeVoltage = requestedVoltage;
 }
@@ -17,21 +24,21 @@ void setIntakeState(intakeStates newState, int requestedWaitTime, int requestedV
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
 
-    switch(currentIntakeState){
+    switch(currentintakeState){
 
-      case intakeStates::on:{  //Intake at velocity
+      case intakeStates::on:{  //intake at velocity
         m_intakeL.moveVoltage(intakeVoltage);
         m_intakeR.moveVoltage(intakeVoltage);
         break;
       }
 
-      case intakeStates::waitOn:{ //Wait and then Intake
+      case intakeStates::waitOn:{ //Wait and then intake
         pros::delay(intakeWaitTime);
-        setIntakeState(intakeStates::on);
+        setintakeState(intakeStates::on);
         break;
       }
 
-      case intakeStates::onWait:{ //Intake in and then stop
+      case intakeStates::onWait:{ //intake in and then stop
 
         m_intakeL.moveVoltage(intakeVoltage);
         m_intakeR.moveVoltage(intakeVoltage);

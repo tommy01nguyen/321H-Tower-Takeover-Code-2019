@@ -12,5 +12,6 @@ enum class intakeStates{
 extern int intakeWaitTime;
 extern int intakeVoltage;
 void task_intakeControl(void*);
-void setIntakeState(intakeStates newState);
-void setIntakeState(intakeStates newState, int requestedWaitTime, int requestedVoltage);
+void setintakeState(intakeStates newState);
+void setintakeState(intakeStates newState, int requestedVoltage);
+void setintakeState(intakeStates newState, int requestedWaitTime, int requestedVoltage);

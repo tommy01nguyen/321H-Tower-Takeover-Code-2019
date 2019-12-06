@@ -1,42 +1,45 @@
 #include "321Hlib/SystemControl/liftTask.h"
-/*
-static intakeStates currentIntakeState = intakeStates::on; //Defaulted Off
 
-int intakeVoltage = 0;
-int intakeWaitTime = 0;
-void setIntakeState(intakeStates newState){ //Set State of intake
-  currentIntakeState = newState;
+static liftStates currentliftState = liftStates::on; //Defaulted Off
+
+int liftVoltage = 0;
+int liftWaitTime = 0;
+void setliftState(liftStates newState){ //Set State of lift
+  currentliftState = newState;
 }
-void setIntakeState(intakeStates newState, int requestedWaitTime, int requestedVoltage){
-  currentIntakeState = newState;
-  intakeWaitTime = requestedWaitTime;
-  intakeVoltage = requestedVoltage;
+void setliftState(liftStates newState, int requestedVoltage){
+  currentliftState = newState;
+  liftVoltage = requestedVoltage;
+}
+void setliftState(liftStates newState, int requestedWaitTime, int requestedVoltage){
+  currentliftState = newState;
+  liftWaitTime = requestedWaitTime;
+  liftVoltage = requestedVoltage;
 }
 
 void task_liftControl(void*){ //State Machine Task for Catapult Control
   while(true){
 
-    switch(currentIntakeState){
+    switch(currentliftState){
 
-      case intakeStates::on:{  //Intake at velocity
-        m_intake.moveVoltage(intakeVoltage);
+      case liftStates::on:{  //lift at velocity
+        m_lift.moveVoltage(liftVoltage);
         break;
       }
 
-      case intakeStates::waitOn:{ //Wait and then Intake
-        pros::delay(intakeWaitTime);
-        setIntakeState(intakeStates::on);
+      case liftStates::waitOn:{ //Wait and then lift
+        pros::delay(liftWaitTime);
+        setliftState(liftStates::on);
         break;
       }
 
-      case intakeStates::onWait:{ //Intake in and then stop
-        m_intake.moveVoltage(intakeVoltage);
-        pros::delay(intakeWaitTime);
-        m_intake.moveVoltage(0);
+      case liftStates::onWait:{ //lift in and then stop
+        m_lift.moveVoltage(liftVoltage);
+        pros::delay(liftWaitTime);
+        m_lift.moveVoltage(0);
         break;
       }
     }
     pros::delay(20);
   }
 }
-*/

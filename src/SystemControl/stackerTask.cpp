@@ -1,5 +1,61 @@
 #include "321Hlib/SystemControl/stackerTask.h"
 
-void task_stackerControl(void*){
-  while(true);
+static stackerStates currentstackerState = stackerStates::on; //Defaulted Off
+
+int stackerVoltage = 0;
+int stackerWaitTime = 0;
+void setstackerState(stackerStates newState){ //Set State of stacker
+  currentstackerState = newState;
+}
+void setstackerState(stackerStates newState, int requestedVoltage){
+  currentstackerState = newState;
+  stackerVoltage = requestedVoltage;
+}
+void setstackerState(stackerStates newState, int requestedWaitTime, int requestedVoltage){
+  currentstackerState = newState;
+  stackerWaitTime = requestedWaitTime;
+  stackerVoltage = requestedVoltage;
+}
+
+
+bool stackMacroOn = false;
+void task_stackerControl(void*){ //State Machine Task for Catapult Control
+  while(true){
+
+    switch(currentstackerState){
+
+      case stackerStates::on:{  //stacker at velocity
+        m_stacker.moveVoltage(stackerVoltage);
+        stackMacroOn = false;
+        break;
+      }
+
+      case stackerStates::waitOn:{ //Wait and then stacker
+        pros::delay(stackerWaitTime);
+        setstackerState(stackerStates::on);
+        stackMacroOn = false;
+        break;
+      }
+
+      case stackerStates::onWait:{ //stacker in and then stop
+        m_stacker.moveVoltage(stackerVoltage);
+        pros::delay(stackerWaitTime);
+        m_stacker.moveVoltage(0);
+        stackMacroOn = false;
+        break;
+      }
+      case stackerStates::stackMacro:{ //Hold a button to start macro, release to end.
+        if(stackMacroOn == false){ //Only runs when case is switched to stackMacro
+          pidStacker.setTarget(200); //Rapid Movement Up (Degrees)
+          pidStacker.waitUntilSettled();
+          m_stacker.moveVoltage(2000); //Finishing Slow Voltage
+        }
+        if(b_stackMacro.changedToReleased()){
+          setstackerState(stackerStates::on, 0); //Off
+        }
+        stackMacroOn = true;
+      }
+    }
+    pros::delay(20);
+  }
 }

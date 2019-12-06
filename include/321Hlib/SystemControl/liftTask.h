@@ -12,5 +12,6 @@ enum class liftStates{
 extern int liftWaitTime;
 extern int liftVoltage;
 void task_liftControl(void*);
-void setLiftState(liftStates newState);
-void setLiftState(liftStates newState, int requestedWaitTime, int requestedVoltage);
+void setliftState(liftStates newState);
+void setliftState(liftStates newState, int requestedVoltage);
+void setliftState(liftStates newState, int requestedWaitTime, int requestedVoltage);

@@ -4,12 +4,15 @@
 #include "systemControl.h"
 
 enum class stackerStates{
-  off, //0
-  on, //1...
-  automatic,
-  loading,
-  fireLoad,
+  on,
+  waitOn,
+  onWait,
+  stackMacro,
 };
 
+extern int stackerWaitTime;
+extern int stackerVoltage;
 void task_stackerControl(void*);
-void setStackerState(stackerStates newStackerState);
+void setstackerState(stackerStates newState);
+void setstackerState(stackerStates newState, int requestedVoltage);
+void setstackerState(stackerStates newState, int requestedWaitTime, int requestedVoltage);

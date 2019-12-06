@@ -4,12 +4,11 @@
 #include "systemControl.h"
 
 enum class driveStates{
-  off, //0
-  on, //1...
-  automatic,
-  loading,
-  fireLoad,
+  on,
+  hold,
 };
 
+extern double drivePercent;
 void task_driveControl(void*);
-void setDriveState(driveStates newDriveState);
+void setdriveState(driveStates newState);
+void setdriveState(driveStates newState, double requestedPercent);

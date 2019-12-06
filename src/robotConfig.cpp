@@ -9,12 +9,8 @@ using namespace okapi;
 
 #define port_intakeL 20
 #define port_intakeR 19
-#define port_angler 11
+#define port_stacker 11
 #define port_lift 5
-
-//Chassis Constants
-double trackWheelDiam = 2.75;
-double chassisLen = 4.5;
 
 //Controllers
 Controller j_master = ControllerId::master;
@@ -28,60 +24,38 @@ Motor m_driveLB(port_driveLB, false, AbstractMotor::gearset::green , AbstractMot
 
 Motor m_intakeL(port_intakeL, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 Motor m_intakeR(port_intakeR, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
-Motor m_angler(port_angler, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
-Motor m_lift(port_lift, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
+Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_lift(port_lift, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
 
 //Motor Group | allows for moving all these motors at once
 MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
 MotorGroup mg_driveL({port_driveLB,port_driveLF});
-
-//Sensors
-okapi::ADIEncoder encM('A', 'B', false); //currently doesnt exist on robot
-okapi::ADIEncoder encR('E', 'F', true);
-okapi::ADIEncoder encL('G', 'H', false);
-
-
+MotorGroup mg_intake({port_intakeL, -port_intakeR});
 
 //Okapi Chassis Controllers
-auto encChassis = ChassisControllerFactory::create( //PID Controller
-	{mg_driveL},{mg_driveR},
-	encR,encL,
-	IterativePosPIDController::Gains{.0011, 0, 0.0000008},
-  IterativePosPIDController::Gains{0, 0, 0}, //Angle PID (Stay Straight PID)
-  IterativePosPIDController::Gains{0, 0, 0},
-  AbstractMotor::gearset::green,
-  {2.75_in, 10_in}
-);
-
-auto pidChassis = ChassisControllerFactory::create( //PID Controller
+ChassisControllerPID pidChassis = ChassisControllerFactory::create( //PID Controller
 	{mg_driveL},{mg_driveR},
 	IterativePosPIDController::Gains{.0011, 0, 0.0000008},//straight
   IterativePosPIDController::Gains{0, 0, 0}, //Angle PID (Stay Straight PID)
   IterativePosPIDController::Gains{.001, 0, 0.0000008}, //turns
-  AbstractMotor::gearset::blue,
+  AbstractMotor::gearset::green,
   {1.71_in, 13_in}
 );
 
-auto slowPidChassis = ChassisControllerFactory::create(
-	{mg_driveL},{mg_driveR},
-  IterativePosPIDController::Gains{.0008, 0, 0.00000008},
-  IterativePosPIDController::Gains{0, 0, 0},
-  IterativePosPIDController::Gains{.0007, 0, 0.0000008}, //Slower Turn PID
-  AbstractMotor::gearset::blue,
-  {1.71_in, 13_in}
-);
+AsyncMotionProfileController chassisProfile = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
+	3.0, 5.0, 30.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
 
+//Test out adaptive tuning
+const double testkP = 1.0;
+const double testkI = .001;
+const double testkD = .1;
 
-auto chassisProfile = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
-	2.0, 4.0, 23.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
-
-auto fastChassisProfile = AsyncControllerFactory::motionProfile( //Faster
-	3.0, 5.0, 30.0, pidChassis);
-
+AsyncPosPIDController pidLift = AsyncControllerFactory::posPID(port_lift, 0.001, 0.0, 0.0001);
+AsyncPosPIDController pidStacker = AsyncControllerFactory::posPID(port_stacker, 0.001, 0.0, 0.0001);
+AsyncPosPIDController pidDriveL = AsyncControllerFactory::posPID({mg_driveL}, .0011, 0, 0.0000008);
+AsyncPosPIDController pidDriveR = AsyncControllerFactory::posPID({mg_driveR}, .0011, 0, 0.0000008);
 
 void initializeRobot(){ //Initialize Robot Devices
-	//encL.reset();
-	//encR.reset();
-	//encM.reset();
+	//Initialize Sensors
 }
