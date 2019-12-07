@@ -23,10 +23,12 @@ void initialize() {
 		initializeRobot(); //Sensors
 
 		//Tasks
+		pros::Task driveTask (task_driveControl, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Drive Task");
 	  pros::Task liftTask (task_liftControl, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Lift Task");
 		pros::Task intakeTask (task_intakeControl, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Intake Task");
 		pros::Task stackerTask (task_stackerControl, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Stacker Task");
-		pros::Task driveTask (task_driveControl, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Drive Task");
+
+
 
 		//Auton Selector
 
@@ -78,10 +80,12 @@ void autonomous() {
 
 
  void opcontrol() {
+	std::cout << "hi" << std::endl;
  	while (true) {
- 		//if(b_debug.isPressed()){
- 		//	autonomous();
- 		//}
+ 		if(b_debug.isPressed()){
+ 			//autonomous();
+			std::cout << "hi" << std::endl;
+ 		}
 
 		systemControl(); //Runs subsystem Controls
  		pros::delay(20);

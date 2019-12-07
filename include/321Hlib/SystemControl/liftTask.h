@@ -7,6 +7,9 @@ enum class liftStates{
   on,
   waitOn,
   onWait,
+  lowTower,
+  highTower,
+  noTower,
 };
 
 extern int liftWaitTime;

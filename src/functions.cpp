@@ -14,6 +14,8 @@ QLength tilesToInches(double tiles){ //Converts Tiles To Inches
 
 
 void resetEncoders(){
+  m_stacker.tarePosition();
+  m_lift.tarePosition();
 }
 
 bool isDriving(){

@@ -24,8 +24,8 @@ Motor m_driveLB(port_driveLB, false, AbstractMotor::gearset::green , AbstractMot
 
 Motor m_intakeL(port_intakeL, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 Motor m_intakeR(port_intakeR, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
-Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
-Motor m_lift(port_lift, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+Motor m_stacker(port_stacker, true, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
 
 //Motor Group | allows for moving all these motors at once
@@ -47,15 +47,16 @@ AsyncMotionProfileController chassisProfile = AsyncControllerFactory::motionProf
 	3.0, 5.0, 30.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
 
 //Test out adaptive tuning
-const double testkP = 1.0;
-const double testkI = .001;
-const double testkD = .1;
+// const double testkP = 1.0;
+// const double testkI = .001;
+// const double testkD = .1;
 
-AsyncPosPIDController pidLift = AsyncControllerFactory::posPID(port_lift, 0.001, 0.0, 0.0001);
-AsyncPosPIDController pidStacker = AsyncControllerFactory::posPID(port_stacker, 0.001, 0.0, 0.0001);
-AsyncPosPIDController pidDriveL = AsyncControllerFactory::posPID({mg_driveL}, .0011, 0, 0.0000008);
-AsyncPosPIDController pidDriveR = AsyncControllerFactory::posPID({mg_driveR}, .0011, 0, 0.0000008);
+// AsyncPosPIDController pidLift = AsyncControllerFactory::posPID(port_lift, 0.001, 0.0, 0.0001);
+// AsyncPosPIDController pidStacker = AsyncControllerFactory::posPID(port_stacker, 0.001, 0.0, 0.0001);
+// AsyncPosPIDController pidDriveL = AsyncControllerFactory::posPID({mg_driveL}, .0011, 0, 0.0000008);
+// AsyncPosPIDController pidDriveR = AsyncControllerFactory::posPID({mg_driveR}, .0011, 0, 0.0000008);
 
 void initializeRobot(){ //Initialize Robot Devices
 	//Initialize Sensors
+	resetEncoders();
 }

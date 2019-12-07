@@ -7,6 +7,8 @@ enum class stackerStates{
   on,
   waitOn,
   onWait,
+  towerScoring,
+  noTowerScoring,
   stackMacro,
 };
 

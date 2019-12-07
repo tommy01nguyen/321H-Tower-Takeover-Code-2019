@@ -27,6 +27,7 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
       case stackerStates::on:{  //stacker at velocity
         m_stacker.moveVoltage(stackerVoltage);
         stackMacroOn = false;
+        std::cout << stackerVoltage << std::endl;
         break;
       }
 
@@ -44,16 +45,34 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
         stackMacroOn = false;
         break;
       }
-      case stackerStates::stackMacro:{ //Hold a button to start macro, release to end.
+      case stackerStates::towerScoring:{
+        m_stacker.moveAbsolute(140, 100);
+        break;
+      }
+      case stackerStates::noTowerScoring:{
+        pros::delay(300);
+        m_stacker.moveAbsolute(0, 30);
+        break;
+      }
+
+      case stackerStates::stackMacro:{ //Currently only meant for auton
+        setintakeState(intakeStates::on, -6000);
+        pros::delay(300);
+        setintakeState(intakeStates::on, 0);
+        m_stacker.moveAbsolute(500, 30);
+        /*
+         //Hold a button to start macro, release to end.
         if(stackMacroOn == false){ //Only runs when case is switched to stackMacro
-          pidStacker.setTarget(200); //Rapid Movement Up (Degrees)
-          pidStacker.waitUntilSettled();
+          // pidStacker.setTarget(200); //Rapid Movement Up (Degrees)
+          // pidStacker.waitUntilSettled();
           m_stacker.moveVoltage(2000); //Finishing Slow Voltage
         }
         if(b_stackMacro.changedToReleased()){
           setstackerState(stackerStates::on, 0); //Off
         }
         stackMacroOn = true;
+        */
+        break;
       }
     }
     pros::delay(20);

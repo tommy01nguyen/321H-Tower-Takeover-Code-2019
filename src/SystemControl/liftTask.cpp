@@ -39,6 +39,18 @@ void task_liftControl(void*){ //State Machine Task for Catapult Control
         m_lift.moveVoltage(0);
         break;
       }
+      case liftStates::noTower:{
+        m_lift.moveAbsolute(0, 150);
+        break;
+      }
+      case liftStates::lowTower:{
+        m_lift.moveAbsolute(600, 200);
+        break;
+      }
+      case liftStates::highTower:{
+        m_lift.moveAbsolute(650, 200);
+        break;
+      }
     }
     pros::delay(20);
   }
