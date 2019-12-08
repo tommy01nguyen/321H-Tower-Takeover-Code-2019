@@ -75,11 +75,11 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
 
   //STACKER
   if(b_stackerUpSlow.isPressed() && !towerMacroOn){
-    setstackerState(stackerStates::on, 5000);
-  
+    setstackerState(stackerStates::on, 8000);
+
   }
   else if(b_stackerUpVerySlow.isPressed() && !towerMacroOn){
-    setstackerState(stackerStates::on, 2000);
+    setstackerState(stackerStates::on, 6000);
   }
   else if(b_stackerUpP.isPressed() && !towerMacroOn){
     setstackerState(stackerStates::on, 12000);

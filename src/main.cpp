@@ -57,12 +57,12 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-set
-	autonNumber = 1;
-	autonSide =-1;
+	autonNumber = 1;//dont change
+	autonSide = 1;
 
 	  switch(autonNumber){ //ex: autonNumber 1 will make case 1 run
 	    case 1:
-	      basicAuton(autonSide);
+	      basicAuton(-1);
 	      break;
 	    case 2:
 	      break;
@@ -84,7 +84,7 @@ void autonomous() {
  	while (true) {
  		if(b_debug.isPressed()){
  			//autonomous();
-			std::cout << "hi" << std::endl;
+			//std::cout << "hi" << std::endl;
  		}
 
 		systemControl(); //Runs subsystem Controls

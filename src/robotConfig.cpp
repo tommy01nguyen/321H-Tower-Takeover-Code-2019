@@ -4,7 +4,7 @@ using namespace okapi;
 //Ports
 #define port_driveRF 1
 #define port_driveRB 2
-#define port_driveLF 8
+#define port_driveLF 7
 #define port_driveLB 10
 
 #define port_intakeL 20
@@ -36,11 +36,11 @@ MotorGroup mg_intake({port_intakeL, -port_intakeR});
 //Okapi Chassis Controllers
 ChassisControllerPID pidChassis = ChassisControllerFactory::create( //PID Controller
 	{mg_driveL},{mg_driveR},
-	IterativePosPIDController::Gains{.0011, 0, 0.0000008},//straight
+	IterativePosPIDController::Gains{.0025, 0, 0.0000008},//straight
   IterativePosPIDController::Gains{0, 0, 0}, //Angle PID (Stay Straight PID)
-  IterativePosPIDController::Gains{.001, 0, 0.0000008}, //turns
+  IterativePosPIDController::Gains{.0021, 0, 0.0000008}, //turns
   AbstractMotor::gearset::green,
-  {1.71_in, 13_in}
+  {4.125_in, 13_in}
 );
 
 AsyncMotionProfileController chassisProfile = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller

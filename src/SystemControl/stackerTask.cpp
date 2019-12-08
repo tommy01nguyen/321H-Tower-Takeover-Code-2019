@@ -56,10 +56,7 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
       }
 
       case stackerStates::stackMacro:{ //Currently only meant for auton
-        setintakeState(intakeStates::on, -6000);
-        pros::delay(300);
-        setintakeState(intakeStates::on, 0);
-        m_stacker.moveAbsolute(500, 30);
+        m_stacker.moveAbsolute(500, 40);
         /*
          //Hold a button to start macro, release to end.
         if(stackMacroOn == false){ //Only runs when case is switched to stackMacro
