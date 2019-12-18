@@ -46,15 +46,6 @@ ChassisControllerPID pidChassis = ChassisControllerFactory::create( //PID Contro
 AsyncMotionProfileController chassisProfile = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
 	3.0, 5.0, 30.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
 
-//Test out adaptive tuning
-// const double testkP = 1.0;
-// const double testkI = .001;
-// const double testkD = .1;
-
-// AsyncPosPIDController pidLift = AsyncControllerFactory::posPID(port_lift, 0.001, 0.0, 0.0001);
-// AsyncPosPIDController pidStacker = AsyncControllerFactory::posPID(port_stacker, 0.001, 0.0, 0.0001);
-// AsyncPosPIDController pidDriveL = AsyncControllerFactory::posPID({mg_driveL}, .0011, 0, 0.0000008);
-// AsyncPosPIDController pidDriveR = AsyncControllerFactory::posPID({mg_driveR}, .0011, 0, 0.0000008);
 
 void initializeRobot(){ //Initialize Robot Devices
 	//Initialize Sensors

@@ -5,7 +5,6 @@ using namespace okapi;
 #define blue -1
 
 void basicAuton(int side){
-side = -1;
 // Flip out
 setstackerState(stackerStates::towerScoring);
 setliftState(liftStates::highTower);
@@ -24,20 +23,13 @@ setintakeState(intakeStates::on, 0);
 //Drive Backwards
 pidChassis.moveDistance(-43_in);
 // Turn Towards Goal zone
-//if(side == red) pidChassis.turnAngle(-83_deg);
-//if(side == blue) pidChassis.turnAngle(91_deg);
-
-
-//pidChassis.turnAngle(-83_deg); //RED
-pidChassis.turnAngle(91_deg); //BLUE
-
-
+if(side == red) pidChassis.turnAngle(-83_deg);
+if(side == blue) pidChassis.turnAngle(91_deg);
 //Drive to Goal Zone
 pidChassis.moveDistance(28_in);
 
 // Score
-setstackerState(stackerStates::stackMacro); //Intake out a tiny bit, then moves stack up
-pros::delay(2000);
+setstackerState(stackerStates::stackMacro); //Stack that
 pidChassis.moveDistance(-20_in);
 
 

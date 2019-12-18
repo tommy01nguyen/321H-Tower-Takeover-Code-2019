@@ -1,7 +1,11 @@
-Notes
+NOTES
 
-Things to Add:
-Actually use the tasks for subsystems - NEEDS TESTING
-Macro for Tray and Towers - TRAY NEEDS TESTING
-Auton Selector
-Redo Controls
+NEED TO DO
+Fix PID(use angle pid)
+Add motion profiling
+Tune noTower preset so tray moves back faster, may need to increase wait time for tray.
+Tune Preset Control
+Test Macro For Tray Stack
+Test Auton Selector
+
+Then we write some autons!

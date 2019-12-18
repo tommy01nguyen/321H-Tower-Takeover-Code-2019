@@ -7,9 +7,10 @@
 #include "321Hlib/SystemControl/stackerTask.h"
 #include "321Hlib/SystemControl/driveTask.h"
 
-extern int autonNumber; //1 front auton
+extern int autonNumber;
 extern int autonSide; //1 Red, -1 Blue
 void basicAuton(int side);
-void farAuton(int side, int park); //nonexistent
+
 void flexible(int side);
 void skills();
+void nearZone8Cube(int side);

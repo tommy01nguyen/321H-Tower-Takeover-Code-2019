@@ -56,9 +56,15 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
       }
 
       case stackerStates::stackMacro:{ //Currently only meant for auton
-        m_stacker.moveAbsolute(500, 40);
-        /*
-         //Hold a button to start macro, release to end.
+        //m_stacker.moveAbsolute(500, 40);
+
+        m_stacker.moveAbsolute(300,100);
+        m_stacker.moveAbsolute(400, 50);
+        m_stacker.moveAbsolute(500, 20);
+        //See if its actually smooth.
+
+
+        /*Hold a button to start macro, release to end.
         if(stackMacroOn == false){ //Only runs when case is switched to stackMacro
           // pidStacker.setTarget(200); //Rapid Movement Up (Degrees)
           // pidStacker.waitUntilSettled();

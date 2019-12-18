@@ -21,3 +21,6 @@ bool isDriving();
 bool isLeftDriving();
 bool isRightDriving();
 void vectorWall(double voltage, double yaw);
+
+void flipout();
+void stack();

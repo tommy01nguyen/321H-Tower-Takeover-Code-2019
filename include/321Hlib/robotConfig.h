@@ -24,10 +24,6 @@ extern MotorGroup mg_driveL;
 //Okapi Controllers
 extern AsyncMotionProfileController chassisProfile;
 extern ChassisControllerPID pidChassis;
-extern AsyncPosPIDController pidLift;
-extern AsyncPosPIDController pidStacker;
-extern AsyncPosPIDController pidDriveL;
-extern AsyncPosPIDController pidDriveR;
 
 
 //Initialize Commands

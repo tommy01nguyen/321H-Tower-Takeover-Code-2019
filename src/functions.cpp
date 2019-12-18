@@ -62,3 +62,11 @@ void vectorWall(double voltage, double yaw){ //voltage -1 to 1. left + yaw, Righ
   mg_driveR.moveVoltage(0);
   mg_driveL.moveVoltage(0);
 }
+
+void flipout(){
+  
+}
+
+void stack(){
+
+}

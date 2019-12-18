@@ -4,4 +4,4 @@ using namespace okapi;
 
 void skills(){ // In progress
 
-    }
+}
