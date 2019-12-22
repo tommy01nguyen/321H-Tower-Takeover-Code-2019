@@ -46,6 +46,9 @@ ChassisControllerPID pidChassis = ChassisControllerFactory::create( //PID Contro
 AsyncMotionProfileController chassisProfile = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
 	3.0, 5.0, 30.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
 
+AsyncMotionProfileController chassisProfileSlow = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
+	1.0, 2.0, 10.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
+
 
 void initializeRobot(){ //Initialize Robot Devices
 	//Initialize Sensors
