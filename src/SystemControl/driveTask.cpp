@@ -16,6 +16,7 @@ void setdriveState(driveStates newState, double requestedPercent){
 void task_driveControl(void*){ //State Machine Task for Catapult Control
   while(true){
 
+
     switch(currentdriveState){
 
       case driveStates::on:{  //drive at velocity
