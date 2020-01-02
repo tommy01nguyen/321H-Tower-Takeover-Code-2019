@@ -22,9 +22,9 @@ extern MotorGroup mg_driveR;
 extern MotorGroup mg_driveL;
 
 //Okapi Controllers
-extern AsyncMotionProfileController chassisProfile;
-extern AsyncMotionProfileController chassisProfileSlow;
-extern ChassisControllerPID pidChassis;
+extern std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfile;
+extern std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfileSlow;
+extern std::shared_ptr<okapi::ChassisController> pidChassis;
 
 
 //Initialize Commands

@@ -24,8 +24,10 @@ void task_driveControl(void*){ //State Machine Task for Catapult Control
           mg_driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
           mg_driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
         }
-        pidChassis.tank(j_master.getAnalog(ControllerAnalog::leftY), //Tank control Normal
-                        j_master.getAnalog(ControllerAnalog::rightY));
+        pidChassis->getModel()->tank(j_master.getAnalog(ControllerAnalog::leftY), //Tank control Normal
+                                     j_master.getAnalog(ControllerAnalog::rightY));
+        // pidChassis.tank(j_master.getAnalog(ControllerAnalog::leftY), //Tank control Normal
+        //                 j_master.getAnalog(ControllerAnalog::rightY));
         break;
       }
 

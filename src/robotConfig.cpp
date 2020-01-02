@@ -34,20 +34,21 @@ MotorGroup mg_driveL({port_driveLB,port_driveLF});
 MotorGroup mg_intake({port_intakeL, -port_intakeR});
 
 //Okapi Chassis Controllers
-ChassisControllerPID pidChassis = ChassisControllerFactory::create( //PID Controller
-	{mg_driveL},{mg_driveR},
-	IterativePosPIDController::Gains{.0025, 0, 0.0000008},//straight
-  IterativePosPIDController::Gains{0, 0, 0}, //Angle PID (Stay Straight PID)
-  IterativePosPIDController::Gains{.0021, 0, 0.0000008}, //turns
-  AbstractMotor::gearset::green,
-  {4.125_in, 13_in}
-);
+std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder()
+										.withMotors({mg_driveL},{mg_driveR})
+										.withGains({.0025, 0, 0.0000008}, {.0021, 0, 0.0000008})
+										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
+										.build();
 
-AsyncMotionProfileController chassisProfile = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
-	3.0, 5.0, 30.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
+std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfile = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
+ 											 	.withLimits({3.0, 5.0, 10.0})
+												.withOutput(pidChassis)
+												.buildMotionProfileController();
 
-AsyncMotionProfileController chassisProfileSlow = AsyncControllerFactory::motionProfile( //Async 2D Motion Profile Controller
-	1.0, 2.0, 10.0, pidChassis); //Max Velocity (m/s), Acceleration, and Jerk
+std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfileSlow = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
+ 											 	.withLimits({1.0, 2.0, 10.0})
+												.withOutput(pidChassis)
+												.buildMotionProfileController();
 
 
 void initializeRobot(){ //Initialize Robot Devices

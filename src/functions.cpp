@@ -57,14 +57,14 @@ void driveWall(int voltage){ //Drives until it hits a wall
 }
 
 void vectorWall(double voltage, double yaw){ //voltage -1 to 1. left + yaw, Right - yaw
-  pidChassis.driveVector(voltage, yaw);
+  pidChassis->getModel()->driveVector(voltage, yaw);
   waitUntilStopped(20);
   mg_driveR.moveVoltage(0);
   mg_driveL.moveVoltage(0);
 }
 
 void flipout(){
-  
+
 }
 
 void stack(){
