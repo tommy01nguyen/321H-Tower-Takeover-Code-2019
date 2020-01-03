@@ -96,5 +96,4 @@ void opcontrol(void);
 #include "321Hlib/SystemControl/liftTask.h"
 #include "321Hlib/SystemControl/stackerTask.h"
 #include "321Hlib/SystemControl/driveTask.h"
-#include "321Hlib/SystemControl/imuTask.h"
 #endif  // _PROS_MAIN_H_

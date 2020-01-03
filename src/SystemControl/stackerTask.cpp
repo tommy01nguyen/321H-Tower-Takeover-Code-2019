@@ -45,11 +45,11 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
         stackMacroOn = false;
         break;
       }
-      case stackerStates::towerScoring:{
+      case stackerStates::towerScoring:{ //Can Delete
         m_stacker.moveAbsolute(140, 100);
         break;
       }
-      case stackerStates::noTowerScoring:{
+      case stackerStates::noTowerScoring:{ //currently useless
         pros::delay(300);
         m_stacker.moveAbsolute(0, 30);
         break;

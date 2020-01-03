@@ -192,7 +192,7 @@ void autonomous() {
 
 
  void opcontrol() {
-
+	 setdriveState(driveStates::tank);//change from turning in auton to tank;
  	while (true) {
  		if(b_debug.isPressed()){
  			//autonomous();

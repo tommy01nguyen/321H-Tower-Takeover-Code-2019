@@ -4,8 +4,9 @@
 #include "systemControl.h"
 
 enum class driveStates{
-  on,
+  tank,
   hold,
+  turnPID,
 };
 
 extern double drivePercent;

@@ -1,17 +1,11 @@
 NOTES
 
 NEED TO DO
-Fix PID(use angle pid)?
 
-Tune noTower preset so tray moves back faster, may need to increase wait time for tray. May not need to do if moving bracing back
-Tune Preset Control
-Tune Motion profiling
-Tune PID
+Tune Lift Preset Control
+Tune Motion profiling, PID(use angle pid?)
 
 Test Macro For Tray Stack
 Test Auton Selector
-TEST Motion profiling
 
-Future:
-Implement IMU
-Write More Autons
+Implement IMU PID

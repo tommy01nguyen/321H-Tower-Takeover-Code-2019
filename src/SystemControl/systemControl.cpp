@@ -92,13 +92,13 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
 
   //DRIVE
   if(b_driveSlower.isPressed()){
-    setdriveState(driveStates::on, 0.45);
+    setdriveState(driveStates::tank, 0.45);
   }
   else if(b_driveHold.isPressed()){
     setdriveState(driveStates::hold);
   }
   else{
-    setdriveState(driveStates::on, 1); //full speed
+    setdriveState(driveStates::tank, 1); //full speed
   }
 
 }

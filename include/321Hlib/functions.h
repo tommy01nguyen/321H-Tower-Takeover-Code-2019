@@ -9,15 +9,13 @@
 using namespace okapi;
 
 void resetEncoders();
-double getL_in();
-double getR_in();
-double getM_in();
+
 void driveWall(int voltage);
 
 //QLength tilesToInches(double tiles);
 void waitUntilStopped(int thresh);
 bool isStopped(int thresh);
-bool isDriving();
+
 bool isLeftDriving();
 bool isRightDriving();
 void vectorWall(double voltage, double yaw);
