@@ -2,10 +2,12 @@ NOTES
 
 NEED TO DO
 
+
 Tune Lift Preset Control
-Tune Motion profiling, PID(use angle pid?)
+Tune and Test Motion profiling, PID(use angle pid?) b/c new okapi update
 
 Test Macro For Tray Stack
 Test Auton Selector
 
 Implement IMU PID
+  Test to see if it inteferes with pidChassis and Motion profiling Chassis

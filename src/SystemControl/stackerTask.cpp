@@ -59,9 +59,19 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
         //m_stacker.moveAbsolute(500, 40);
 
         m_stacker.moveAbsolute(300,100);
+        while (!((m_stacker.getPosition() < 305) && (m_stacker.getPosition() > 295))) {
+          pros::delay(2);
+        }
         m_stacker.moveAbsolute(400, 50);
+        while (!((m_stacker.getPosition() < 405) && (m_stacker.getPosition() > 395))) {
+          pros::delay(2);
+        }
         m_stacker.moveAbsolute(500, 20);
+
         //See if its actually smooth.
+        //Currently cant move anything else while this is running... need it to be async.
+
+
 
 
         /*Hold a button to start macro, release to end.
