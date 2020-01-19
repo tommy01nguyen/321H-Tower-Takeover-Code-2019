@@ -26,7 +26,7 @@ Page == Auton Number
 void displayPage(int page){
 
 	if(page != 11){ //Assuming no more than 10 different autons
-		pros::lcd::set_text(7, "Select               Previous                Next");
+		pros::lcd::set_text(7, "Select         Previous            Next");
 	}
 
 	switch(page){
@@ -57,7 +57,7 @@ void displayPage(int page){
 		case 9:
 			pros::lcd::set_text(4, "Nothing");
 		case 11: //Select Side Menu
-			pros::lcd::set_text(7, "Back               Red                Blue");
+			pros::lcd::set_text(7, "Back          Red            Blue");
 		case 0: //Do Nothing
 			break;
 	}
@@ -163,14 +163,15 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-sets
-	autonNumber = 1;
-	autonSide = 1;
+	autonNumber = 3;
+	autonSide = -1;
 
 	  switch(autonNumber){
 	    case 2:
 				basicAuton(autonSide);
 	      break;
 	    case 3:
+				nearZone8Cube(autonSide);
 	      break;
 	    case 4:
 	      break;

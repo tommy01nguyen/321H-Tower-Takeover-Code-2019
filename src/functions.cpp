@@ -34,7 +34,11 @@ void resetEncoders(){
 }
 
 void flipout(){
-
+  setliftState(liftStates::highTower);
+  pros::delay(1500);
+  setliftState(liftStates::noTower);
+  pros::delay(1000);
+  setliftState(liftStates::on,0);
 }
 
 void stack(){

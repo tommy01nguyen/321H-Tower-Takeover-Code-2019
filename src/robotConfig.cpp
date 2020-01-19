@@ -1,16 +1,16 @@
 #include "main.h"
 using namespace okapi;
 
-//Ports
-#define port_driveRF 1
-#define port_driveRB 2
-#define port_driveLF 7
-#define port_driveLB 10
+//Ports Broken: 19,20
+#define port_driveRF 16
+#define port_driveRB 17
+#define port_driveLF 13
+#define port_driveLB 15
 
-#define port_intakeL 20
-#define port_intakeR 19
-#define port_stacker 11
-#define port_lift 5
+#define port_intakeL 11
+#define port_intakeR 7
+#define port_stacker 6
+#define port_lift 10
 
 //Controllers
 Controller j_master = ControllerId::master;
@@ -22,10 +22,13 @@ Motor m_driveRB(port_driveRB, true, AbstractMotor::gearset::green , AbstractMoto
 Motor m_driveLF(port_driveLF, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 Motor m_driveLB(port_driveLB, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
 
-Motor m_intakeL(port_intakeL, false, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
-Motor m_intakeR(port_intakeR, true, AbstractMotor::gearset::green , AbstractMotor::encoderUnits::degrees);
-Motor m_stacker(port_stacker, true, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_intakeL(port_intakeL, true, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_intakeR(port_intakeR, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
+Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
 Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+
+
+
 
 
 //Motor Group | allows for moving all these motors at once

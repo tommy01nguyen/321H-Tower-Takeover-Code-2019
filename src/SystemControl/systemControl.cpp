@@ -18,6 +18,9 @@ ControllerButton b_stackMacro(ControllerDigital::Y); //extern
 ControllerButton b_intakeIn(ControllerDigital::R1); //shared
 ControllerButton b_intakeOut(ControllerDigital::R2); //shared
 
+ControllerButton b_liftUp(ControllerDigital::up);
+ControllerButton b_liftDown(ControllerDigital::down);
+
 //Partner Controller
 ControllerButton b_lowTowerMacro(ControllerId::partner, ControllerDigital::R2);
 ControllerButton b_highTowerMacro(ControllerId::partner, ControllerDigital::R1);
@@ -47,24 +50,24 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
 
   //LIFT
-  if(b_liftUpP.isPressed()){
+  if(b_liftUpP.isPressed() || b_liftUp.isPressed()){
     setliftState(liftStates::on, 12000);
   }
-  else if(b_liftDownP.isPressed()){
+  else if(b_liftDownP.isPressed() || b_liftDown.isPressed()){
     setliftState(liftStates::on, -12000);
   }
   else if(b_lowTowerMacro.isPressed()){
-    setstackerState(stackerStates::towerScoring);
+    //setstackerState(stackerStates::towerScoring);
     setliftState(liftStates::lowTower);
     towerMacroOn = true;
   }
   else if(b_highTowerMacro.isPressed()){
-    setstackerState(stackerStates::towerScoring);
+    //setstackerState(stackerStates::towerScoring);
     setliftState(liftStates::highTower);
     towerMacroOn = true;
   }
   else if(b_noTowerMacro.isPressed()){
-    setstackerState(stackerStates::noTowerScoring);
+    //setstackerState(stackerStates::noTowerScoring);
     setliftState(liftStates::noTower);
     towerMacroOn = true;
   }
