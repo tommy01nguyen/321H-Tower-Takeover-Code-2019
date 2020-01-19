@@ -19,7 +19,7 @@ void setstackerState(stackerStates newState, int requestedWaitTime, int requeste
 
 
 bool stackMacroOn = false;
-void task_stackerControl(void*){ //State Machine Task for Catapult Control
+void task_stackerControl(void*){ //State Machine Task for Stacker Control
   while(true){
 
     switch(currentstackerState){
@@ -45,34 +45,30 @@ void task_stackerControl(void*){ //State Machine Task for Catapult Control
         stackMacroOn = false;
         break;
       }
-      case stackerStates::towerScoring:{ //Can Delete
+      case stackerStates::towerScoring:{ //Rename
         m_stacker.moveAbsolute(140, 100);
         break;
       }
-      case stackerStates::noTowerScoring:{ //currently useless
+      case stackerStates::noTowerScoring:{//Rename
         pros::delay(300);
         m_stacker.moveAbsolute(0, 30);
         break;
       }
 
-      case stackerStates::stackMacro:{ //Currently only meant for auton
-        //m_stacker.moveAbsolute(500, 40);
+      case stackerStates::stackMacro:{
+
 
         m_stacker.moveAbsolute(300,100);
         while (!((m_stacker.getPosition() < 305) && (m_stacker.getPosition() > 295))) {
-          pros::delay(2);
+          pros::delay(2);//try 20?
         }
         m_stacker.moveAbsolute(400, 50);
+        //reverse intake
         while (!((m_stacker.getPosition() < 405) && (m_stacker.getPosition() > 395))) {
           pros::delay(2);
         }
+        //hold intake or cruise
         m_stacker.moveAbsolute(500, 20);
-
-        //See if its actually smooth.
-        //Currently cant move anything else while this is running... need it to be async.
-
-
-
 
         /*Hold a button to start macro, release to end.
         if(stackMacroOn == false){ //Only runs when case is switched to stackMacro

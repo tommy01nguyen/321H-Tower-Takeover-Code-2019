@@ -6,7 +6,6 @@ using namespace okapi;
 //Master Controller
 ControllerButton b_debug(ControllerDigital::right);//extern
 
-
 ControllerButton b_driveHold(ControllerDigital::left);
 ControllerButton b_driveSlower(ControllerDigital::L1);
 
@@ -35,7 +34,7 @@ ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::B);
 ControllerButton b_stackerUpP(ControllerId::partner, ControllerDigital::up);
 ControllerButton b_stackerDownP(ControllerId::partner, ControllerDigital::down);
 
-bool towerMacroOn = false;
+
 void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop
 
   //INTAKE
@@ -57,39 +56,32 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setliftState(liftStates::on, -12000);
   }
   else if(b_lowTowerMacro.isPressed()){
-    //setstackerState(stackerStates::towerScoring);
     setliftState(liftStates::lowTower);
-    towerMacroOn = true;
   }
   else if(b_highTowerMacro.isPressed()){
-    //setstackerState(stackerStates::towerScoring);
     setliftState(liftStates::highTower);
-    towerMacroOn = true;
   }
   else if(b_noTowerMacro.isPressed()){
-    //setstackerState(stackerStates::noTowerScoring);
     setliftState(liftStates::noTower);
-    towerMacroOn = true;
   }
   else{
     setliftState(liftStates::on, 0); //Off
-    towerMacroOn = false;
   }
 
   //STACKER
-  if(b_stackerUpSlow.isPressed() && !towerMacroOn){
+  if(b_stackerUpSlow.isPressed()){
     setstackerState(stackerStates::on, 8000);
   }
-  else if(b_stackerUpVerySlow.isPressed() && !towerMacroOn){
+  else if(b_stackerUpVerySlow.isPressed()){
     setstackerState(stackerStates::on, 6000);
   }
-  else if(b_stackerUpP.isPressed() && !towerMacroOn){
+  else if(b_stackerUpP.isPressed()){
     setstackerState(stackerStates::on, 12000);
   }
-  else if((b_stackerDownP.isPressed() || b_stackerDown.isPressed()) && !towerMacroOn){
+  else if((b_stackerDownP.isPressed() || b_stackerDown.isPressed())){
     setstackerState(stackerStates::on, -12000);
   }
-  else if(!towerMacroOn){
+  else{
     setstackerState(stackerStates::on, 0); //Off
   }
 

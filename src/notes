@@ -1,13 +1,16 @@
 NOTES
 
-NEED TO DO
+NEED TO DO, highest priority on top
 
 
 Tune Lift Preset Control
-Tune and Test Motion profiling, PID(use angle pid?) b/c new okapi update
+Better Macro for stacker
+Code preset for tray
+Line Follower on intake, create macros for towers
+Better controls for opcontrol
 
-Test Macro For Tray Stack
 Test Auton Selector
+Motion Profiling, PID
 
 Implement IMU PID
   Test to see if it inteferes with pidChassis and Motion profiling Chassis
