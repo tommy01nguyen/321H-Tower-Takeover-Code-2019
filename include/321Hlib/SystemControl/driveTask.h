@@ -7,6 +7,7 @@ enum class driveStates{
   tank,
   hold,
   turnPID,
+  outOfStack,
 };
 
 extern double drivePercent;

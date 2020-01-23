@@ -174,6 +174,7 @@ void autonomous() {
 				nearZone8Cube(autonSide);
 	      break;
 	    case 4:
+			  smallZoneBasic(autonSide);
 	      break;
 	    case 5:
 	      break;

@@ -45,23 +45,22 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
         stackMacroOn = false;
         break;
       }
-      case stackerStates::towerScoring:{ //Rename
+      case stackerStates::raisedPreset:{ //Rename
         m_stacker.moveAbsolute(140, 100);
         break;
       }
-      case stackerStates::noTowerScoring:{//Rename
-        pros::delay(300);
+      case stackerStates::toBottom:{//Rename
         m_stacker.moveAbsolute(0, 30);
         break;
       }
 
       case stackerStates::stackMacro:{
-                std::cout << m_stacker.getPosition() << std::endl;
+        std::cout << m_stacker.getPosition() << std::endl;
         while (m_stacker.getPosition() < 250){
           m_stacker.moveVoltage(12000);
         }
         //reverse intake
-                std::cout << m_stacker.getPosition() << std::endl;
+        std::cout << m_stacker.getPosition() << std::endl;
         while (m_stacker.getPosition()< 400) {
           m_stacker.moveVoltage(7000);
         }

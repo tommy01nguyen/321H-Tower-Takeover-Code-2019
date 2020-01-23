@@ -1,17 +1,20 @@
 NOTES
 
 NEED TO DO, highest priority on top
+Testing:
+Line Follower
+Tower macros
+Stacker macros
+Tray Raised Preset
+Driving Backwards Preset
 
 
-Tune Lift Preset Control
-Better Macro for stacker
-Code preset for tray
-Line Follower on intake, create macros for towers NO
-Better controls for opcontrol
-preset for driving backwards with intake in reverse
-
+smallZoneBasic Auton
 Test Auton Selector
-Motion Profiling, PID
 
+
+
+
+Motion Profiling, PID
 Implement IMU PID
   Test to see if it inteferes with pidChassis and Motion profiling Chassis

@@ -28,13 +28,12 @@ Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor
 Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
 
-
-
+pros::ADILineSensor s_intakeSensor('A');
 
 //Motor Group | allows for moving all these motors at once
 MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
 MotorGroup mg_driveL({port_driveLB,port_driveLF});
-MotorGroup mg_intake({port_intakeL, -port_intakeR});
+MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
 //Okapi Chassis Controllers
 std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder()
@@ -57,4 +56,5 @@ std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfileSlow = AsyncM
 void initializeRobot(){ //Initialize Robot Devices
 	//Initialize Sensors
 	resetEncoders();
+	s_intakeSensor.calibrate();
 }

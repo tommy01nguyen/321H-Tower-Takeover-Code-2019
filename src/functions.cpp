@@ -34,10 +34,12 @@ void resetEncoders(){
 }
 
 void flipout(){
+  setstackerState(stackerStates::raisedPreset);
   setliftState(liftStates::highTower);
-  pros::delay(1500);
+  pros::delay(500);
+  setstackerState(stackerStates::toBottom);
   setliftState(liftStates::noTower);
-  pros::delay(1000);
+  pros::delay(400);
   setliftState(liftStates::on,0);
 }
 

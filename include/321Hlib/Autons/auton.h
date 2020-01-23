@@ -10,6 +10,7 @@
 extern int autonNumber;
 extern int autonSide; //1 Red, -1 Blue
 void basicAuton(int side);
+void smallZoneBasic(int side);
 
 void flexible(int side);
 void skills();

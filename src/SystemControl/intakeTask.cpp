@@ -20,10 +20,11 @@ void setintakeState(intakeStates newState, int requestedWaitTime, int requestedV
   intakeVoltage = requestedVoltage;
 }
 
-
+double sensorVal;
+int cubeSensValue = -300;
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
-
+    sensorVal = s_intakeSensor.get_value_calibrated();
     switch(currentintakeState){
 
       case intakeStates::on:{  //intake at velocity
@@ -46,6 +47,17 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         m_intakeL.moveVoltage(0);
         m_intakeR.moveVoltage(0);
         break;
+      }
+      case intakeStates::untilSensed:{
+      //  m_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+        if(sensorVal > cubeSensValue){ //While the ball is not in the sensor
+          m_intakeL.moveVoltage(12000);
+          m_intakeR.moveVoltage(12000);
+        }
+        else{
+          m_intakeL.moveVoltage(0);
+          m_intakeR.moveVoltage(0);
+        }
       }
     }
     pros::delay(20);

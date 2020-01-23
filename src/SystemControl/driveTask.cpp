@@ -147,6 +147,11 @@ void task_driveControl(void*){
         mg_driveL.moveVelocity(0);
         break;
       }
+      case driveStates::outOfStack:{
+        setintakeState(intakeStates::on,-6000);
+        pidChassis->moveDistance(-2_in);
+        setintakeState(intakeStates::on, 0);
+      }
 
       case driveStates::turnPID:{
         int prevError;
