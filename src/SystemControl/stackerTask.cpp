@@ -56,31 +56,19 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
       }
 
       case stackerStates::stackMacro:{
-
-
-        m_stacker.moveAbsolute(300,100);
-        while (!((m_stacker.getPosition() < 305) && (m_stacker.getPosition() > 295))) {
-          pros::delay(2);//try 20?
+                std::cout << m_stacker.getPosition() << std::endl;
+        while (m_stacker.getPosition() < 250){
+          m_stacker.moveVoltage(12000);
         }
-        m_stacker.moveAbsolute(400, 50);
         //reverse intake
-        while (!((m_stacker.getPosition() < 405) && (m_stacker.getPosition() > 395))) {
-          pros::delay(2);
+                std::cout << m_stacker.getPosition() << std::endl;
+        while (m_stacker.getPosition()< 400) {
+          m_stacker.moveVoltage(7000);
         }
         //hold intake or cruise
-        m_stacker.moveAbsolute(500, 20);
+        std::cout << m_stacker.getPosition() << std::endl;
+        m_stacker.moveAbsolute(600, 20);
 
-        /*Hold a button to start macro, release to end.
-        if(stackMacroOn == false){ //Only runs when case is switched to stackMacro
-          // pidStacker.setTarget(200); //Rapid Movement Up (Degrees)
-          // pidStacker.waitUntilSettled();
-          m_stacker.moveVoltage(2000); //Finishing Slow Voltage
-        }
-        if(b_stackMacro.changedToReleased()){
-          setstackerState(stackerStates::on, 0); //Off
-        }
-        stackMacroOn = true;
-        */
         break;
       }
     }

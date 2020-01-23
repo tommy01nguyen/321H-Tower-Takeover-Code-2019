@@ -81,6 +81,9 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   else if((b_stackerDownP.isPressed() || b_stackerDown.isPressed())){
     setstackerState(stackerStates::on, -12000);
   }
+  else if(b_stackMacro.isPressed()){
+    setstackerState(stackerStates::stackMacro);
+  }
   else{
     setstackerState(stackerStates::on, 0); //Off
   }

@@ -155,7 +155,6 @@ void task_driveControl(void*){
           double pv = turnTarget; //Process Variable  //Currently, PV and SV are not in the same units
 
           //convert pv into sv units or other way around
-
           double sv = getImuValue(); //Set Point Variable
 
           double error = pv-sv;
