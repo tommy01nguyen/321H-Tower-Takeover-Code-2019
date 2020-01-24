@@ -24,23 +24,29 @@ double sensorVal;
 int cubeSensValue = -300;
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
-    sensorVal = s_intakeSensor.get_value_calibrated();
+    //sensorVal = s_intakeSensor.get_value();
+  sensorVal = s_intakeSensor.get_value_calibrated();
     switch(currentintakeState){
 
       case intakeStates::on:{  //intake at velocity
+        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
+        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::coast);
         m_intakeL.moveVoltage(intakeVoltage);
         m_intakeR.moveVoltage(intakeVoltage);
         break;
       }
 
       case intakeStates::waitOn:{ //Wait and then intake
+        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
+        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::coast);
         pros::delay(intakeWaitTime);
         setintakeState(intakeStates::on);
         break;
       }
 
       case intakeStates::onWait:{ //intake in and then stop
-
+        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
+        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::coast);
         m_intakeL.moveVoltage(intakeVoltage);
         m_intakeR.moveVoltage(intakeVoltage);
         pros::delay(intakeWaitTime);
@@ -49,7 +55,10 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         break;
       }
       case intakeStates::untilSensed:{
-      //  m_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+       m_intakeR.setBrakeMode(AbstractMotor::brakeMode::brake);
+       m_intakeL.setBrakeMode(AbstractMotor::brakeMode::brake);
+      std::cout << "intake" <<std::endl;
+        std::cout << sensorVal << std:: endl;
         if(sensorVal > cubeSensValue){ //While the ball is not in the sensor
           m_intakeL.moveVoltage(12000);
           m_intakeR.moveVoltage(12000);
@@ -59,6 +68,8 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
           m_intakeR.moveVoltage(0);
         }
       }
+
+
     }
     pros::delay(20);
   }

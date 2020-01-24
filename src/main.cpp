@@ -164,7 +164,7 @@ void autonomous() {
 
 	//Pre-sets
 	autonNumber = 3;
-	autonSide = -1;
+	autonSide = 1;
 
 	  switch(autonNumber){
 	    case 2:
@@ -196,8 +196,9 @@ void autonomous() {
  void opcontrol() {
 	 setdriveState(driveStates::tank);//change from turning in auton to tank;
  	while (true) {
- 		if(b_debug.isPressed()){
- 			//autonomous();
+ 		if(b_debug.isPressed()){//right main controller
+			//flipout();
+ 			autonomous();
 			//std::cout << "hi" << std::endl;
  		}
 		systemControl(); //Runs subsystem Controls
