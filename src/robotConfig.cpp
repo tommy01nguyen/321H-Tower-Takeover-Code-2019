@@ -41,6 +41,12 @@ std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder(
 										.withGains({.0025, 0, 0},{0, 0, 0})//.0021, 0, 0.0000008
 										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
 										.build();
+										
+std::shared_ptr<okapi::ChassisController> pidChassisA = ChassisControllerBuilder()
+										.withMotors({mg_driveL},{mg_driveR})
+										.withGains(IterativePosPIDController::Gains{.0012, 0.00, 0.0005},IterativePosPIDController::Gains{0.001,001,})
+										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
+										.build();
 
 std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfile = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
  											 	.withLimits({3.0, 5.0, 10.0})
