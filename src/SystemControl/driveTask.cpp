@@ -148,6 +148,8 @@ void task_driveControl(void*){
         break;
       }
       case driveStates::outOfStack:{
+          mg_driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+          mg_driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
         setintakeState(intakeStates::on,-6000);
         pidChassis->moveDistance(-2_in);
         setintakeState(intakeStates::on, 0);

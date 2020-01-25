@@ -35,6 +35,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         m_intakeR.moveVoltage(intakeVoltage);
         break;
       }
+      
 
       case intakeStates::waitOn:{ //Wait and then intake
         m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
@@ -57,11 +58,11 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       case intakeStates::untilSensed:{
        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::brake);
        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::brake);
-      std::cout << "intake" <<std::endl;
-        std::cout << sensorVal << std:: endl;
+      // std::cout << "intake" <<std::endl;
+      // std::cout << sensorVal << std:: endl;
         if(sensorVal > cubeSensValue){ //While the ball is not in the sensor
-          m_intakeL.moveVoltage(12000);
-          m_intakeR.moveVoltage(12000);
+          m_intakeL.moveVoltage(intakeVoltage);
+          m_intakeR.moveVoltage(intakeVoltage);
         }
         else{
           m_intakeL.moveVoltage(0);

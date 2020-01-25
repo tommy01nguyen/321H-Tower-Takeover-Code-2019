@@ -38,7 +38,7 @@ MotorGroup mg_intake({-port_intakeL, port_intakeR});
 //Okapi Chassis Controllers
 std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder()
 										.withMotors({mg_driveL},{mg_driveR})
-										.withGains({.0025, 0, 0.0000008},{.0021, 0, 0.0000008})
+										.withGains({.0025, 0, 0},{0, 0, 0})//.0021, 0, 0.0000008
 										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
 										.build();
 

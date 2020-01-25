@@ -163,8 +163,8 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-sets
-	autonNumber = 3;
-	autonSide = 1;
+	autonNumber = 3;//4
+	autonSide = -1;
 
 	  switch(autonNumber){
 	    case 2:
@@ -198,7 +198,7 @@ void autonomous() {
  	while (true) {
  		if(b_debug.isPressed()){//right main controller
 			//flipout();
- 			autonomous();
+ 			//autonomous();
 			//std::cout << "hi" << std::endl;
  		}
 		systemControl(); //Runs subsystem Controls

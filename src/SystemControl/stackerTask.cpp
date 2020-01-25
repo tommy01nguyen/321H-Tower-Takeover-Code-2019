@@ -55,18 +55,23 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
       }
 
       case stackerStates::stackMacro:{
-        // std::cout << m_stacker.getPosition() << std::endl;
-        while (m_stacker.getPosition() < 250){
+        
+        while (m_stacker.getPosition() <= 250){
           m_stacker.moveVoltage(10000);
         }
         //reverse intake
-        // std::cout << m_stacker.getPosition() << std::endl;
-        while (m_stacker.getPosition() < 400) {
+        while ((m_stacker.getPosition() <= 400) && m_stacker.getPosition() > 250) {
           m_stacker.moveVoltage(5000);
         }
-        //hold intake or cruise
-        // std::cout << m_stacker.getPosition() << std::endl;
-        m_stacker.moveAbsolute(600, 15);
+         while ((m_stacker.getPosition() <= 550) && m_stacker.getPosition() > 400) {
+           m_stacker.moveVoltage(4500);
+         }
+         while ((m_stacker.getPosition() <= 700) && m_stacker.getPosition() > 550) {
+           m_stacker.moveVoltage(2500);
+         }
+
+        // //hold intake or cruise
+        // m_stacker.moveAbsolute(700, 20);
 
         break;
       }

@@ -75,9 +75,13 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   //STACKER
   if(b_stackerUpSlow.isPressed()){
     setstackerState(stackerStates::on, 8000);
+    m_intakeR.setBrakeMode(AbstractMotor::brakeMode::hold);
+    m_intakeL.setBrakeMode(AbstractMotor::brakeMode::hold);
   }
   else if(b_stackerUpVerySlow.isPressed()){
-    setstackerState(stackerStates::on, 6000);
+    setstackerState(stackerStates::on, 5000);
+    m_intakeR.setBrakeMode(AbstractMotor::brakeMode::hold);
+    m_intakeL.setBrakeMode(AbstractMotor::brakeMode::hold);
   }
   else if(b_stackerDown.isPressed()){
     setstackerState(stackerStates::on, -12000);

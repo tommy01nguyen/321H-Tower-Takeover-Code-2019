@@ -4,14 +4,125 @@
 using namespace okapi;
 #define red 1
 #define blue -1
-void nearZone8Cube(int side){ //This the op op one
+void nearZone8Cube(int side){ //This the op op on
+  //flipout();
+  //pros::delay(300);
+  // Intake and Drive Forward
+  setintakeState(intakeStates::on, 12000);
+  driveTest(1900, 140);
+  pros::delay(300);
+  if(side == red) turn(-40,-50);
+  if(side == blue) turn(300,50);
+  pros::delay(300);
+  driveTest(1300, 200);
+  pros::delay(300);
+   //if(side == red) turn(1000,50);
+  if(side == blue) turn(700,50);
+  pros::delay(300);
+  //
+  // driveTest(1300,150);
+  //
+  // setintakeState(intakeStates::on, 0);
+  // //Stack that
+  // while (m_stacker.getPosition() <= 250){
+  //   m_stacker.moveVoltage(10000);
+  // }
+  // //reverse intake
+  // while ((m_stacker.getPosition() <= 400) && m_stacker.getPosition() > 250) {
+  //   m_stacker.moveVoltage(5000);
+  // }
+  //  while ((m_stacker.getPosition() <= 550) && m_stacker.getPosition() > 400) {
+  //    m_stacker.moveVoltage(3500);
+  //  }
+  //  while ((m_stacker.getPosition() <= 700) && m_stacker.getPosition() > 550) {
+  //    m_stacker.moveVoltage(2500);
+  //  }
+  //
+  // pros::delay(100);
+  // setintakeState(intakeStates::on,-12000);
+  // driveTest(-1500,-160);
+  // setintakeState(intakeStates::on, 0);
 
 
-  flipout();
-  pros::delay(500);
-  setintakeState(intakeStates::on, -12000);
-  pros::delay(2000);
-  setintakeState(intakeStates::on, 0);
+
+
+
+
+
+
+
+
+
+
+
+  // flipout();
+  // pros::delay(300);
+  // // Intake and Drive Forward
+  // setintakeState(intakeStates::on, 12000);
+  // driveTest(3000, 80);
+  // pros::delay(200);
+  // driveTest(-1750, -120);
+  //
+  // pros::delay(100);
+  // setintakeState(intakeStates::untilSensed, -12000);
+  // if(side == red) turn(1000,50);
+  // if(side == blue) turn(-900,-50);
+  //
+  // driveTest(1300,150);
+  //
+  // setintakeState(intakeStates::on, 0);
+  // //Stack that
+  // while (m_stacker.getPosition() <= 250){
+  //   m_stacker.moveVoltage(10000);
+  // }
+  // //reverse intake
+  // while ((m_stacker.getPosition() <= 400) && m_stacker.getPosition() > 250) {
+  //   m_stacker.moveVoltage(5000);
+  // }
+  //  while ((m_stacker.getPosition() <= 550) && m_stacker.getPosition() > 400) {
+  //    m_stacker.moveVoltage(3500);
+  //  }
+  //  while ((m_stacker.getPosition() <= 700) && m_stacker.getPosition() > 550) {
+  //    m_stacker.moveVoltage(2500);
+  //  }
+  //
+  // pros::delay(100);
+  // setintakeState(intakeStates::on,-12000);
+  // driveTest(-1500,-160);
+  // setintakeState(intakeStates::on, 0);
+  //
+
+
+
+
+  // turn(500,120);
+  // pros::delay(500);
+  // turn(-500,-120);
+
+
+
+   // // Turn Towards Goal zone
+   // if(side == red)
+   // if(side == blue) pidChassis->turnAngle(-140_deg);
+   // //Drive to Goal Zone
+   // pidChassis->moveDistance(15_in);
+   //
+   // // Score
+   //
+   // setintakeState(intakeStates::untilSensed, -12000);
+   //
+   // setstackerState(stackerStates::stackMacro); //Stack that
+   // pros::delay(500);
+   // pidChassis->moveDistance(-10_in);
+   //
+
+
+  // pros::delay(500);
+  // pidChassis->moveDistance(10_in);
+  // turn(1000,200);
+  // flipout();
+
+
 
   //
   // //Start Up

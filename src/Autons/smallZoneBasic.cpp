@@ -5,29 +5,32 @@ using namespace okapi;
 #define blue -1
 
 void smallZoneBasic(int side){
-
-//flipout();
-// Intake and Drive Forward
-setintakeState(intakeStates::on, 12000);
-pidChassis->setMaxVelocity(100);
-pidChassis->moveDistance(43_in); //Up until past stack
-pros::delay(1000);
-pidChassis->turnAngle(90_deg);
+// 
+// mg_driveL.moveDistance(10_in);
+// mg_driveR.moveDistance(10_in);
+// //flipout();
+// // Intake and Drive Forward
+// setintakeState(intakeStates::on, 12000);
+// pidChassis->setMaxVelocity(200);
+//
+// pidChassis->moveDistance(43_in); //Up until past stack
 // //Drive Backwards
+// pidChassis->setMaxVelocity(3000);
 // pidChassis->moveDistance(-30_in);
 // // Turn Towards Goal zone
-// if(side == red) pidChassis->turnAngle(83_deg);
-// if(side == blue) pidChassis->turnAngle(-91_deg);
+// pidChassis->setMaxVelocity(150);
+// if(side == red) pidChassis->turnAngle(130_deg);
+// if(side == blue) pidChassis->turnAngle(-140_deg);
 // //Drive to Goal Zone
 // pidChassis->moveDistance(15_in);
 //
 // // Score
-// mg_intake.moveRelative(-50, 100);
-// pros::delay(500);
+
+//setintakeState(intakeStates::untilSensed, -12000);
+
 // setstackerState(stackerStates::stackMacro); //Stack that
 // pros::delay(500);
 // pidChassis->moveDistance(-10_in);
-
-
+setdriveState(driveStates::outOfStack);
 
 }

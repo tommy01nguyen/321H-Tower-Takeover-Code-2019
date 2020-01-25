@@ -2,19 +2,13 @@ NOTES
 
 NEED TO DO, highest priority on top
 Testing:
-Line Follower
-Tower macros
 Stacker macros
 Tray Raised Preset
 Driving Backwards Preset
 
+Auton
 
-smallZoneBasic Auton
 Test Auton Selector
-
-
-
-
 Motion Profiling, PID
 Implement IMU PID
   Test to see if it inteferes with pidChassis and Motion profiling Chassis

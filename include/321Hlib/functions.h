@@ -20,5 +20,9 @@ bool isLeftDriving();
 bool isRightDriving();
 void vectorWall(double voltage, double yaw);
 
+void driveTest(int distance, int speed);
+void turn(int distance, int speed);
+
 void flipout();
+void outOfStack();
 void stack();
