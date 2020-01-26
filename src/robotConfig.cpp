@@ -31,6 +31,7 @@ Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::enc
 
 
 pros::ADILineSensor s_intakeSensor('C');
+pros::Imu s_imu(port_imu);
 
 //Motor Group | allows for moving all these motors at once
 MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
@@ -64,16 +65,15 @@ void initializeSensors(){
 	resetEncoders();
 	s_intakeSensor.calibrate();
 
-	pros::Imu imu_sensor(port_imu);
-	imu_sensor.reset();
 
+	s_imu.reset();
 	int time = pros::millis();
 	int iter = 0;
-	while (imu_sensor.is_calibrating()) {
+	while (s_imu.is_calibrating()) {
 		printf("IMU calibrating... %d\n", iter);
 		iter += 10;
 		pros::delay(10);
 	}
-	// should print about 2000 ms
+	//should print about 2000 ms
 	printf("IMU is done calibrating (took %d ms)\n", iter - time);
 }

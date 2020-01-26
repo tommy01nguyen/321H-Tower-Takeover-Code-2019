@@ -14,14 +14,13 @@ void setdriveState(driveStates newState, double requestedPercent){
 }
 /**************************************************/
 //IMU PID
-//Dear 574C, thank you.
 double kp = .1;
 double kd = .1;
 static double turnTarget;
 static double maxSpeed = 200;
 
-double getImuValue(){
-  return 2.0;
+double getImuHeading(){
+  return s_imu.get_heading();
 }
 
 void reset(){
@@ -34,48 +33,48 @@ void reset(){
   mg_driveR.moveVelocity(0);
   mg_driveL.moveVelocity(0);
 }
-
-//slew control
-const int accel_step = 9;
-const int deccel_step = 256; // no decel slew
-static int leftSpeed = 0;
-static int rightSpeed = 0;
-
-void leftSlew(int leftTarget){
-  int step;
-
-  if(abs(leftSpeed) < abs(leftTarget))
-    step = accel_step;
-  else
-    step = deccel_step;
-
-  if(leftTarget > leftSpeed + step)
-    leftSpeed += step;
-  else if(leftTarget < leftSpeed - step)
-    leftSpeed -= step;
-  else
-    leftSpeed = leftTarget;
-
-  mg_driveL.moveVelocity(leftSpeed);
-}
-
-void rightSlew(int rightTarget){
-  int step;
-
-  if(abs(rightSpeed) < abs(rightTarget))
-    step = accel_step;
-  else
-    step = deccel_step;
-
-  if(rightTarget > rightSpeed + step)
-    rightSpeed += step;
-  else if(rightTarget < rightSpeed - step)
-    rightSpeed -= step;
-  else
-    rightSpeed = rightTarget;
-
-  mg_driveR.moveVelocity(rightSpeed);
-}
+//
+// //slew control
+// const int accel_step = 9;
+// const int deccel_step = 256; // no decel slew
+// static int leftSpeed = 0;
+// static int rightSpeed = 0;
+//
+// void leftSlew(int leftTarget){
+//   int step;
+//
+//   if(abs(leftSpeed) < abs(leftTarget))
+//     step = accel_step;
+//   else
+//     step = deccel_step;
+//
+//   if(leftTarget > leftSpeed + step)
+//     leftSpeed += step;
+//   else if(leftTarget < leftSpeed - step)
+//     leftSpeed -= step;
+//   else
+//     leftSpeed = leftTarget;
+//
+//   mg_driveL.moveVelocity(leftSpeed);
+// }
+//
+// void rightSlew(int rightTarget){
+//   int step;
+//
+//   if(abs(rightSpeed) < abs(rightTarget))
+//     step = accel_step;
+//   else
+//     step = deccel_step;
+//
+//   if(rightTarget > rightSpeed + step)
+//     rightSpeed += step;
+//   else if(rightTarget < rightSpeed - step)
+//     rightSpeed -= step;
+//   else
+//     rightSpeed = rightTarget;
+//
+//   mg_driveR.moveVelocity(rightSpeed);
+// }
 
 void setSpeed(int speed){
   maxSpeed = speed;
@@ -86,7 +85,7 @@ bool isTurning(){
   static int lastAngle = 0;
   static int lastTarget = 0;
 
-  int curAngle = getImuValue(); //CHANGE TO IMU VALUES************
+  int curAngle = getImuHeading(); //CHANGE TO IMU VALUES************
   int target = turnTarget;
 
   if(abs(lastAngle-curAngle) < 3) //3 degree encoder unit threshold for change in Angle NEEDS TUNING
@@ -106,13 +105,14 @@ bool isTurning(){
     return true; //Turning
 }
 
-double headingToTarget(double heading){//Turn heading(degrees) into angle needed to travel
-  return heading;
-}
+// double headingToTarget(double heading){//Turn heading(degrees) into angle needed to travel
+//   return heading;
+// }
 
-void turnTo(double newHeading){ //Heading in degrees
+void turnTo(double newHeading){ //Heading in degrees (-360,360)
     reset();
-    turnTarget = headingToTarget(newHeading);
+    // turnTarget = headingToTarget(newHeading);
+    turnTarget = newHeading;
     setdriveState(driveStates::turnPID);
 
     pros::delay(300); //Assuming no super short turns
@@ -159,10 +159,8 @@ void task_driveControl(void*){
         int prevError;
 
         while(1){
-          double pv = turnTarget; //Process Variable  //Currently, PV and SV are not in the same units
-
-          //convert pv into sv units or other way around
-          double sv = getImuValue(); //Set Point Variable
+          double pv = turnTarget; //Process Variable //both should be heading.. same units?
+          double sv = getImuHeading(); //Set Point Variable
 
           double error = pv-sv;
           double derivative = error - prevError;

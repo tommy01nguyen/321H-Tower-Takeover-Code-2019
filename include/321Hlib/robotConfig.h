@@ -18,6 +18,8 @@ extern Motor m_driveLF;
 extern Motor m_driveLB;
 
 extern pros::ADILineSensor s_intakeSensor;
+extern pros::Imu s_imu;
+
 //Motor Groups;
 extern MotorGroup mg_driveR;
 extern MotorGroup mg_driveL;

@@ -125,7 +125,7 @@ void initialize() {
 		pros::delay(500); //Give the legacy ports time to start up
 
 		//Initialize Sensors
-
+		initializeSensors();
 
 
 		//Tasks
