@@ -125,22 +125,7 @@ void initialize() {
 		pros::delay(500); //Give the legacy ports time to start up
 
 		//Initialize Sensors
-		resetEncoders();
-		s_intakeSensor.calibrate();
 
-	// 	pros::Imu imu_sensor(port_imu);
-	//   imu_sensor.reset();
-	//
-	//   int time = pros::millis();
-	//   int iter = 0;
-	//   while (imu_sensor.is_calibrating()) {
-	//     printf("IMU calibrating... %d\n", iter);
-	//     iter += 10;
-	//     pros::delay(10);
-	//   }
-	//
-  // // should print about 2000 ms
-  // printf("IMU is done calibrating (took %d ms)\n", iter - time);
 
 
 		//Tasks
