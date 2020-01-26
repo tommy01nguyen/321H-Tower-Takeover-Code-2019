@@ -12,6 +12,8 @@ using namespace okapi;
 #define port_stacker 6
 #define port_lift 10
 
+#define port_imu 1
+
 //Controllers
 Controller j_master = ControllerId::master;
 Controller j_partner = ControllerId::partner;
@@ -30,6 +32,7 @@ Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::enc
 
 pros::ADILineSensor s_intakeSensor('C');
 
+
 //Motor Group | allows for moving all these motors at once
 MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
 MotorGroup mg_driveL({port_driveLB,port_driveLF});
@@ -41,7 +44,7 @@ std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder(
 										.withGains({.0025, 0, 0},{0, 0, 0})//.0021, 0, 0.0000008
 										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
 										.build();
-										
+
 std::shared_ptr<okapi::ChassisController> pidChassisA = ChassisControllerBuilder()
 										.withMotors({mg_driveL},{mg_driveR})
 										.withGains(IterativePosPIDController::Gains{.0012, 0.00, 0.0005},IterativePosPIDController::Gains{0.001,001,})
@@ -57,10 +60,3 @@ std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfileSlow = AsyncM
  											 	.withLimits({1.0, 2.0, 10.0})
 												.withOutput(pidChassis)
 												.buildMotionProfileController();
-
-
-void initializeRobot(){ //Initialize Robot Devices
-	//Initialize Sensors
-	resetEncoders();
-	s_intakeSensor.calibrate();
-}

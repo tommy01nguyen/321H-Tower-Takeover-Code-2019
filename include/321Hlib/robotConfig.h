@@ -27,7 +27,3 @@ extern MotorGroup mg_intake;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfile;
 extern std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfileSlow;
 extern std::shared_ptr<okapi::ChassisController> pidChassis;
-
-
-//Initialize Commands
-void initializeRobot();
