@@ -154,7 +154,6 @@ void task_driveControl(void*){
         pidChassis->moveDistance(-2_in);
         setintakeState(intakeStates::on, 0);
       }
-
       case driveStates::turnPID:{
         int prevError;
 

@@ -28,6 +28,29 @@ QLength tilesToInches(double tiles){ //Converts Tiles To Inches
 //   mg_driveR.moveVoltage(0);
 //   mg_driveL.moveVoltage(0);
 // }
+double inchesToTicks(double inches){
+  double rev = inches/3.1415/4;
+  double ticks = rev * 360;
+  return ticks;
+}
+
+void arcTurn(double inches, int speed, int yaw){ //Positive yaw is arcing right
+  double distance = inchesToTicks(inches);
+  if(yaw > 0){
+    mg_driveR.moveVelocity(speed-yaw);
+    mg_driveL.moveRelative(distance, speed + yaw); //Tuned PID would be better
+    mg_driveR.moveVelocity(0);
+  }
+  else{
+    yaw *= -1;
+    mg_driveL.moveVelocity(speed-yaw);
+    mg_driveR.moveRelative(distance, speed + yaw);
+    mg_driveL.moveVelocity(0);
+  }
+
+  //Left motor to spin for distance at a speed
+  //Right motor to spin for as long as the left spins, at a different speed
+}
 
 void driveTest(int distance, int speed){
   m_driveRB.tarePosition();
