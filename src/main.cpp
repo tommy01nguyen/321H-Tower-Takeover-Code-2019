@@ -121,11 +121,26 @@ void rightButtonClicked(){
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+ std::shared_ptr<okapi::ChassisController> pidChassis;
+ std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfile;
 void initialize() {
 		pros::delay(500); //Give the legacy ports time to start up
 
 		//Initialize Sensors
 		initializeSensors();
+
+		pidChassis = ChassisControllerBuilder()
+												.withMotors({mg_driveL},{mg_driveR})
+												.withGains({.00090, 0, .000001},{0, 0, 0})//.000008 and .0000008 || .00072 ||0000001
+												.withDimensions(AbstractMotor::gearset::green, {{4.05_in, 11.5_in}, imev5GreenTPR})
+												.build();
+	  chassisProfile = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
+ 											 	.withLimits({1.0, 2.0, 10.0})//3,5,10
+												.withOutput(pidChassis)
+												.buildMotionProfileController();
+
+
+
 
 
 		//Tasks
@@ -165,7 +180,7 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-sets
-	autonNumber = 3;//4
+	autonNumber = 2;//4
 	autonSide = -1;
 
 	  switch(autonNumber){
@@ -179,6 +194,7 @@ void autonomous() {
 			  smallZoneBasic(autonSide);
 	      break;
 	    case 5:
+				flexible(autonSide);
 	      break;
 			case 6:
 				break;

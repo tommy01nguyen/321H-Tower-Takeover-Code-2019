@@ -3,28 +3,46 @@
 using namespace okapi;
 #define red 1
 #define blue -1
+// pidChassis = ChassisControllerBuilder()
+//                     .withMotors({mg_driveL},{mg_driveR})
+//                     .withGains({.0003, 0, 0},{0, 0, 0},{0,0,0})//.0021, 0, 0.0000008
+//                     .withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
+//                     .build();
 
 void basicAuton(int side){
+  //TESTING MOTION PROFILING
+  chassisProfile->generatePath({{0_in, 0_in, 0_deg},  {40_in, 0_in, 0_deg}},"A");
+  pros::delay(500);
+  chassisProfile->setTarget("A");
+  chassisProfile->waitUntilSettled();
 
-flipout();
-// Intake and Drive Forward
-setintakeState(intakeStates::on, 12000);
-pidChassis->moveDistance(35_in); //Up until past stack
-pros::delay(500);
-pidChassis->moveDistance(9_in);
-setintakeState(intakeStates::on, 0);
-//Drive Backwards
-pidChassis->moveDistance(-43_in);
-// Turn Towards Goal zone
-if(side == red) pidChassis->turnAngle(-83_deg);
-if(side == blue) pidChassis->turnAngle(91_deg);
-//Drive to Goal Zone
-pidChassis->moveDistance(28_in);
+  //TESTING PID
+// pidChassis->setMaxVelocity(160);
+// pidChassis->moveDistance(20_in);
+// pros::delay(500);
+// pidChassis->moveDistance(10_in);
 
-// Score
-mg_intake.moveRelative(-50, 100);
-pros::delay(500);
-setstackerState(stackerStates::stackMacro); //Stack that
-pros::delay(500);
-pidChassis->moveDistance(-20_in);
+
+
+// flipout();
+// // Intake and Drive Forward
+// setintakeState(intakeStates::on, 12000);
+// pidChassis->moveDistance(35_in); //Up until past stack
+// pros::delay(500);
+// pidChassis->moveDistance(9_in);
+// setintakeState(intakeStates::on, 0);
+// //Drive Backwards
+// pidChassis->moveDistance(-43_in);
+// // Turn Towards Goal zone
+// if(side == red) pidChassis->turnAngle(-83_deg);
+// if(side == blue) pidChassis->turnAngle(91_deg);
+// //Drive to Goal Zone
+// pidChassis->moveDistance(28_in);
+//
+// // Score
+// mg_intake.moveRelative(-50, 100);
+// pros::delay(500);
+// setstackerState(stackerStates::stackMacro); //Stack that
+// pros::delay(500);
+// pidChassis->moveDistance(-20_in);
 }
