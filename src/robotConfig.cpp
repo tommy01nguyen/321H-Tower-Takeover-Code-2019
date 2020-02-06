@@ -12,7 +12,7 @@ using namespace okapi;
 #define port_stacker 6
 #define port_lift 10
 
-#define port_imu 1
+#define port_imu 4
 
 //Controllers
 Controller j_master = ControllerId::master;
@@ -68,14 +68,15 @@ void initializeSensors(){
 	// 										.build();
 
 
-	// s_imu.reset();
-	// int time = pros::millis();
-	// int iter = 0;
-	// while (s_imu.is_calibrating()) {
-	// 	printf("IMU calibrating... %d\n", iter);
-	// 	iter += 10;
-	// 	pros::delay(10);
-	// }
-	// //should print about 2000 ms
+	s_imu.reset();
+	int time = pros::millis();
+	int iter = 0;
+	while (s_imu.is_calibrating()) {
+		// printf("IMU calibrating... %d\n", iter);
+		// iter += 10;
+		pros::delay(10);
+	}
+	//should print about 2000 ms
 	// printf("IMU is done calibrating (took %d ms)\n", iter - time);
+	// pros::delay(1000);
 }

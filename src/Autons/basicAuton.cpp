@@ -10,17 +10,33 @@ using namespace okapi;
 //                     .build();
 
 void basicAuton(int side){
+  //IMU TESTING
+  // while(true){
+  //   std::cout << "rotation: " << s_imu.get_rotation() << std::endl;
+  //   std::cout << "heading: " <<  s_imu.get_heading()  << "!!!!!"<< std::endl;
+  //   pros::delay(100);
+  // }
+  turnTo(90);
+  //pros::delay(500);
+  turnTo(-90);
+  // pros::delay(500);
+  // turnTo(90);
+
   //TESTING MOTION PROFILING
-  chassisProfile->generatePath({{0_in, 0_in, 0_deg},  {40_in, 0_in, 0_deg}},"A");
-  pros::delay(500);
-  chassisProfile->setTarget("A");
-  chassisProfile->waitUntilSettled();
+  // chassisProfile->generatePath({{0_in, 0_in, 0_deg},  {40_in, 0_in, 0_deg}},"A");
+  // pros::delay(500);
+  // chassisProfile->setTarget("A");
+  // chassisProfile->waitUntilSettled();
 
   //TESTING PID
 // pidChassis->setMaxVelocity(160);
 // pidChassis->moveDistance(20_in);
 // pros::delay(500);
 // pidChassis->moveDistance(10_in);
+
+  // pidChassis->turnAngle(90_deg);
+  // pros::delay(500);
+  // pidChassis->turnAngle(-90_deg);
 
 
 

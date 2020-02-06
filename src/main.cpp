@@ -131,8 +131,8 @@ void initialize() {
 
 		pidChassis = ChassisControllerBuilder()
 												.withMotors({mg_driveL},{mg_driveR})
-												.withGains({.00090, 0, .000001},{0, 0, 0})//.000008 and .0000008 || .00072 ||0000001
-												.withDimensions(AbstractMotor::gearset::green, {{4.05_in, 11.5_in}, imev5GreenTPR})
+												.withGains({.00090, 0, .000001},{.0012, 0, 0.00002})//.000008 and .0000008 || .00072 ||0000001
+												.withDimensions(AbstractMotor::gearset::green, {{4.05_in, 10.5_in}, imev5GreenTPR})
 												.build();
 	  chassisProfile = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
  											 	.withLimits({1.0, 2.0, 10.0})//3,5,10

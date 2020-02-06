@@ -13,3 +13,8 @@ Test Auton Selector
 Motion Profiling, PID
 Implement IMU PID
   Test to see if it inteferes with pidChassis and Motion profiling Chassis
+
+  Checklist:
+  Quick PID Turns
+  IMU
+  

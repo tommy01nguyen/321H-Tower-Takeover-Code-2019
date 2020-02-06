@@ -14,13 +14,14 @@ void setdriveState(driveStates newState, double requestedPercent){
 }
 /**************************************************/
 //IMU PID
-double kp = .1;
-double kd = .1;
+bool turnPIDOn = false;
+double kp = 1.25;//.7
+double kd = .1;//.1
 static double turnTarget;
 static double maxSpeed = 200;
 
-double getImuHeading(){
-  return s_imu.get_heading();
+double getImuHeading(){ //Convert 0-359 to 0-179, -179,-1
+  return s_imu.get_rotation();
 }
 
 void reset(){
@@ -81,14 +82,15 @@ void setSpeed(int speed){
 }
 
 bool isTurning(){
+
   static int count = 0;
-  static int lastAngle = 0;
-  static int lastTarget = 0;
+  static double lastAngle = 0;
+  static double lastTarget = 0;
 
-  int curAngle = getImuHeading(); //CHANGE TO IMU VALUES************
-  int target = turnTarget;
+  double curAngle = getImuHeading(); //CHANGE TO IMU VALUES************
+  double target = turnTarget;
 
-  if(abs(lastAngle-curAngle) < 3) //3 degree encoder unit threshold for change in Angle NEEDS TUNING
+  if(abs(lastAngle-curAngle) < .01) //3 robot degree threshold for change in Angle NEEDS TUNING
     count++;
   else
     count = 0;
@@ -96,8 +98,13 @@ bool isTurning(){
   if(target != lastTarget) //If changing target, restart iterating
     count = 0;
 
+    std::cout << "lastAngle: " << lastAngle << std::endl;
+    std::cout << "curAngle: " << curAngle << std::endl;
+    std::cout << "count: " << count << std::endl;
+
   lastTarget = target;
   lastAngle = curAngle;
+
 
   if(count > 4) //If iterated 4 times
     return false; //Not Turning
@@ -109,18 +116,23 @@ bool isTurning(){
 //   return heading;
 // }
 
-void turnTo(double newHeading){ //Heading in degrees (-360,360)
+void turnTo(double newHeading){ //Heading in degrees (0,360)
     reset();
+
     // turnTarget = headingToTarget(newHeading);
     turnTarget = newHeading;
     setdriveState(driveStates::turnPID);
+    turnPIDOn = true;
 
     pros::delay(300); //Assuming no super short turns
     while(isTurning()){ //Wait until settled
+      setdriveState(driveStates::turnPID);
       pros::delay(20);
     }
     //Movement over
     setdriveState(driveStates::tank);
+    std::cout << "turnTo Over!!" << std::endl;
+    turnPIDOn = false;
 }
 
 /**************************************************/
@@ -157,11 +169,11 @@ void task_driveControl(void*){
       case driveStates::turnPID:{
         int prevError;
 
-        while(1){
-          double pv = turnTarget; //Process Variable //both should be heading.. same units?
-          double sv = getImuHeading(); //Set Point Variable
+        while(turnPIDOn){
+          double target = turnTarget;
+          double current = getImuHeading();
 
-          double error = pv-sv;
+          double error = target-current;
           double derivative = error - prevError;
           prevError = error;
 
@@ -172,10 +184,20 @@ void task_driveControl(void*){
           if(speed < -maxSpeed)
             speed = -maxSpeed;
 
-          mg_driveL.moveVelocity(-speed);
-          mg_driveR.moveVelocity(speed);
+          // std::cout << "turnTarget: " << target << std::endl;
+          // std::cout << "rotation: " << current << std::endl;
+          // std::cout << "error: " << error << std::endl;
+          // std::cout << "speed: " << speed << std::endl;
+          //PV 90, SV 360. //PV 270, SV 360
+          // if(turnTarget > 180){
+          //   speed = -speed;
+          // }
+
+          mg_driveL.moveVelocity(speed);
+          mg_driveR.moveVelocity(-speed);
           // leftSlew(-speed);
           // rightSlew(speed);
+          //std::cout << "PIDis on!" << std::endl;
           pros::delay(20);
           }
 

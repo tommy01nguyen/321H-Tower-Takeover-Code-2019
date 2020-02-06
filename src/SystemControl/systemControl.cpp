@@ -35,9 +35,18 @@ ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::d
 ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::X);
 ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::B);
 
+ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
+ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
+
 
 void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop
-
+  //TESTING
+  if(b_test1.isPressed()){
+    turnTo(0);
+  }
+  else if(b_test2.isPressed()){
+    turnTo(90);
+  }
   //INTAKE
   if(b_intakeInP.isPressed() || b_intakeIn.isPressed()){
     setintakeState(intakeStates::on, 12000);

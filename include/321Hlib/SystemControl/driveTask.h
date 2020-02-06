@@ -14,3 +14,5 @@ extern double drivePercent;
 void task_driveControl(void*);
 void setdriveState(driveStates newState);
 void setdriveState(driveStates newState, double requestedPercent);
+
+void turnTo(double newHeading);
