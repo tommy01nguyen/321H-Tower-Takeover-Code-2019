@@ -8,6 +8,9 @@ enum class intakeStates{
   waitOn,
   onWait,
   untilSensed,
+  readyToStack,
+  hold,
+
 };
 
 extern int intakeWaitTime;

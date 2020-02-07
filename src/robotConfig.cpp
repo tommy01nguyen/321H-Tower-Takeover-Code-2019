@@ -30,7 +30,8 @@ Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor
 Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
 
-pros::ADILineSensor s_intakeSensor('C');
+pros::ADILineSensor s_backIntakeSensor('C');
+pros::ADILineSensor s_frontIntakeSensor('D');
 pros::Imu s_imu(port_imu);
 
 //Motor Group | allows for moving all these motors at once
@@ -59,8 +60,8 @@ MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
 void initializeSensors(){
 	resetEncoders();
-	s_intakeSensor.calibrate();
-
+	s_backIntakeSensor.calibrate();
+	s_frontIntakeSensor.calibrate();
 	// std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder()
 	// 										.withMotors({mg_driveL},{mg_driveR})
 	// 										.withGains({.0007, 0, 0},{0, 0, 0},{0,0,0})//.0021, 0, 0.0000008

@@ -20,54 +20,62 @@ void setintakeState(intakeStates newState, int requestedWaitTime, int requestedV
   intakeVoltage = requestedVoltage;
 }
 
-double sensorVal;
+int frontSensorVal;
+int backSensorVal;
 int cubeSensValue = -300;
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
     //sensorVal = s_intakeSensor.get_value();
-  sensorVal = s_intakeSensor.get_value_calibrated();
+  frontSensorVal = s_frontIntakeSensor.get_value_calibrated();
+  backSensorVal = s_backIntakeSensor.get_value_calibrated();
     switch(currentintakeState){
 
       case intakeStates::on:{  //intake at velocity
-        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
-        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::coast);
-        m_intakeL.moveVoltage(intakeVoltage);
-        m_intakeR.moveVoltage(intakeVoltage);
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+        mg_intake.moveVoltage(intakeVoltage);
         break;
       }
-      
-
       case intakeStates::waitOn:{ //Wait and then intake
-        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
-        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::coast);
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+        //intake off?
         pros::delay(intakeWaitTime);
         setintakeState(intakeStates::on);
         break;
       }
 
       case intakeStates::onWait:{ //intake in and then stop
-        m_intakeR.setBrakeMode(AbstractMotor::brakeMode::coast);
-        m_intakeL.setBrakeMode(AbstractMotor::brakeMode::coast);
-        m_intakeL.moveVoltage(intakeVoltage);
-        m_intakeR.moveVoltage(intakeVoltage);
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+        mg_intake.moveVoltage(intakeVoltage);
         pros::delay(intakeWaitTime);
-        m_intakeL.moveVoltage(0);
-        m_intakeR.moveVoltage(0);
+        setintakeState(intakeStates::on, 0);
         break;
       }
-      case intakeStates::untilSensed:{
-       m_intakeR.setBrakeMode(AbstractMotor::brakeMode::brake);
-       m_intakeL.setBrakeMode(AbstractMotor::brakeMode::brake);
-      // std::cout << "intake" <<std::endl;
-      // std::cout << sensorVal << std:: endl;
-        if(sensorVal > cubeSensValue){ //While the ball is not in the sensor
-          m_intakeL.moveVoltage(intakeVoltage);
-          m_intakeR.moveVoltage(intakeVoltage);
+      case intakeStates::untilSensed:{ //Meant picking up a cube to score in towers //Tune sensor vals with flipout
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+      //  std::cout << backSensorVal << std:: endl;
+        if(backSensorVal > cubeSensValue){ //While the cube is not in the sensor
+          mg_intake.moveVoltage(12000);
         }
         else{
-          m_intakeL.moveVoltage(0);
-          m_intakeR.moveVoltage(0);
+          mg_intake.moveVoltage(0);
         }
+        break;
+      }
+      case intakeStates::readyToStack:{ //Tune sensor vals with flipout
+        //Assumes cubes are past the back roller
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+        if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
+          mg_intake.moveVoltage(-4000);
+        }
+        else{
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+          mg_intake.moveVoltage(0);
+        }
+        break;
+      }
+      case intakeStates::hold:{
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+        mg_intake.moveVelocity(0);
       }
 
 

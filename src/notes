@@ -1,20 +1,12 @@
 NOTES
 
-NEED TO DO, highest priority on top
-Testing:
-Stacker macros
-Tray Raised Preset
-Out of Stack Preset
-arm hold at bottom
-intake speeds
-Auton
 
-Test Auton Selector
-Motion Profiling, PID
-Implement IMU PID
-  Test to see if it inteferes with pidChassis and Motion profiling Chassis
+Checklist:
+intake sensor presets TUNE with flipout
+cube lock macro
+  -Move lift up && intake out to sensor at same time
 
-  Checklist:
-  Quick PID Turns
-  IMU
-  
+
+
+Make Autons
+Make Prog Skills

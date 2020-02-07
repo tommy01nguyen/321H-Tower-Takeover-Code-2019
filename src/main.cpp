@@ -3,113 +3,96 @@
 using namespace okapi;
 int autonNumber = 0;
 int autonSide = 0;
-int page = 0;
+int page = 1;
 /*
 Pages:
-1: homescreen
-2-10: Auton pages
+1-7: Auton pages
 11: Color chooser
 
 Buttons:
-Start: Select, Back, Next
-On Select: Red     Back      Blue
+Auton List: Select, Previous,  Next
+Color Chooser: Back, Red, Blue
 
-Page == Auton Number
+autonNumber = page
 */
-
-// void clear(){ //Clears all 7 lines
-// 	for(int i = 0; i <= 7; i++){
-// 		pros::lcd::set_text(i, "");
-// 	}
-// }
 
 void displayPage(int page){
 
 	if(page != 11){ //Assuming no more than 10 different autons
-		pros::lcd::set_text(7, "Select         Previous            Next");
+		pros::lcd::set_text(7, "Select      Previous       Next");
 	}
 
+	pros::lcd::print(0, "Number:%i Side:%i (R1:B-1)", autonNumber, autonSide);
 	switch(page){
-		case 1://Home Screen
-			pros::lcd::set_text(1, "321H Auton Selector");
-			pros::lcd::set_text(4, "");
+		case 1://Initial Screen
+			pros::lcd::set_text(3, "Program: Nothing");
 			break;
 		case 2:
-			pros::lcd::set_text(4, "Small Zone 8 Cubes");
+			pros::lcd::print(3, "Program: Small Zone Big Stack");
 			break;
 		case 3:
-			pros::lcd::set_text(4, "Large Zone 8 Cubes");
+			pros::lcd::set_text(3, "Program: Large Zone Big Stack");
 			break;
 		case 4:
-			pros::lcd::set_text(4, "Small Zone 4 Cubes");
+			pros::lcd::set_text(3, "Program: Small Zone Small Stack");
 			break;
 		case 5:
-			pros::lcd::set_text(4, "Large Zone 4 Cubes");
+			pros::lcd::set_text(3, "Program: Large Zone Small Stack");
 		case 6:
-			pros::lcd::set_text(4, "Flexible 1");
+			pros::lcd::set_text(3, "Program: Flexible 1");
 			break;
 		case 7:
-			pros::lcd::set_text(4, "Flexible 2");
+			pros::lcd::set_text(3, "Program: Flexible 2");
 			break;
 		case 8:
-			pros::lcd::set_text(4, "Skills 1");
+			pros::lcd::set_text(3, "Program: Skills 1");
 			break;
-		case 9:
-			pros::lcd::set_text(4, "Nothing");
 		case 11: //Select Side Menu
-			pros::lcd::set_text(7, "Back          Red            Blue");
-		case 0: //Do Nothing
+			pros::lcd::set_text(7, "Back          Red          Blue");
 			break;
 	}
-
 }
 
 void leftButtonClicked(){
 	//Either Select or Back
-	if((page != 1) && (page <= 10)){ //Select
+	if(page <= 10){ //Select
 		autonNumber = page;
 		page = 11; //Go to Color Chooser
-		displayPage(page);
-
 	}
 	else if(page == 11){ //Back
-		page = 1; //Go back to Home
-		displayPage(page);
+		page = 1; //Go back to Auton List
+		pros::lcd::set_text(5, "");
 	}
+	displayPage(page);
 }
 void middleButtonClicked(){
 	//Either Previous or Red
 	if(page == 1){ // Previous
-		page = 9; //Last Auton Page
-		displayPage(page);
+		page = 8; //Last Auton Page
 	}
 	else if(page <= 10){
 		page--;
-		displayPage(page);
 	}
-
-	if(page == 11){ //Red
-		//Select Red
+	if(page == 11){ //Select Red
 		autonSide = 1;
-		pros::lcd::set_text(5, "SELECTED RED");
+		pros::lcd::set_text(5, "Color: Red");
 	}
+	displayPage(page);
 }
 void rightButtonClicked(){
 	//Either Next or Blue
-	if(page == 9){ // Next
-		page = 2;
-		displayPage(page);
+	if(page == 8){ // Next
+		page = 1;
 	}
 	else if(page <= 10){
 		page++;
-		displayPage(page);
 	}
 
-	if(page == 11){ //Blue
-		//Select Blue
+	if(page == 11){ //Select Blue
 		autonSide = -1;
-		pros::lcd::set_text(5, "SELECTED BLUE");
+		pros::lcd::set_text(5, "Color: Blue");
 	}
+	displayPage(page);
 }
 
 
@@ -138,10 +121,6 @@ void initialize() {
  											 	.withLimits({1.0, 2.0, 10.0})//3,5,10
 												.withOutput(pidChassis)
 												.buildMotionProfileController();
-
-
-
-
 
 		//Tasks
 		pros::Task driveTask (task_driveControl, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Drive Task");
@@ -184,6 +163,8 @@ void autonomous() {
 	autonSide = -1;
 
 	  switch(autonNumber){
+			case 1: //Do Nothing
+				break;
 	    case 2:
 				basicAuton(autonSide);
 	      break;
@@ -203,10 +184,6 @@ void autonomous() {
 			case 8:
 				skills();
 				break;
-			case 9:
-				break;
-	    case 0: //Do Nothing
-	      break;
 	  }
 }
 
@@ -214,11 +191,11 @@ void autonomous() {
  void opcontrol() {
 	 setdriveState(driveStates::tank);//change from turning in auton to tank;
  	while (true) {
- 		if(b_debug.isPressed()){//right main controller
-			//flipout();
- 			//autonomous();
-			//std::cout << "hi" << std::endl;
- 		}
+ 		// if(b_debug.isPressed()){//right main controller
+		// 	flipout();
+ 		// 	autonomous();
+		// 	std::cout << "hi" << std::endl;
+ 		// }
 		systemControl(); //Runs subsystem Controls
  		pros::delay(20);
  	}

@@ -20,7 +20,7 @@ double kd = .1;//.1
 static double turnTarget;
 static double maxSpeed = 200;
 
-double getImuHeading(){ //Convert 0-359 to 0-179, -179,-1
+double getImuRotation(){ //()-infinity, infinity)
   return s_imu.get_rotation();
 }
 
@@ -56,7 +56,7 @@ void reset(){
 //   else
 //     leftSpeed = leftTarget;
 //
-//   mg_driveL.moveVelocity(leftSpeed);
+//   mg_driveL.moveVoltage(leftSpeed);
 // }
 //
 // void rightSlew(int rightTarget){
@@ -74,7 +74,7 @@ void reset(){
 //   else
 //     rightSpeed = rightTarget;
 //
-//   mg_driveR.moveVelocity(rightSpeed);
+//   mg_driveR.moveVoltage(rightSpeed);
 // }
 
 void setSpeed(int speed){
@@ -87,34 +87,35 @@ bool isTurning(){
   static double lastAngle = 0;
   static double lastTarget = 0;
 
-  double curAngle = getImuHeading(); //CHANGE TO IMU VALUES************
+  double curAngle = getImuRotation(); //CHANGE TO IMU VALUES************
   double target = turnTarget;
 
-  if(abs(lastAngle-curAngle) < .01) //3 robot degree threshold for change in Angle NEEDS TUNING
+  if(abs(lastAngle-curAngle) < .01){ //3 robot degree threshold for change in Angle NEEDS TUNING
     count++;
-  else
+  }
+  else{
     count = 0;
+  }
 
-  if(target != lastTarget) //If changing target, restart iterating
+  if(target != lastTarget){ //If changing target, restart iterating
     count = 0;
+  }
 
-    std::cout << "lastAngle: " << lastAngle << std::endl;
-    std::cout << "curAngle: " << curAngle << std::endl;
-    std::cout << "count: " << count << std::endl;
+    // std::cout << "lastAngle: " << lastAngle << std::endl;
+    // std::cout << "curAngle: " << curAngle << std::endl;
+    // std::cout << "count: " << count << std::endl;
 
   lastTarget = target;
   lastAngle = curAngle;
 
 
-  if(count > 4) //If iterated 4 times
+  if(count > 4){ //If iterated 5 times
     return false; //Not Turning
-  else
+  }
+  else{
     return true; //Turning
+  }
 }
-
-// double headingToTarget(double heading){//Turn heading(degrees) into angle needed to travel
-//   return heading;
-// }
 
 void turnTo(double newHeading){ //Heading in degrees (0,360)
     reset();
@@ -131,7 +132,7 @@ void turnTo(double newHeading){ //Heading in degrees (0,360)
     }
     //Movement over
     setdriveState(driveStates::tank);
-    std::cout << "turnTo Over!!" << std::endl;
+    //std::cout << "turnTo Over!!" << std::endl;
     turnPIDOn = false;
 }
 
@@ -162,16 +163,16 @@ void task_driveControl(void*){
       case driveStates::outOfStack:{
           mg_driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
           mg_driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
-        setintakeState(intakeStates::on,-6000);
-        pidChassis->moveDistance(-2_in);
-        setintakeState(intakeStates::on, 0);
+          setintakeState(intakeStates::on,-12000);
+          mg_driveR.moveVelocity(-30);
+          mg_driveL.moveVelocity(-30);
       }
       case driveStates::turnPID:{
         int prevError;
 
         while(turnPIDOn){
-          double target = turnTarget;
-          double current = getImuHeading();
+          double target = turnTarget; //Set in turnTo method
+          double current = getImuRotation();
 
           double error = target-current;
           double derivative = error - prevError;
@@ -188,16 +189,13 @@ void task_driveControl(void*){
           // std::cout << "rotation: " << current << std::endl;
           // std::cout << "error: " << error << std::endl;
           // std::cout << "speed: " << speed << std::endl;
-          //PV 90, SV 360. //PV 270, SV 360
-          // if(turnTarget > 180){
-          //   speed = -speed;
-          // }
+
 
           mg_driveL.moveVelocity(speed);
           mg_driveR.moveVelocity(-speed);
           // leftSlew(-speed);
           // rightSlew(speed);
-          //std::cout << "PIDis on!" << std::endl;
+          //std::cout << "PID is on!" << std::endl;
           pros::delay(20);
           }
 

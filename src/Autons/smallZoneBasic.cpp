@@ -5,32 +5,41 @@ using namespace okapi;
 #define blue -1
 
 void smallZoneBasic(int side){
-// 
-// mg_driveL.moveDistance(10_in);
-// mg_driveR.moveDistance(10_in);
-// //flipout();
-// // Intake and Drive Forward
-// setintakeState(intakeStates::on, 12000);
-// pidChassis->setMaxVelocity(200);
-//
-// pidChassis->moveDistance(43_in); //Up until past stack
-// //Drive Backwards
-// pidChassis->setMaxVelocity(3000);
-// pidChassis->moveDistance(-30_in);
-// // Turn Towards Goal zone
-// pidChassis->setMaxVelocity(150);
-// if(side == red) pidChassis->turnAngle(130_deg);
-// if(side == blue) pidChassis->turnAngle(-140_deg);
-// //Drive to Goal Zone
-// pidChassis->moveDistance(15_in);
-//
-// // Score
+//Starts in 4 cube row, goes forward, picks up all the cubes, turns and gets the cube by the tower, then scores. 7 cubes.
 
-//setintakeState(intakeStates::untilSensed, -12000);
+//First Row
+flipout();
+setintakeState(intakeStates::on, 12000);
+chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {16_in, 0_in, 0_deg}}, "out of row");
+pidChassis->setMaxVelocity(150);
+pidChassis->moveDistance(55_in);
 
-// setstackerState(stackerStates::stackMacro); //Stack that
-// pros::delay(500);
-// pidChassis->moveDistance(-10_in);
+//Get tower cube
+chassisProfile->setTarget("out of row", true);
+chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {16_in, 0_in, 0_deg}}, "through tower cube");
+chassisProfile->waitUntilSettled();
+chassisProfile->removePath("out of row");
+turnTo(-50);
+chassisProfile->setTarget("through tower cube");
+chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {50_in, 0_in, 0_deg}}, "to goal zone");
+chassisProfile->waitUntilSettled();
+chassisProfile->removePath("through tower cube");
+
+//Get to zone
+turnTo(-40);
+setintakeState(intakeStates::on, 6000);
+chassisProfile->setTarget("to goal zone", true);
+chassisProfile->waitUntilSettled();
+chassisProfile->removePath("to goal zone");
+turnTo(135);
+
+//Score in Zone
+setintakeState(intakeStates::readyToStack);
+pidChassis->setMaxVelocity(80); //Tune speed so it is impossible to climb over zone
+pidChassis->moveDistance(10_in);
+setstackerState(stackerStates::bigStackMacro);
 setdriveState(driveStates::outOfStack);
+pros::delay(1000);
+setdriveState(driveStates::tank);
 
 }

@@ -3,12 +3,12 @@ using namespace okapi;
 
 //Controller Buttons
 
-//Master Controller
-ControllerButton b_debug(ControllerDigital::right);//extern
+//Master Controller: L trigger does intake, R trigger does drive functions. Right set of buttons is stacking. left set
+//ControllerButton b_debug(ControllerDigital::right);//extern
 
 ControllerButton b_driveHold(ControllerDigital::left);
-ControllerButton b_driveSlower(ControllerDigital::L1);
-ControllerButton b_driveOutOfStack(ControllerDigital::L2);
+ControllerButton b_driveSlower(ControllerDigital::R1);
+ControllerButton b_driveOutOfStack(ControllerDigital::R2);//Move to stacker macro side
 
 ControllerButton b_stackerUpSlow(ControllerDigital::X);
 ControllerButton b_stackerUpVerySlow(ControllerDigital::A);
@@ -16,43 +16,54 @@ ControllerButton b_stackerDown(ControllerDigital::B); //shared
 ControllerButton b_stackMacro(ControllerDigital::Y); //extern
 ControllerButton b_stackerRaisedPreset(ControllerDigital::A); //currently not used, would need to remove upveryslow button
 
-ControllerButton b_intakeIn(ControllerDigital::R1); //shared
-ControllerButton b_intakeOut(ControllerDigital::R2); //shared
+ControllerButton b_intakeIn(ControllerDigital::L1); //shared
+ControllerButton b_intakeOut(ControllerDigital::L2); //shared
 
+ControllerButton b_intakeReadyToStack(ControllerDigital::right);
 
 ControllerButton b_liftUp(ControllerDigital::up);
 ControllerButton b_liftDown(ControllerDigital::down);
 
-//Partner Controller
+//Partner Controller: Triggers do intake and towers. Right button set does tower presets, left button set does intake presets
 ControllerButton b_lowTowerMacro(ControllerId::partner, ControllerDigital::R2);
 ControllerButton b_highTowerMacro(ControllerId::partner, ControllerDigital::R1);
 ControllerButton b_noTowerMacro(ControllerId::partner, ControllerDigital::A);
 
+ControllerButton b_cubeLatchMacro(ControllerId::partner, ControllerDigital::Y);
+
 ControllerButton b_intakeInP(ControllerId::partner, ControllerDigital::L2);
 ControllerButton b_intakeOutP(ControllerId::partner, ControllerDigital::L1);
 ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::down);
+ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
 
 ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::X);
 ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::B);
 
-ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
-ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
+// ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
+// ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
 
 
 void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop
   //TESTING
-  if(b_test1.isPressed()){
-    turnTo(0);
-  }
-  else if(b_test2.isPressed()){
-    turnTo(90);
-  }
+  // if(b_test1.isPressed()){
+  //   turnTo(0);
+  // }
+  // else if(b_test2.isPressed()){
+  //   turnTo(90);
+  // }
+
   //INTAKE
   if(b_intakeInP.isPressed() || b_intakeIn.isPressed()){
     setintakeState(intakeStates::on, 12000);
   }
+  else if(b_intakeReadyToStack.isPressed()){
+    setintakeState(intakeStates::readyToStack);
+  }
   else if(b_intakeOutP.isPressed() || b_intakeOut.isPressed()){
     setintakeState(intakeStates::on, -12000);
+  }
+  else if(b_intakeOutSlow.isPressed()){
+    setintakeState(intakeStates::on, -6000);
   }
   else if(b_intakeUntilSensed.isPressed()){
     setintakeState(intakeStates::untilSensed);
@@ -78,19 +89,16 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setliftState(liftStates::noTower);
   }
   else{
-    setliftState(liftStates::on, 0); //Off
+    setliftState(liftStates::holdBottom);
+  //  setliftState(liftStates::on, 0); //Off
   }
 
   //STACKER
   if(b_stackerUpSlow.isPressed()){
-    setstackerState(stackerStates::on, 8000);
-    m_intakeR.setBrakeMode(AbstractMotor::brakeMode::hold);
-    m_intakeL.setBrakeMode(AbstractMotor::brakeMode::hold);
+    setstackerState(stackerStates::on, 5000);
   }
   else if(b_stackerUpVerySlow.isPressed()){
-    setstackerState(stackerStates::on, 5000);
-    m_intakeR.setBrakeMode(AbstractMotor::brakeMode::hold);
-    m_intakeL.setBrakeMode(AbstractMotor::brakeMode::hold);
+    setstackerState(stackerStates::raisedPreset);
   }
   else if(b_stackerDown.isPressed()){
     setstackerState(stackerStates::on, -12000);
@@ -109,9 +117,9 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   else if(b_driveHold.isPressed()){
     setdriveState(driveStates::hold);
   }
-  // else if(b_driveOutOfStack.isPressed()){
-  //   setdriveState(driveStates::outOfStack);
-  // }
+  else if(b_driveOutOfStack.isPressed()){
+    setdriveState(driveStates::outOfStack);
+  }
   else{
     setdriveState(driveStates::tank, 1); //full speed
   }
