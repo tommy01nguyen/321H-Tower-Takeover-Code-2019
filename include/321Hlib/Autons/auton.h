@@ -14,4 +14,4 @@ void smallZoneBasic(int side);
 
 void flexible(int side);
 void skills();
-void nearZone8Cube(int side);
+void largeZone4Cube(int side);

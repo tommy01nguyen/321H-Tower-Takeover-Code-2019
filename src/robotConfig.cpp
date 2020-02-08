@@ -5,7 +5,7 @@ using namespace okapi;
 #define port_driveRF 16
 #define port_driveRB 17
 #define port_driveLF 12
-#define port_driveLB 14
+#define port_driveLB 5
 
 #define port_intakeL 11
 #define port_intakeR 7
@@ -39,34 +39,10 @@ MotorGroup mg_driveR({-port_driveRB,-port_driveRF});
 MotorGroup mg_driveL({port_driveLB,port_driveLF});
 MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
-//Okapi Chassis Controllers
-// std::shared_ptr<okapi::ChassisController> pidChassis;
-//
-// std::shared_ptr<okapi::ChassisController> pidChassisA = ChassisControllerBuilder()
-// 										.withMotors({mg_driveL},{mg_driveR})
-// 										.withGains(IterativePosPIDController::Gains{.0012, 0.00, 0.0005},IterativePosPIDController::Gains{0.001,001,})
-// 										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
-// 										.build();
-//
-// std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfile = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
-//  											 	.withLimits({3.0, 5.0, 10.0})
-// 												.withOutput(pidChassis)
-// 												.buildMotionProfileController();
-//
-// std::shared_ptr<okapi::AsyncMotionProfileController> chassisProfileSlow = AsyncMotionProfileControllerBuilder() //Async 2D Motion Profile Controller
-//  											 	.withLimits({1.0, 2.0, 10.0})
-// 												.withOutput(pidChassis)
-// 												.buildMotionProfileController();
-
 void initializeSensors(){
 	resetEncoders();
 	s_backIntakeSensor.calibrate();
 	s_frontIntakeSensor.calibrate();
-	// std::shared_ptr<okapi::ChassisController> pidChassis = ChassisControllerBuilder()
-	// 										.withMotors({mg_driveL},{mg_driveR})
-	// 										.withGains({.0007, 0, 0},{0, 0, 0},{0,0,0})//.0021, 0, 0.0000008
-	// 										.withDimensions(AbstractMotor::gearset::green, {{4.125_in, 11.5_in}, imev5GreenTPR})
-	// 										.build();
 
 
 	s_imu.reset();

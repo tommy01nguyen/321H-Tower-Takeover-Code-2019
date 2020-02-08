@@ -28,24 +28,24 @@ void displayPage(int page){
 			pros::lcd::set_text(3, "Program: Nothing");
 			break;
 		case 2:
-			pros::lcd::print(3, "Program: Small Zone Big Stack");
+			pros::lcd::print(3, "Program: smallZoneBasic");
 			break;
 		case 3:
-			pros::lcd::set_text(3, "Program: Large Zone Big Stack");
+			pros::lcd::set_text(3, "Program: largeZone4Cube");
 			break;
 		case 4:
-			pros::lcd::set_text(3, "Program: Small Zone Small Stack");
+			pros::lcd::set_text(3, "Program: basicAuton");
 			break;
 		case 5:
-			pros::lcd::set_text(3, "Program: Large Zone Small Stack");
+			pros::lcd::set_text(3, "Program: Filler 1");
 		case 6:
-			pros::lcd::set_text(3, "Program: Flexible 1");
+			pros::lcd::set_text(3, "Program: Filler 2");
 			break;
 		case 7:
-			pros::lcd::set_text(3, "Program: Flexible 2");
+			pros::lcd::set_text(3, "Program: Filler 3");
 			break;
 		case 8:
-			pros::lcd::set_text(3, "Program: Skills 1");
+			pros::lcd::set_text(3, "Program: Skills");
 			break;
 		case 11: //Select Side Menu
 			pros::lcd::set_text(7, "Back          Red          Blue");
@@ -166,16 +166,16 @@ void autonomous() {
 			case 1: //Do Nothing
 				break;
 	    case 2:
-				basicAuton(autonSide);
+				smallZoneBasic(autonSide);
 	      break;
 	    case 3:
-				nearZone8Cube(autonSide);
+				largeZone4Cube(autonSide);
 	      break;
 	    case 4:
-			  smallZoneBasic(autonSide);
+			  basicAuton(autonSide);
 	      break;
 	    case 5:
-				flexible(autonSide);
+				//flexible(autonSide);
 	      break;
 			case 6:
 				break;

@@ -22,7 +22,7 @@ void setintakeState(intakeStates newState, int requestedWaitTime, int requestedV
 
 int frontSensorVal;
 int backSensorVal;
-int cubeSensValue = -300;
+int cubeSensValue = -100;
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
     //sensorVal = s_intakeSensor.get_value();
@@ -64,6 +64,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       case intakeStates::readyToStack:{ //Tune sensor vals with flipout
         //Assumes cubes are past the back roller
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+        std::cout << frontSensorVal << std:: endl;
         if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
           mg_intake.moveVoltage(-4000);
         }
