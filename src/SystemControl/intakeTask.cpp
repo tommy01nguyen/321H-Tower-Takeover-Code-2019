@@ -64,7 +64,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       case intakeStates::readyToStack:{ //Tune sensor vals with flipout
         //Assumes cubes are past the back roller
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
-        std::cout << frontSensorVal << std:: endl;
+        //std::cout << frontSensorVal << std:: endl;
         if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
           mg_intake.moveVoltage(-4000);
         }
@@ -73,6 +73,20 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
           mg_intake.moveVoltage(0);
         }
         break;
+      }
+      case intakeStates::cubeLockMacro:{
+        //Assumes cubes are past the back roller
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+        //std::cout << frontSensorVal << std:: endl;
+        if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
+          mg_intake.moveVoltage(-12000);
+        }
+        else{
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+          mg_intake.moveVoltage(0);
+        }
+        break;
+
       }
       case intakeStates::hold:{
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);

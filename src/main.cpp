@@ -34,7 +34,7 @@ void displayPage(int page){
 			pros::lcd::set_text(3, "Program: largeZone4Cube");
 			break;
 		case 4:
-			pros::lcd::set_text(3, "Program: basicAuton");
+			pros::lcd::set_text(3, "Program: smallZone5Cube1Row");
 			break;
 		case 5:
 			pros::lcd::set_text(3, "Program: Filler 1");
@@ -159,7 +159,7 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-sets
-	autonNumber = 2;//4
+	autonNumber = 4;//4
 	autonSide = -1;
 
 	  switch(autonNumber){
@@ -172,7 +172,7 @@ void autonomous() {
 				largeZone4Cube(autonSide);
 	      break;
 	    case 4:
-			  basicAuton(autonSide);
+			  smallZone5Cube1Row(autonSide);
 	      break;
 	    case 5:
 				//flexible(autonSide);
@@ -191,11 +191,6 @@ void autonomous() {
  void opcontrol() {
 	 setdriveState(driveStates::tank);//change from turning in auton to tank;
  	while (true) {
- 		// if(b_debug.isPressed()){//right main controller
-		// 	flipout();
- 		// 	autonomous();
-		// 	std::cout << "hi" << std::endl;
- 		// }
 		systemControl(); //Runs subsystem Controls
  		pros::delay(20);
  	}

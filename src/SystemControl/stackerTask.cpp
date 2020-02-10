@@ -28,7 +28,7 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
 
     switch(currentstackerState){
       case stackerStates::stackMacro:{
-
+        stackMacroOn = true;
         while (m_stacker.getPosition() <= cp1){
           m_stacker.moveVoltage(12000);
           setintakeState(intakeStates::hold);
@@ -45,7 +45,9 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
            m_stacker.moveVoltage(4000);//2500
            setintakeState(intakeStates::on, 12000);
          }
+         setintakeState(intakeStates::on, 0);
          m_stacker.moveVoltage(0);
+         stackMacroOn = false;
         break;
       }
       case stackerStates::bigStackMacro:{

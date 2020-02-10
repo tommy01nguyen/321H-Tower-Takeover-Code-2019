@@ -10,6 +10,7 @@ enum class intakeStates{
   untilSensed,
   readyToStack,
   hold,
+  cubeLockMacro,
 
 };
 

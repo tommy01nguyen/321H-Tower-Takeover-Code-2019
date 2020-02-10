@@ -87,10 +87,10 @@ bool isTurning(){
   static double lastAngle = 0;
   static double lastTarget = 0;
 
-  double curAngle = getImuRotation(); //CHANGE TO IMU VALUES************
+  double curAngle = getImuRotation();
   double target = turnTarget;
 
-  if(abs(lastAngle-curAngle) < .01){ //3 robot degree threshold for change in Angle NEEDS TUNING
+  if(abs(lastAngle-curAngle) < .05){ //3 robot degree threshold for change in Angle NEEDS TUNING
     count++;
   }
   else{
@@ -101,9 +101,9 @@ bool isTurning(){
     count = 0;
   }
 
-    // std::cout << "lastAngle: " << lastAngle << std::endl;
-    // std::cout << "curAngle: " << curAngle << std::endl;
-    // std::cout << "count: " << count << std::endl;
+     std::cout << "lastAngle: " << lastAngle << std::endl;
+     std::cout << "curAngle: " << curAngle << std::endl;
+     std::cout << "count: " << count << std::endl;
 
   lastTarget = target;
   lastAngle = curAngle;

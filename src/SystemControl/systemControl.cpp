@@ -11,10 +11,10 @@ ControllerButton b_driveSlower(ControllerDigital::R1);
 ControllerButton b_driveOutOfStack(ControllerDigital::R2);//Move to stacker macro side
 
 ControllerButton b_stackerUpSlow(ControllerDigital::X);
-ControllerButton b_stackerUpVerySlow(ControllerDigital::A);
+//ControllerButton b_stackerUpVerySlow(ControllerDigital::A);
 ControllerButton b_stackerDown(ControllerDigital::B); //shared
 ControllerButton b_stackMacro(ControllerDigital::Y); //extern
-ControllerButton b_stackerRaisedPreset(ControllerDigital::A); //currently not used, would need to remove upveryslow button
+ControllerButton b_stackerRaisedPreset(ControllerDigital::A);
 
 ControllerButton b_intakeIn(ControllerDigital::L1); //shared
 ControllerButton b_intakeOut(ControllerDigital::L2); //shared
@@ -29,14 +29,15 @@ ControllerButton b_lowTowerMacro(ControllerId::partner, ControllerDigital::R2);
 ControllerButton b_highTowerMacro(ControllerId::partner, ControllerDigital::R1);
 ControllerButton b_noTowerMacro(ControllerId::partner, ControllerDigital::A);
 
-ControllerButton b_cubeLatchMacro(ControllerId::partner, ControllerDigital::Y);
+ControllerButton b_highCubeLockMacro(ControllerId::partner, ControllerDigital::Y);
+ControllerButton b_lowCubeLockMacro(ControllerId::partner, ControllerDigital::Y);
 
 ControllerButton b_intakeInP(ControllerId::partner, ControllerDigital::L2);
 ControllerButton b_intakeOutP(ControllerId::partner, ControllerDigital::L1);
 ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::down);
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
 
-ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::X);
+ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::X); //Joystick?
 ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::B);
 
 // ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
@@ -85,6 +86,14 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   else if(b_highTowerMacro.isPressed()){
     setliftState(liftStates::highTower);
   }
+  else if(b_highCubeLockMacro.isPressed()){
+    setliftState(liftStates::highTower);
+    setintakeState(intakeStates::cubeLockMacro);//implement waitTime inside ready to Stack?
+  }
+  else if(b_lowCubeLockMacro.isPressed()){
+    setliftState(liftStates::lowTower);
+    setintakeState(intakeStates::cubeLockMacro);
+  }
   else if(b_noTowerMacro.isPressed()){
     setliftState(liftStates::noTower);
   }
@@ -97,7 +106,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   if(b_stackerUpSlow.isPressed()){
     setstackerState(stackerStates::on, 5000);
   }
-  else if(b_stackerUpVerySlow.isPressed()){
+  else if(b_stackerRaisedPreset.isPressed()){
     setstackerState(stackerStates::raisedPreset);
   }
   else if(b_stackerDown.isPressed()){
