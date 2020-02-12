@@ -19,56 +19,77 @@ void setstackerState(stackerStates newState, int requestedWaitTime, int requeste
 
 
 bool stackMacroOn = false;
+bool autonStackMacroOn = false;
 int cp1 = 250;
 int cp2 = 400;
 int cp3 = 550;
 int cp4 = 700;
+
+int v1 = 12000;
+int v2 = 9000;
+int v3 = 6000;
+int v4 = 4000;
 void task_stackerControl(void*){ //State Machine Task for Stacker Control
   while(true){
 
     switch(currentstackerState){
       case stackerStates::stackMacro:{
         stackMacroOn = true;
-        while (m_stacker.getPosition() <= cp1){
-          m_stacker.moveVoltage(12000);
-          setintakeState(intakeStates::hold);
+        while(stackMacroOn){
+          if(m_stacker.getPosition() <= cp1){
+            m_stacker.moveVoltage(v1);
+            setintakeState(intakeStates::hold);
+          }
+          else if((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
+            m_stacker.moveVoltage(v2);
+            setintakeState(intakeStates::hold);
+          }
+          else if((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
+            m_stacker.moveVoltage(v3);//4500
+           setintakeState(intakeStates::hold);
+          }
+          else if((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
+            m_stacker.moveVoltage(v4);//2500
+            setintakeState(intakeStates::on, 12000);
+          }
+          else{
+            m_stacker.moveVoltage(0);
+            setdriveState(driveStates::outOfStack);
+            pros::delay(2000);
+            stackMacroOn = false;
+          }
+          pros::delay(20);
         }
-        while ((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
-          m_stacker.moveVoltage(9000);
-          setintakeState(intakeStates::hold);
-        }
-         while ((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
-           m_stacker.moveVoltage(6000);//4500
-          setintakeState(intakeStates::hold);
-         }
-         while ((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
-           m_stacker.moveVoltage(4000);//2500
-           setintakeState(intakeStates::on, 12000);
-         }
-         setintakeState(intakeStates::on, 0);
-         m_stacker.moveVoltage(0);
-         stackMacroOn = false;
         break;
       }
-      case stackerStates::bigStackMacro:{
+      case stackerStates::autonStackMacro:{
+        autonStackMacroOn = true;
+        while(stackMacroOn){
+          if(m_stacker.getPosition() <= cp1){
+            m_stacker.moveVoltage(v1);
+            setintakeState(intakeStates::hold);
+          }
+          else if((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
+            m_stacker.moveVoltage(v2);
+            setintakeState(intakeStates::hold);
+          }
+          else if((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
+            m_stacker.moveVoltage(v3);//4500
+           setintakeState(intakeStates::hold);
+          }
+          else if((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
+            m_stacker.moveVoltage(v4);//2500
+            setintakeState(intakeStates::on, 12000);
+          }
+          else{
+            m_stacker.moveVoltage(0);
+            setintakeState(intakeStates::on, 0);
+            autonStackMacroOn = false;
+          }
+          pros::delay(20);
+        }
 
-        while (m_stacker.getPosition() <= cp1){
-          m_stacker.moveVoltage(10000);
-          setintakeState(intakeStates::hold);
-        }
-        while ((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
-          m_stacker.moveVoltage(5000);
-          setintakeState(intakeStates::hold);
-        }
-         while ((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
-           m_stacker.moveVoltage(4500);
-          setintakeState(intakeStates::hold);
-         }
-         while ((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
-           m_stacker.moveVoltage(2500);
-           setintakeState(intakeStates::on, 12000);
-         }
-         m_stacker.moveVoltage(0);
+
         break;
       }
 

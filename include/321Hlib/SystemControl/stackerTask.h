@@ -10,12 +10,13 @@ enum class stackerStates{
   raisedPreset,
   toBottom,
   stackMacro,
-  bigStackMacro,
+  autonStackMacro,
 };
 
 extern int stackerWaitTime;
 extern int stackerVoltage;
 extern bool stackMacroOn;
+extern bool autonStackMacroOn;
 void task_stackerControl(void*);
 void setstackerState(stackerStates newState);
 void setstackerState(stackerStates newState, int requestedVoltage);

@@ -2,13 +2,14 @@
 using namespace okapi;
 
 //Ports Broken: 19,20,13,15
+//Ports Broken: 5,7,8,9,3
 #define port_driveRF 16
 #define port_driveRB 17
 #define port_driveLF 12
-#define port_driveLB 5
+#define port_driveLB 2
 
-#define port_intakeL 11
-#define port_intakeR 7
+#define port_intakeL 11 //Actually right side intake?
+#define port_intakeR 21
 #define port_stacker 6
 #define port_lift 10
 
@@ -41,19 +42,12 @@ MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
 void initializeSensors(){
 	resetEncoders();
-	s_backIntakeSensor.calibrate();
-	s_frontIntakeSensor.calibrate();
+	//s_backIntakeSensor.calibrate();
+	//s_frontIntakeSensor.calibrate();
 
 
 	s_imu.reset();
-	int time = pros::millis();
-	int iter = 0;
 	while (s_imu.is_calibrating()) {
-		// printf("IMU calibrating... %d\n", iter);
-		// iter += 10;
 		pros::delay(10);
 	}
-	//should print about 2000 ms
-	// printf("IMU is done calibrating (took %d ms)\n", iter - time);
-	// pros::delay(1000);
 }

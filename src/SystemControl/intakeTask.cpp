@@ -22,7 +22,7 @@ void setintakeState(intakeStates newState, int requestedWaitTime, int requestedV
 
 int frontSensorVal;
 int backSensorVal;
-int cubeSensValue = -100;
+int cubeSensValue = -100; //adjust for no calibration
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
     //sensorVal = s_intakeSensor.get_value();

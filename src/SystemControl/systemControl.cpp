@@ -103,6 +103,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
 
   //STACKER
+
   if(b_stackerUpSlow.isPressed()){
     setstackerState(stackerStates::on, 5000);
   }
@@ -114,6 +115,9 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
   else if(b_stackMacro.isPressed()){
     setstackerState(stackerStates::stackMacro);
+  }
+  else if(b_stackMacro.changedToReleased()){
+    stackMacroOn = false;
   }
   else{
     setstackerState(stackerStates::on, 0); //Off

@@ -3,11 +3,13 @@ NOTES
 
 Checklist:
 intake sensor presets TUNE with flipout
-Diffrent stack macros
+  -test without calibrating sensor
+Different stack macros
 -include drive backwards
+-Abort option by releasing -TEST
 
-
-
+-Adjust controller Buttons
+-make sure intake presets and stuff are in the right precedence
 
 Make Autons
 Make Prog Skills
