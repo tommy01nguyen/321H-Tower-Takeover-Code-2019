@@ -79,7 +79,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
         //std::cout << frontSensorVal << std:: endl;
         if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
-          mg_intake.moveVoltage(-12000);
+          mg_intake.moveVoltage(-8000); //tune speed
         }
         else{
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);

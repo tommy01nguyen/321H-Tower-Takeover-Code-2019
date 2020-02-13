@@ -37,7 +37,7 @@ turnTo(135);
 setintakeState(intakeStates::readyToStack);
 pidChassis->setMaxVelocity(80); //Tune speed so it is impossible to climb over zone
 pidChassis->moveDistance(10_in);
-setstackerState(stackerStates::bigStackMacro);
+setstackerState(stackerStates::autonStackMacro);
 setdriveState(driveStates::outOfStack);
 pros::delay(1000);
 setdriveState(driveStates::tank);

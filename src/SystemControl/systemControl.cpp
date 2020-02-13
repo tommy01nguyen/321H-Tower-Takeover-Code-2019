@@ -8,11 +8,11 @@ using namespace okapi;
 
 ControllerButton b_driveHold(ControllerDigital::left);
 ControllerButton b_driveSlower(ControllerDigital::R1);
-ControllerButton b_driveOutOfStack(ControllerDigital::R2);//Move to stacker macro side
+ControllerButton b_driveOutOfStack(ControllerDigital::B);//Move to stacker macro side
 
 ControllerButton b_stackerUpSlow(ControllerDigital::X);
 //ControllerButton b_stackerUpVerySlow(ControllerDigital::A);
-ControllerButton b_stackerDown(ControllerDigital::B); //shared
+ControllerButton b_stackerDown(ControllerDigital::R2); //shared
 ControllerButton b_stackMacro(ControllerDigital::Y); //extern
 ControllerButton b_stackerRaisedPreset(ControllerDigital::A);
 
@@ -29,16 +29,17 @@ ControllerButton b_lowTowerMacro(ControllerId::partner, ControllerDigital::R2);
 ControllerButton b_highTowerMacro(ControllerId::partner, ControllerDigital::R1);
 ControllerButton b_noTowerMacro(ControllerId::partner, ControllerDigital::A);
 
-ControllerButton b_highCubeLockMacro(ControllerId::partner, ControllerDigital::Y);
-ControllerButton b_lowCubeLockMacro(ControllerId::partner, ControllerDigital::Y);
+ControllerButton b_highCubeLockMacro(ControllerId::partner, ControllerDigital::X);
+ControllerButton b_lowCubeLockMacro(ControllerId::partner, ControllerDigital::B);
+
+ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::right); //Joystick?
+ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::left);
 
 ControllerButton b_intakeInP(ControllerId::partner, ControllerDigital::L2);
 ControllerButton b_intakeOutP(ControllerId::partner, ControllerDigital::L1);
 ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::down);
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
 
-ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::X); //Joystick?
-ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::B);
 
 // ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
 // ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
@@ -54,39 +55,27 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   // }
 
   //INTAKE
-  if(b_intakeInP.isPressed() || b_intakeIn.isPressed()){
-    setintakeState(intakeStates::on, 12000);
-  }
-  else if(b_intakeReadyToStack.isPressed()){
+  if(b_intakeReadyToStack.isPressed()){
     setintakeState(intakeStates::readyToStack);
   }
-  else if(b_intakeOutP.isPressed() || b_intakeOut.isPressed()){
-    setintakeState(intakeStates::on, -12000);
+  else if(b_intakeUntilSensed.isPressed()){
+    setintakeState(intakeStates::untilSensed);
   }
   else if(b_intakeOutSlow.isPressed()){
     setintakeState(intakeStates::on, -6000);
   }
-  else if(b_intakeUntilSensed.isPressed()){
-    setintakeState(intakeStates::untilSensed);
+  else if(b_intakeInP.isPressed() || b_intakeIn.isPressed()){
+    setintakeState(intakeStates::on, 12000);
+  }
+  else if(b_intakeOutP.isPressed() || b_intakeOut.isPressed()){
+    setintakeState(intakeStates::on, -12000);
   }
   else{
     setintakeState(intakeStates::on, 0); //Off
   }
 
   //LIFT
-  if(b_liftUpP.isPressed() || b_liftUp.isPressed()){
-    setliftState(liftStates::on, 12000);
-  }
-  else if(b_liftDownP.isPressed() || b_liftDown.isPressed()){
-    setliftState(liftStates::on, -12000);
-  }
-  else if(b_lowTowerMacro.isPressed()){
-    setliftState(liftStates::lowTower);
-  }
-  else if(b_highTowerMacro.isPressed()){
-    setliftState(liftStates::highTower);
-  }
-  else if(b_highCubeLockMacro.isPressed()){
+  if(b_highCubeLockMacro.isPressed()){
     setliftState(liftStates::highTower);
     setintakeState(intakeStates::cubeLockMacro);//implement waitTime inside ready to Stack?
   }
@@ -94,8 +83,20 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setliftState(liftStates::lowTower);
     setintakeState(intakeStates::cubeLockMacro);
   }
+  else if(b_lowTowerMacro.isPressed()){
+    setliftState(liftStates::lowTower);
+  }
+  else if(b_highTowerMacro.isPressed()){
+    setliftState(liftStates::highTower);
+  }
   else if(b_noTowerMacro.isPressed()){
     setliftState(liftStates::noTower);
+  }
+  else if(b_liftUpP.isPressed() || b_liftUp.isPressed()){
+    setliftState(liftStates::on, 12000);
+  }
+  else if(b_liftDownP.isPressed() || b_liftDown.isPressed()){
+    setliftState(liftStates::on, -12000);
   }
   else{
     setliftState(liftStates::holdBottom);
@@ -103,21 +104,20 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
 
   //STACKER
-
-  if(b_stackerUpSlow.isPressed()){
-    setstackerState(stackerStates::on, 5000);
-  }
-  else if(b_stackerRaisedPreset.isPressed()){
-    setstackerState(stackerStates::raisedPreset);
-  }
-  else if(b_stackerDown.isPressed()){
-    setstackerState(stackerStates::on, -12000);
-  }
-  else if(b_stackMacro.isPressed()){
+  if(b_stackMacro.isPressed()){
     setstackerState(stackerStates::stackMacro);
   }
   else if(b_stackMacro.changedToReleased()){
     stackMacroOn = false;
+  }
+  else if(b_stackerRaisedPreset.isPressed()){
+    setstackerState(stackerStates::raisedPreset);
+  }
+  else if(b_stackerUpSlow.isPressed()){
+    setstackerState(stackerStates::on, 5000);
+  }
+  else if(b_stackerDown.isPressed()){
+    setstackerState(stackerStates::on, -12000);
   }
   else{
     setstackerState(stackerStates::on, 0); //Off

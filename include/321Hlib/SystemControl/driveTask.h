@@ -7,6 +7,7 @@ enum class driveStates{
   tank,
   hold,
   turnPID,
+  drivePID,
   outOfStack,
 };
 
@@ -16,3 +17,6 @@ void setdriveState(driveStates newState);
 void setdriveState(driveStates newState, double requestedPercent);
 
 void turnTo(double newHeading);
+void drive(double distance, int speed);
+void drive(double distance, int speed, int yawInput);
+void variableDrive(double distance, double dropDistance, int vi, int vf);
