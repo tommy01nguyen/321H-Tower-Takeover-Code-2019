@@ -15,12 +15,12 @@ void setdriveState(driveStates newState, double requestedPercent){
 /**************************************************/
 
 bool drivePIDOn = false;
-double kpDrive = 1;
+double kpDrive = .85;
 double kdDrive = .1;
 static double driveTarget;
 
 bool turnPIDOn = false;
-double kp = 1.25;//.7
+double kp = .98;//.7
 double kd = .1;//.1
 static double turnTarget;
 
@@ -107,6 +107,7 @@ bool isTurning_encoder(){
   static int count = 0;
   static double lastPos = 0;
   static double lastTarget = 0;
+  static int thresh = 2;
 
   double curPos = getEncRotation();
   double target = turnTarget;
@@ -114,7 +115,7 @@ bool isTurning_encoder(){
     target = driveTarget;
   }
 
-  if(abs(lastPos-curPos) < 3){ //3 robot degree threshold for change in Angle NEEDS TUNING
+  if(abs(lastPos-curPos) < thresh){ //3 robot degree threshold for change in Angle NEEDS TUNING
     count++;
   }
   else{
@@ -124,10 +125,11 @@ bool isTurning_encoder(){
   if(target != lastTarget){ //If changing target, restart iterating
     count = 0;
   }
-
-     // std::cout << "lastAngle: " << lastAngle << std::endl;
-     // std::cout << "curAngle: " << curAngle << std::endl;
-     // std::cout << "count: " << count << std::endl;
+      std::cout << "//////////////////////////////" << std::endl;
+      std::cout << "lastPos: " << lastPos << std::endl;
+      std::cout << "curPos: " << curPos << std::endl;
+      std::cout << "count: " << count << std::endl;
+      std::cout << "angle:" << getImuRotation() << std::endl;
 
   lastTarget = target;
   lastPos = curPos;
@@ -189,7 +191,8 @@ void turnTo(double newHeading){ //Heading in degrees (0,360)
     turnPIDOn = true;
 
     pros::delay(300); //Assuming no super short turns
-    while(isTurning()){ //Wait until settled
+    //while(isTurning()){ //Wait until settled
+    while(isTurning_encoder()){ //Wait until settled
       setdriveState(driveStates::turnPID);
       pros::delay(20);
     }
@@ -319,8 +322,8 @@ void task_driveControl(void*){
 
           // std::cout << "turnTarget: " << target << std::endl;
           // std::cout << "rotation: " << current << std::endl;
-          // std::cout << "error: " << error << std::endl;
-          // std::cout << "speed: " << speed << std::endl;
+           //std::cout << "error: " << error << std::endl;
+           //std::cout << "speed: " << speed << std::endl;
 
 
           mg_driveL.moveVelocity(speed + yaw);
@@ -332,6 +335,7 @@ void task_driveControl(void*){
           }
 
       }
+      
       case driveStates::turnPID:{
         int prevError;
 
@@ -352,8 +356,8 @@ void task_driveControl(void*){
 
           // std::cout << "turnTarget: " << target << std::endl;
           // std::cout << "rotation: " << current << std::endl;
-          // std::cout << "error: " << error << std::endl;
-          // std::cout << "speed: " << speed << std::endl;
+           std::cout << "error: " << error << std::endl;
+           std::cout << "speed: " << speed << std::endl;
 
 
           mg_driveL.moveVelocity(speed);

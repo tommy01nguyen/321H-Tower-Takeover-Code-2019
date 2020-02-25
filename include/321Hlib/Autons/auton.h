@@ -10,8 +10,12 @@
 extern int autonNumber;
 extern int autonSide; //1 Red, -1 Blue
 void smallZone5Cube1Row(int side);
-void smallZoneBasic(int side);
+void smallZone6Cube1Row(int side);
+void smallZone7Cube1Row(int side);
+
+
 
 void flexible(int side);
 void skills();
 void largeZone4Cube(int side);
+void largeZone7Cube(int side);

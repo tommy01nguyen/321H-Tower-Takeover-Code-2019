@@ -28,7 +28,7 @@ void displayPage(int page){
 			pros::lcd::set_text(3, "Program: Nothing");
 			break;
 		case 2:
-			pros::lcd::print(3, "Program: smallZoneBasic");
+			pros::lcd::print(3, "Program: smallZone6Cube1Row");
 			break;
 		case 3:
 			pros::lcd::set_text(3, "Program: largeZone4Cube");
@@ -159,14 +159,14 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-sets
-	autonNumber = 4;//4
+	autonNumber = 2;//4
 	autonSide = -1;
 
 	  switch(autonNumber){
 			case 1: //Do Nothing
 				break;
 	    case 2:
-				smallZoneBasic(autonSide);
+				smallZone6Cube1Row(autonSide);
 	      break;
 	    case 3:
 				largeZone4Cube(autonSide);
@@ -178,8 +178,10 @@ void autonomous() {
 				//flexible(autonSide);
 	      break;
 			case 6:
+				smallZone7Cube1Row(autonSide);
 				break;
 			case 7:
+				largeZone7Cube(autonSide);
 				break;
 			case 8:
 				skills();

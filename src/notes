@@ -2,21 +2,14 @@ NOTES
 
 
 Checklist:
-intake sensor presets TUNE with flipout
-  -test without calibrating sensor
-Different stack macros
--include drive backwards -TEST
--Abort option by releasing -TEST
+intake sensors are Off
 
--Adjust controller Buttons TEST
--make sure intake presets and stuff are in the right precedence -TEST
 
-- use encoders for isTurning TEST
-- variable speed move forward (making my own pid)  TEST
+tune intake sensor
+tune stacking macro
 
-drive slower TEST
+create own drive pid
 
--Test Arcs
 
 Make Autons
 Make Prog Skills

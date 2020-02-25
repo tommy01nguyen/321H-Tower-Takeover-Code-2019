@@ -1,24 +1,24 @@
 #include "321Hlib/Autons/auton.h"
 
-
 using namespace okapi;
 #define red 1
 #define blue -1
-void largeZone4Cube(int side){
-//start at protect zone cube, get 4 cubes
 
+void smallZone7Cube1Row(int side){
+//Starts in 4 cube row, goes forward, picks up all the cubes, turns and gets the cube by the tower, then scores. 7 cubes.
 //First Row
-chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {20_in, 0_in, 0_deg}}, "firstCube");
+chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {100_in, 0_in, 0_deg}}, "throughFirstRow");
 //flipout();
 setintakeState(intakeStates::on, 12000);
-chassisProfile->setTarget("firstCube");
+pidChassis->setMaxVelocity(100);
+chassisProfile->setTarget("throughFirstRow");
 chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {10_in, 0_in, 0_deg}}, "getTowerCube");
+chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {35_in, 0_in, 0_deg}}, "out of row");
 chassisProfile->waitUntilSettled();
-chassisProfile->removePath("firstCube");
-if(side == red) turnTo(90);
-if(side == blue) turnTo(-90);
+chassisProfile->removePath("throughFirstRow");
 
 pros::delay(100);
+pidChassis->setMaxVelocity(150);
 chassisProfile->setTarget("getTowerCube");
 chassisProfile->waitUntilSettled();
 
@@ -51,5 +51,4 @@ pidChassis->setMaxVelocity(160);
 setstackerState(stackerStates::toBottom);
 setintakeState(intakeStates::on, -6000);
 pidChassis->moveDistance(-10_in);
-
 }

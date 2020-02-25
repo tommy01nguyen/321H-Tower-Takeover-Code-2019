@@ -11,9 +11,10 @@ enum class intakeStates{
   readyToStack,
   hold,
   cubeLockMacro,
+  toFrontSensor
 
 };
-
+extern bool intakeStackMacroOn;
 extern int intakeWaitTime;
 extern int intakeVoltage;
 void task_intakeControl(void*);

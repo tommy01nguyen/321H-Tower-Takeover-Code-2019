@@ -22,7 +22,7 @@ bool stackMacroOn = false;
 bool autonStackMacroOn = false;
 int cp1 = 250;
 int cp2 = 400;
-int cp3 = 550;
+int cp3 = 500;//550
 int cp4 = 700;
 
 int v1 = 12000;
@@ -34,19 +34,26 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
 
     switch(currentstackerState){
       case stackerStates::stackMacro:{
-        stackMacroOn = true;
+
         while(stackMacroOn){
-          if(m_stacker.getPosition() <= cp1){
+          //std::cout << stackMacroOn << std::endl;
+          if(stackMacroOn == false){
+            break;
+          }
+          else if(m_stacker.getPosition() <= cp1){
             m_stacker.moveVoltage(v1);
             setintakeState(intakeStates::hold);
+            //setintakeState(intakeStates::on, 4000);
           }
           else if((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
             m_stacker.moveVoltage(v2);
             setintakeState(intakeStates::hold);
+              //setintakeState(intakeStates::on, 6000);
           }
           else if((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
             m_stacker.moveVoltage(v3);//4500
            setintakeState(intakeStates::hold);
+             //setintakeState(intakeStates::on, 12000);
           }
           else if((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
             m_stacker.moveVoltage(v4);//2500
@@ -54,8 +61,8 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
           }
           else{
             m_stacker.moveVoltage(0);
-            setdriveState(driveStates::outOfStack);
-            pros::delay(2000);
+            //setdriveState(driveStates::outOfStack);
+            //pros::delay(2000);
             stackMacroOn = false;
           }
           pros::delay(20);

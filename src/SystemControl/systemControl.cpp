@@ -41,22 +41,24 @@ ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::d
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
 
 
-// ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
-// ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
+ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
+ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
 
 
 void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop
   //TESTING
-  // if(b_test1.isPressed()){
-  //   turnTo(0);
-  // }
-  // else if(b_test2.isPressed()){
-  //   turnTo(90);
-  // }
+
+  if(b_test1.isPressed()){
+    turnTo(0);
+  }
+  else if(b_test2.isPressed()){
+    turnTo(90);
+  }
 
   //INTAKE
   if(b_intakeReadyToStack.isPressed()){
     setintakeState(intakeStates::readyToStack);
+    intakeStackMacroOn = true;
   }
   else if(b_intakeUntilSensed.isPressed()){
     setintakeState(intakeStates::untilSensed);
@@ -104,11 +106,14 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
 
   //STACKER
-  if(b_stackMacro.isPressed()){
-    setstackerState(stackerStates::stackMacro);
-  }
-  else if(b_stackMacro.changedToReleased()){
+
+  if(b_stackMacro.changedToReleased()){
     stackMacroOn = false;
+    //std::cout << "released" << std::endl;
+  }
+  else if(b_stackMacro.isPressed()){
+    setstackerState(stackerStates::stackMacro);
+    stackMacroOn = true;
   }
   else if(b_stackerRaisedPreset.isPressed()){
     setstackerState(stackerStates::raisedPreset);
@@ -126,6 +131,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   //DRIVE
   if(b_driveSlower.isPressed()){
     setdriveState(driveStates::tank, 0.45);
+    //flipout();
   }
   else if(b_driveHold.isPressed()){
     setdriveState(driveStates::hold);

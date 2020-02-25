@@ -6,7 +6,7 @@ using namespace okapi;
 #define port_driveRF 16
 #define port_driveRB 17
 #define port_driveLF 12
-#define port_driveLB 2
+#define port_driveLB 9
 
 #define port_intakeL 11 //Actually right side intake?
 #define port_intakeR 21
@@ -31,7 +31,7 @@ Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor
 Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
 
-pros::ADILineSensor s_backIntakeSensor('C');
+pros::ADILineSensor s_backIntakeSensor('B');
 pros::ADILineSensor s_frontIntakeSensor('D');
 pros::Imu s_imu(port_imu);
 
@@ -42,8 +42,8 @@ MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
 void initializeSensors(){
 	resetEncoders();
-	//s_backIntakeSensor.calibrate();
-	//s_frontIntakeSensor.calibrate();
+	s_backIntakeSensor.calibrate();
+	s_frontIntakeSensor.calibrate();
 
 
 	s_imu.reset();

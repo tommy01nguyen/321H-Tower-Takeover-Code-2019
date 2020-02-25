@@ -129,11 +129,11 @@ void resetEncoders(){
 }
 
 void flipout(){
-  setstackerState(stackerStates::raisedPreset);
   setliftState(liftStates::highTower);
-  pros::delay(800);
-  setstackerState(stackerStates::toBottom);
+  pros::delay(200);
+  setintakeState(intakeStates::toFrontSensor);
+  pros::delay(2000);
   setliftState(liftStates::noTower);
-  pros::delay(400);
-  setliftState(liftStates::on,0);
+  setintakeState(intakeStates::untilSensed);
+  pros::delay(500);//testing
 }

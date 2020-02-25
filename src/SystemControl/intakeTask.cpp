@@ -19,20 +19,27 @@ void setintakeState(intakeStates newState, int requestedWaitTime, int requestedV
   intakeWaitTime = requestedWaitTime;
   intakeVoltage = requestedVoltage;
 }
+int getFrontSensorVal(){
+  return s_frontIntakeSensor.get_value_calibrated();
+}
+int getBackSensorVal(){
+  return s_backIntakeSensor.get_value_calibrated();
+}
 
-int frontSensorVal;
-int backSensorVal;
+
+// int frontSensorVal;
+// int backSensorVal;
 int cubeSensValue = -100; //adjust for no calibration
+bool tare = false;
+bool intakeStackMacroOn = false;
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
-    //sensorVal = s_intakeSensor.get_value();
-  frontSensorVal = s_frontIntakeSensor.get_value_calibrated();
-  backSensorVal = s_backIntakeSensor.get_value_calibrated();
     switch(currentintakeState){
 
       case intakeStates::on:{  //intake at velocity
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::coast);
         mg_intake.moveVoltage(intakeVoltage);
+        //std::cout << "Sensor:" << frontSensorVal << std::endl;
         break;
       }
       case intakeStates::waitOn:{ //Wait and then intake
@@ -51,9 +58,9 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         break;
       }
       case intakeStates::untilSensed:{ //Meant picking up a cube to score in towers //Tune sensor vals with flipout
-        mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
       //  std::cout << backSensorVal << std:: endl;
-        if(backSensorVal > cubeSensValue){ //While the cube is not in the sensor
+        if(getBackSensorVal() > cubeSensValue){ //While the cube is not in the sensor
           mg_intake.moveVoltage(12000);
         }
         else{
@@ -61,16 +68,50 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         }
         break;
       }
+
+      case intakeStates::toFrontSensor:{
+          mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+          if(getFrontSensorVal() > cubeSensValue){
+            mg_intake.moveVelocity(-80);
+          }
+          else{
+            mg_intake.moveVoltage(0);
+          }
+        break;
+      }
       case intakeStates::readyToStack:{ //Tune sensor vals with flipout
-        //Assumes cubes are past the back roller
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
-        //std::cout << frontSensorVal << std:: endl;
-        if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
-          mg_intake.moveVoltage(-4000);
-        }
-        else{
-        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
-          mg_intake.moveVoltage(0);
+        while(intakeStackMacroOn){
+
+          if(intakeStackMacroOn == false){
+            break;
+          }
+          else if((getFrontSensorVal() > cubeSensValue) && (tare == false) ){//cube is not in the sensor
+            mg_intake.moveVelocity(-100);
+            //std::cout << m_intakeR.getPosition() << std::endl;
+            //std::cout << "Sensor:" << getFrontSensorVal() << std::endl;
+          }
+          else{
+            if(tare == false){
+              //std::cout << "TARED"<< std::endl;
+              m_intakeR.tarePosition();
+              tare = true;
+            }
+            if(m_intakeR.getPosition() >= -400){
+              //std::cout << "LOOPING"<< std::endl;
+              //std::cout << m_intakeR.getPosition() << std::endl;
+              m_intakeR.moveVelocity(-30);
+              m_intakeL.moveVelocity(-30);
+            }
+            else{
+              //std::cout << "END"<< std::endl;
+              tare = false;
+              intakeStackMacroOn = false;
+              mg_intake.moveVoltage(0);
+              mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+            }
+          }
+          pros::delay(20);
         }
         break;
       }
@@ -78,7 +119,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         //Assumes cubes are past the back roller
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
         //std::cout << frontSensorVal << std:: endl;
-        if(frontSensorVal > cubeSensValue ){//cube is not in the sensor
+        if(getFrontSensorVal() > cubeSensValue ){//cube is not in the sensor
           mg_intake.moveVoltage(-8000); //tune speed
         }
         else{
