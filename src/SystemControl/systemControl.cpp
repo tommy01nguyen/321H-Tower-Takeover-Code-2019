@@ -6,7 +6,7 @@ using namespace okapi;
 //Master Controller: L trigger does intake, R trigger does drive functions. Right set of buttons is stacking. left set
 //ControllerButton b_debug(ControllerDigital::right);//extern
 
-ControllerButton b_driveHold(ControllerDigital::left);
+//ControllerButton b_driveHold(ControllerDigital::left);
 ControllerButton b_driveSlower(ControllerDigital::R1);
 ControllerButton b_driveOutOfStack(ControllerDigital::B);//Move to stacker macro side
 
@@ -21,13 +21,14 @@ ControllerButton b_intakeOut(ControllerDigital::L2); //shared
 
 ControllerButton b_intakeReadyToStack(ControllerDigital::right);
 
-ControllerButton b_liftUp(ControllerDigital::up);
-ControllerButton b_liftDown(ControllerDigital::down);
+ControllerButton b_noTowerMacro(ControllerDigital::down);
+ControllerButton b_lowTowerMacro(ControllerDigital::left);
+ControllerButton b_highTowerMacro(ControllerDigital::up);
 
 //Partner Controller: Triggers do intake and towers. Right button set does tower presets, left button set does intake presets
-ControllerButton b_lowTowerMacro(ControllerId::partner, ControllerDigital::R2);
-ControllerButton b_highTowerMacro(ControllerId::partner, ControllerDigital::R1);
-ControllerButton b_noTowerMacro(ControllerId::partner, ControllerDigital::A);
+ControllerButton b_lowTowerMacroP(ControllerId::partner, ControllerDigital::R2);
+ControllerButton b_highTowerMacroP(ControllerId::partner, ControllerDigital::R1);
+ControllerButton b_noTowerMacroP(ControllerId::partner, ControllerDigital::A);
 
 ControllerButton b_highCubeLockMacro(ControllerId::partner, ControllerDigital::X);
 ControllerButton b_lowCubeLockMacro(ControllerId::partner, ControllerDigital::B);
@@ -41,19 +42,19 @@ ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::d
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
 
 
-ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
-ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
+// ControllerButton b_test1(ControllerId::partner, ControllerDigital::left);
+// ControllerButton b_test2(ControllerId::partner, ControllerDigital::right);
 
 
 void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop
   //TESTING
 
-  if(b_test1.isPressed()){
-    turnTo(0);
-  }
-  else if(b_test2.isPressed()){
-    turnTo(90);
-  }
+  // if(b_test1.isPressed()){
+  //   turnTo(0);
+  // }
+  // else if(b_test2.isPressed()){
+  //   turnTo(90);
+  // }
 
   //INTAKE
   if(b_intakeReadyToStack.isPressed()){
@@ -85,19 +86,19 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setliftState(liftStates::lowTower);
     setintakeState(intakeStates::cubeLockMacro);
   }
-  else if(b_lowTowerMacro.isPressed()){
+  else if(b_lowTowerMacro.isPressed() || b_lowTowerMacroP.isPressed()){
     setliftState(liftStates::lowTower);
   }
-  else if(b_highTowerMacro.isPressed()){
+  else if(b_highTowerMacro.isPressed() || b_highTowerMacroP.isPressed()){
     setliftState(liftStates::highTower);
   }
-  else if(b_noTowerMacro.isPressed()){
+  else if(b_noTowerMacro.isPressed() || b_noTowerMacroP.isPressed()){
     setliftState(liftStates::noTower);
   }
-  else if(b_liftUpP.isPressed() || b_liftUp.isPressed()){
+  else if(b_liftUpP.isPressed()){
     setliftState(liftStates::on, 12000);
   }
-  else if(b_liftDownP.isPressed() || b_liftDown.isPressed()){
+  else if(b_liftDownP.isPressed()){
     setliftState(liftStates::on, -12000);
   }
   else{
@@ -133,9 +134,9 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setdriveState(driveStates::tank, 0.45);
     //flipout();
   }
-  else if(b_driveHold.isPressed()){
-    setdriveState(driveStates::hold);
-  }
+  // else if(b_driveHold.isPressed()){
+  //   setdriveState(driveStates::hold);
+  // }
   else if(b_driveOutOfStack.isPressed()){
     setdriveState(driveStates::outOfStack);
   }

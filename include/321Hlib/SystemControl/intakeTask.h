@@ -17,6 +17,9 @@ enum class intakeStates{
 extern bool intakeStackMacroOn;
 extern int intakeWaitTime;
 extern int intakeVoltage;
+extern int cubeSensValueFront;
+extern int cubeSensValueBack;
+
 void task_intakeControl(void*);
 void setintakeState(intakeStates newState);
 void setintakeState(intakeStates newState, int requestedVoltage);

@@ -42,6 +42,9 @@ MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
 void initializeSensors(){
 	resetEncoders();
+	cubeSensValueBack = s_backIntakeSensor.get_value() - 100;
+	cubeSensValueFront = s_frontIntakeSensor.get_value() - 100;
+	pros::delay(50);
 	s_backIntakeSensor.calibrate();
 	s_frontIntakeSensor.calibrate();
 

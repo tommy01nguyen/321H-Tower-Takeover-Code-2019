@@ -10,7 +10,7 @@ enum class stackerStates{
   raisedPreset,
   toBottom,
   stackMacro,
-  autonStackMacro,
+  bigMacro,
 };
 
 extern int stackerWaitTime;

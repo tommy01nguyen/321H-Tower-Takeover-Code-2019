@@ -20,15 +20,13 @@ void setstackerState(stackerStates newState, int requestedWaitTime, int requeste
 
 bool stackMacroOn = false;
 bool autonStackMacroOn = false;
-int cp1 = 250;
-int cp2 = 400;
-int cp3 = 500;//550
-int cp4 = 700;
 
-int v1 = 12000;
-int v2 = 9000;
-int v3 = 6000;
-int v4 = 4000;
+int cpBigMacro[] = {240,400,500,700};    //2-11 Cubes
+int velBigMacro[] = {12000,9000,6000,4000};
+
+int cpSmallMacro[] = {250,400,500,700}; //7 Cubes and under
+int velSmallMacro[] = {12000,9000,6000,4000};
+
 void task_stackerControl(void*){ //State Machine Task for Stacker Control
   while(true){
 
@@ -40,23 +38,23 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
           if(stackMacroOn == false){
             break;
           }
-          else if(m_stacker.getPosition() <= cp1){
-            m_stacker.moveVoltage(v1);
+          else if(m_stacker.getPosition() <= cpSmallMacro[0]){
+            m_stacker.moveVelocity(velSmallMacro[0]);
             setintakeState(intakeStates::hold);
             //setintakeState(intakeStates::on, 4000);
           }
-          else if((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
-            m_stacker.moveVoltage(v2);
+          else if((m_stacker.getPosition() <= cpSmallMacro[1]) && m_stacker.getPosition() > cpSmallMacro[0]) {
+            m_stacker.moveVoltage(velSmallMacro[1]);
             setintakeState(intakeStates::hold);
               //setintakeState(intakeStates::on, 6000);
           }
-          else if((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
-            m_stacker.moveVoltage(v3);//4500
+          else if((m_stacker.getPosition() <= cpSmallMacro[2]) && m_stacker.getPosition() > cpSmallMacro[1]) {
+            m_stacker.moveVoltage(velSmallMacro[2]);//4500
            setintakeState(intakeStates::hold);
              //setintakeState(intakeStates::on, 12000);
           }
-          else if((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
-            m_stacker.moveVoltage(v4);//2500
+          else if((m_stacker.getPosition() <= cpSmallMacro[3]) && m_stacker.getPosition() > cpSmallMacro[2]) {
+            m_stacker.moveVoltage(velSmallMacro[3]);//2500
             setintakeState(intakeStates::on, 12000);
           }
           else{
@@ -69,36 +67,42 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
         }
         break;
       }
-      case stackerStates::autonStackMacro:{
-        autonStackMacroOn = true;
-        while(stackMacroOn){
-          if(m_stacker.getPosition() <= cp1){
-            m_stacker.moveVoltage(v1);
-            setintakeState(intakeStates::hold);
-          }
-          else if((m_stacker.getPosition() <= cp2) && m_stacker.getPosition() > cp1) {
-            m_stacker.moveVoltage(v2);
-            setintakeState(intakeStates::hold);
-          }
-          else if((m_stacker.getPosition() <= cp3) && m_stacker.getPosition() > cp2) {
-            m_stacker.moveVoltage(v3);//4500
-           setintakeState(intakeStates::hold);
-          }
-          else if((m_stacker.getPosition() <= cp4) && m_stacker.getPosition() > cp3) {
-            m_stacker.moveVoltage(v4);//2500
-            setintakeState(intakeStates::on, 12000);
-          }
-          else{
-            m_stacker.moveVoltage(0);
-            setintakeState(intakeStates::on, 0);
-            autonStackMacroOn = false;
-          }
-          pros::delay(20);
-        }
+      case stackerStates::bigMacro:{
 
-
-        break;
-      }
+              while(stackMacroOn){
+                //std::cout << stackMacroOn << std::endl;
+                if(stackMacroOn == false){
+                  break;
+                }
+                else if(m_stacker.getPosition() <= cpBigMacro[0]){
+                  m_stacker.moveVelocity(velBigMacro[0]);
+                  setintakeState(intakeStates::hold);
+                  //setintakeState(intakeStates::on, 4000);
+                }
+                else if((m_stacker.getPosition() <= cpBigMacro[1]) && m_stacker.getPosition() > cpBigMacro[0]) {
+                  m_stacker.moveVoltage(velBigMacro[1]);
+                  setintakeState(intakeStates::hold);
+                    //setintakeState(intakeStates::on, 6000);
+                }
+                else if((m_stacker.getPosition() <= cpBigMacro[2]) && m_stacker.getPosition() > cpBigMacro[1]) {
+                  m_stacker.moveVoltage(velBigMacro[2]);//4500
+                 setintakeState(intakeStates::hold);
+                   //setintakeState(intakeStates::on, 12000);
+                }
+                else if((m_stacker.getPosition() <= cpBigMacro[3]) && m_stacker.getPosition() > cpBigMacro[2]) {
+                  m_stacker.moveVoltage(velBigMacro[3]);//2500
+                  setintakeState(intakeStates::on, 12000);
+                }
+                else{
+                  m_stacker.moveVoltage(0);
+                  //setdriveState(driveStates::outOfStack);
+                  //pros::delay(2000);
+                  stackMacroOn = false;
+                }
+                pros::delay(20);
+              }
+              break;
+            }
 
       case stackerStates::on:{  //stacker at velocity
         m_stacker.moveVoltage(stackerVoltage);
