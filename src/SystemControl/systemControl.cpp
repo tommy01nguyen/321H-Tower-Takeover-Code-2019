@@ -22,16 +22,16 @@ ControllerButton b_intakeOut(ControllerDigital::L2); //shared
 ControllerButton b_intakeReadyToStack(ControllerDigital::right);
 
 ControllerButton b_noTowerMacro(ControllerDigital::down);
-ControllerButton b_lowTowerMacro(ControllerDigital::left);
-ControllerButton b_highTowerMacro(ControllerDigital::up);
+ControllerButton b_highCubeLockMacro(ControllerDigital::up);
+ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
 
 //Partner Controller: Triggers do intake and towers. Right button set does tower presets, left button set does intake presets
 ControllerButton b_lowTowerMacroP(ControllerId::partner, ControllerDigital::R2);
 ControllerButton b_highTowerMacroP(ControllerId::partner, ControllerDigital::R1);
 ControllerButton b_noTowerMacroP(ControllerId::partner, ControllerDigital::A);
 
-ControllerButton b_highCubeLockMacro(ControllerId::partner, ControllerDigital::X);
-ControllerButton b_lowCubeLockMacro(ControllerId::partner, ControllerDigital::B);
+ControllerButton b_highCubeLockMacroP(ControllerId::partner, ControllerDigital::X);
+ControllerButton b_lowCubeLockMacroP(ControllerId::partner, ControllerDigital::B);
 
 ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::right); //Joystick?
 ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::left);
@@ -78,18 +78,19 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
 
   //LIFT
-  if(b_highCubeLockMacro.isPressed()){
+  if(b_highCubeLockMacroP.isPressed() || b_highCubeLockMacro.isPressed()){
     setliftState(liftStates::highTower);
     setintakeState(intakeStates::cubeLockMacro);//implement waitTime inside ready to Stack?
+    //setintakeState(intakeStates::toFrontSensor);
   }
-  else if(b_lowCubeLockMacro.isPressed()){
+  else if(b_lowCubeLockMacroP.isPressed() || b_lowCubeLockMacro.isPressed()){
     setliftState(liftStates::lowTower);
     setintakeState(intakeStates::cubeLockMacro);
   }
-  else if(b_lowTowerMacro.isPressed() || b_lowTowerMacroP.isPressed()){
+  else if(b_lowTowerMacroP.isPressed()){
     setliftState(liftStates::lowTower);
   }
-  else if(b_highTowerMacro.isPressed() || b_highTowerMacroP.isPressed()){
+  else if(b_highTowerMacroP.isPressed()){
     setliftState(liftStates::highTower);
   }
   else if(b_noTowerMacro.isPressed() || b_noTowerMacroP.isPressed()){

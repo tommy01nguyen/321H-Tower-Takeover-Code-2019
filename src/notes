@@ -2,15 +2,18 @@ NOTES
 
 
 Checklist:
-intake sensors are Off
+Fix intake sensing, work with flipout and without
+Tune Stacking Macro  (add drive Hold)
 
 
-tune intake sensor
-tune stacking macro
--ADD DRIVE HOLD????
-
-create own drive pid
-
+implement drive pid
+implement slew control in pids
+Tune large zone autons
 
 Make Autons
 Make Prog Skills
+
+Update firmware
+cube lock tuning
+
+Hardware:
