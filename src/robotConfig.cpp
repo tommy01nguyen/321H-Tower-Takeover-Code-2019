@@ -31,7 +31,7 @@ Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor
 Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
 
-pros::ADILineSensor s_backIntakeSensor('B');
+pros::ADILineSensor s_backIntakeSensor('C');
 pros::ADILineSensor s_frontIntakeSensor('D');
 pros::Imu s_imu(port_imu);
 

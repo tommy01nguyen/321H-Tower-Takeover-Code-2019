@@ -27,8 +27,8 @@ int getBackSensorVal(){
 }
 
 
-int cubeSensValueFront = -100;
-int cubeSensValueBack = -100;
+int cubeSensValueFront = -40;
+int cubeSensValueBack = -40;
 bool tare = false;
 bool intakeStackMacroOn = false;
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
@@ -58,7 +58,8 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       }
       case intakeStates::untilSensed:{ //Meant picking up a cube to score in towers //Tune sensor vals with flipout
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
-      //  std::cout << backSensorVal << std:: endl;
+        //std::cout << getBackSensorVal() << std:: endl;
+        std::cout << getFrontSensorVal() << std:: endl;
         if(getBackSensorVal() > cubeSensValueBack){ //While the cube is not in the sensor
           mg_intake.moveVoltage(12000);
         }
@@ -67,9 +68,20 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         }
         break;
       }
+      case intakeStates::holdEleventh:{ //Meant for picking up the 11th cube and holding it so it doesn't pop out the back.
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+        //std::cout << getFrontSensorVal() << std:: endl;
+        if(getFrontSensorVal() < cubeSensValueFront){ //while cube is in the sensor, intake in
+          mg_intake.moveVoltage(12000);
+        }
+        else{ //hold when the cube is just outside the sensor
+          mg_intake.moveVoltage(0);
+        }
+      }
 
       case intakeStates::toFrontSensor:{
           mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+          //std::cout << getFrontSensorVal() << std:: endl;
           if(getFrontSensorVal() > cubeSensValueFront){
             mg_intake.moveVelocity(-80);
           }

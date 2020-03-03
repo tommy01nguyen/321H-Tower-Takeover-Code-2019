@@ -28,10 +28,10 @@ ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
 //Partner Controller: Triggers do intake and towers. Right button set does tower presets, left button set does intake presets
 ControllerButton b_lowTowerMacroP(ControllerId::partner, ControllerDigital::R2);
 ControllerButton b_highTowerMacroP(ControllerId::partner, ControllerDigital::R1);
-ControllerButton b_noTowerMacroP(ControllerId::partner, ControllerDigital::A);
+ControllerButton b_noTowerMacroP(ControllerId::partner, ControllerDigital::B);
 
 ControllerButton b_highCubeLockMacroP(ControllerId::partner, ControllerDigital::X);
-ControllerButton b_lowCubeLockMacroP(ControllerId::partner, ControllerDigital::B);
+ControllerButton b_lowCubeLockMacroP(ControllerId::partner, ControllerDigital::A);
 
 ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::right); //Joystick?
 ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::left);
@@ -82,10 +82,15 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setliftState(liftStates::highTower);
     setintakeState(intakeStates::cubeLockMacro);//implement waitTime inside ready to Stack?
     //setintakeState(intakeStates::toFrontSensor);
+    if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
+      setintakeState(intakeStates::cubeLockMacro);
+    }
   }
   else if(b_lowCubeLockMacroP.isPressed() || b_lowCubeLockMacro.isPressed()){
     setliftState(liftStates::lowTower);
-    setintakeState(intakeStates::cubeLockMacro);
+    if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
+      setintakeState(intakeStates::cubeLockMacro);
+    }
   }
   else if(b_lowTowerMacroP.isPressed()){
     setliftState(liftStates::lowTower);

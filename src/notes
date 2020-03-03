@@ -3,12 +3,15 @@ NOTES
 
 Checklist:
 Fix intake sensing, work with flipout and without
-Tune Stacking Macro  (add drive Hold)
-
+Tune Stacking Macro  (add drive Hold maybe) ( shift key for difference stacking macro)
+tune cube lock macro
+cube lock up and outtake doesnt work at the same time TEST
+hold for 11 cubes TEST
 
 implement drive pid
 implement slew control in pids
 Tune large zone autons
+combine drive pid with turn pid for a drive straight
 
 Make Autons
 Make Prog Skills

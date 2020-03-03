@@ -11,7 +11,8 @@ enum class intakeStates{
   readyToStack,
   hold,
   cubeLockMacro,
-  toFrontSensor
+  toFrontSensor,
+  holdEleventh,
 
 };
 extern bool intakeStackMacroOn;
