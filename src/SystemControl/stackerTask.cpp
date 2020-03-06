@@ -134,6 +134,9 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
         m_stacker.moveAbsolute(0, 30);
         break;
       }
+      case stackerStates::toBottomQuick:{
+        m_stacker.moveAbsolute(0, 190);
+      }
 
 
     }

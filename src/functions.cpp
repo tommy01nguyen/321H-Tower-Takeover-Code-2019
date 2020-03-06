@@ -137,3 +137,14 @@ void flipout(){
   setintakeState(intakeStates::untilSensed);
   pros::delay(500);//testing
 }
+
+void stack(){
+  intakeStackMacroOn = true;
+  setintakeState(intakeStates::readyToStack);
+  stackMacroOn = true;
+  setstackerState(stackerStates::stackMacro);
+  while(stackMacroOn){
+    pros::delay(20);
+  }
+  setstackerState(stackerStates::toBottom);
+}

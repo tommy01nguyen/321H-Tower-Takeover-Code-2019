@@ -11,6 +11,7 @@ enum class stackerStates{
   toBottom,
   stackMacro,
   bigMacro,
+  toBottomQuick,
 };
 
 extern int stackerWaitTime;

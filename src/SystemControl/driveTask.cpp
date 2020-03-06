@@ -15,19 +15,19 @@ void setdriveState(driveStates newState, double requestedPercent){
 /**************************************************/
 
 bool drivePIDOn = false;
-double kpDrive = .85;
-double kdDrive = .1;
+double kpDrive = .3; //.24
+double kdDrive = .5; //.2
 static double driveTarget;
 
 bool turnPIDOn = false;
 double kp = .98;//.7
-double kd = .1;//.1
+double kd = .1; //.1
 static double turnTarget;
 
-static double maxSpeed = 200;
+static double maxSpeed = 195;
 static int yaw = 0; //Used for arcing
 
-double getImuRotation(){ //()-infinity, infinity)
+double getImuRotation(){ //(-infinity, infinity)
   return s_imu.get_rotation();
 }
 
@@ -44,11 +44,57 @@ double inchesToTicks(double inches){
   return ticks;
 }
 
+
+//slew control
+const int accel_step = 9; //9
+const int deccel_step = 200; // no decel slew
+static int leftSpeed = 0;
+static int rightSpeed = 0;
+
+void leftSlew(int leftTarget){
+  int step;
+
+  if(abs(leftSpeed) < abs(leftTarget))
+    step = accel_step;
+  else
+    step = deccel_step;
+
+  if(leftTarget > leftSpeed + step)
+    leftSpeed += step;
+  else if(leftTarget < leftSpeed - step)
+    leftSpeed -= step;
+  else
+    leftSpeed = leftTarget;
+
+  mg_driveL.moveVelocity(leftSpeed);
+  //std::cout << "step: " << step << std::endl;
+  //std::cout << "slewspeed: " << leftSpeed << std::endl;
+}
+
+void rightSlew(int rightTarget){
+  int step;
+
+  if(abs(rightSpeed) < abs(rightTarget))
+    step = accel_step;
+  else
+    step = deccel_step;
+
+  if(rightTarget > rightSpeed + step)
+    rightSpeed += step;
+  else if(rightTarget < rightSpeed - step)
+    rightSpeed -= step;
+  else
+    rightSpeed = rightTarget;
+
+  mg_driveR.moveVelocity(rightSpeed);
+}
 void reset(){
-  turnTarget = 0;
-  driveTarget = 0;
+  //turnTarget = 0;
+  //driveTarget = 0;
   yaw = 0;
-  maxSpeed = 200;
+  maxSpeed = 195;
+  leftSpeed = 0;
+  rightSpeed = 0;
   m_driveLF.tarePosition();
   m_driveLB.tarePosition();
   m_driveRF.tarePosition();
@@ -56,86 +102,38 @@ void reset(){
   mg_driveR.moveVelocity(0);
   mg_driveL.moveVelocity(0);
 }
-//
-// //slew control
-// const int accel_step = 9;
-// const int deccel_step = 256; // no decel slew
-// static int leftSpeed = 0;
-// static int rightSpeed = 0;
-//
-// void leftSlew(int leftTarget){
-//   int step;
-//
-//   if(abs(leftSpeed) < abs(leftTarget))
-//     step = accel_step;
-//   else
-//     step = deccel_step;
-//
-//   if(leftTarget > leftSpeed + step)
-//     leftSpeed += step;
-//   else if(leftTarget < leftSpeed - step)
-//     leftSpeed -= step;
-//   else
-//     leftSpeed = leftTarget;
-//
-//   mg_driveL.moveVoltage(leftSpeed);
-// }
-//
-// void rightSlew(int rightTarget){
-//   int step;
-//
-//   if(abs(rightSpeed) < abs(rightTarget))
-//     step = accel_step;
-//   else
-//     step = deccel_step;
-//
-//   if(rightTarget > rightSpeed + step)
-//     rightSpeed += step;
-//   else if(rightTarget < rightSpeed - step)
-//     rightSpeed -= step;
-//   else
-//     rightSpeed = rightTarget;
-//
-//   mg_driveR.moveVoltage(rightSpeed);
-// }
-
 void setMaxSpeed(int speed){
   maxSpeed = speed;
 }
-bool isTurning_encoder(){
-
-  static int count = 0;
+bool isTurning_encoder(int threshInput, int iterationExit){ //isMoving, different inputs for thresh and iteration
+  static int iteration = 0;
   static double lastPos = 0;
   static double lastTarget = 0;
-  static int thresh = 2;
+  static int thresh = threshInput; //2
 
   double curPos = getEncRotation();
   double target = turnTarget;
   if(currentdriveState == driveStates::drivePID){
     target = driveTarget;
   }
-
   if(abs(lastPos-curPos) < thresh){ //3 robot degree threshold for change in Angle NEEDS TUNING
-    count++;
+    iteration++;
   }
   else{
-    count = 0;
+    iteration = 0;
   }
-
   if(target != lastTarget){ //If changing target, restart iterating
-    count = 0;
+    iteration = 0;
   }
-      std::cout << "//////////////////////////////" << std::endl;
-      std::cout << "lastPos: " << lastPos << std::endl;
-      std::cout << "curPos: " << curPos << std::endl;
-      std::cout << "count: " << count << std::endl;
-      std::cout << "angle:" << getImuRotation() << std::endl;
-
+      // std::cout << "//////////////////////////////" << std::endl;
+      // std::cout << "lastPos: " << lastPos << std::endl;
+      // std::cout << "curPos: " << curPos << std::endl;
+      // std::cout << "count: " << count << std::endl;
+      // std::cout << "angle:" << getImuRotation() << std::endl;
   lastTarget = target;
   lastPos = curPos;
 
-
-  if(count > 4){ //If iterated 5 times
+  if(iteration >= iterationExit){ //If iterated iterationExit times, 5
     return false; //Not Turning
   }
   else{
@@ -143,89 +141,35 @@ bool isTurning_encoder(){
   }
 }
 
-bool isTurning(){
-
-  static int count = 0;
-  static double lastPos = 0;
-  static double lastTarget = 0;
-
-  double curPos = getImuRotation();
-  double target = turnTarget;
-  if(currentdriveState == driveStates::drivePID){
-    target = driveTarget;
-  }
-
-  if(abs(lastPos-curPos) < .05){ //3 robot degree threshold for change in Angle NEEDS TUNING
-    count++;
-  }
-  else{
-    count = 0;
-  }
-
-  if(target != lastTarget){ //If changing target, restart iterating
-    count = 0;
-  }
-
-     // std::cout << "lastAngle: " << lastAngle << std::endl;
-     // std::cout << "curAngle: " << curAngle << std::endl;
-     // std::cout << "count: " << count << std::endl;
-
-  lastTarget = target;
-  lastPos = curPos;
-
-
-  if(count > 4){ //If iterated 5 times
-    return false; //Not Turning
-  }
-  else{
-    return true; //Turning
-  }
-}
-
-void turnTo(double newHeading){ //Heading in degrees (0,360)
+void turnTo(double newHeading, int speed, int threshInput, int iterationExit){ //Heading in degrees (0,360) default: 195,2,5
     reset();
-
-    // turnTarget = headingToTarget(newHeading);
+    setMaxSpeed(speed);
     turnTarget = newHeading;
     setdriveState(driveStates::turnPID);
     turnPIDOn = true;
 
-    pros::delay(300); //Assuming no super short turns
-    //while(isTurning()){ //Wait until settled
-    while(isTurning_encoder()){ //Wait until settled
+    pros::delay(200); //Assuming no super short turns
+    while(isTurning_encoder(threshInput, iterationExit)){ //Wait until settled
       setdriveState(driveStates::turnPID);
       pros::delay(20);
     }
+
     //Movement over
     setdriveState(driveStates::tank);
     //std::cout << "turnTo Over!!" << std::endl;
     turnPIDOn = false;
 }
 
-void drive(double distance, int speed){ //Inchess
-  reset();
-  setMaxSpeed(speed);
-  driveTarget = inchesToTicks(distance);
-  setdriveState(driveStates::drivePID);
-  drivePIDOn = true;
-  pros::delay(300);
-  while(isTurning()){
-    setdriveState(driveStates::drivePID);
-    pros::delay(20);
-  }
-  setdriveState(driveStates::tank);
-  drivePIDOn = false;
-}
 
-void drive(double distance, int speed, int yawInput){//Arc
+void drive(double distance, int speed, int yawInput, int threshInput, int iterationExit){//arc  default: 195,0, 2,5
   reset();
   yaw = yawInput;
   setMaxSpeed(speed);
   driveTarget = inchesToTicks(distance);
   setdriveState(driveStates::drivePID);
   drivePIDOn = true;
-  pros::delay(300);
-  while(isTurning()){
+  pros::delay(200);
+  while(isTurning_encoder(threshInput, iterationExit)){
     setdriveState(driveStates::drivePID);
     pros::delay(20);
   }
@@ -236,16 +180,16 @@ void drive(double distance, int speed, int yawInput){//Arc
 
 
 //Two speed drive
-void variableDrive(double distance, double dropDistance, int vi, int vf){
+void variableDrive(double distance, double changeDistanceOne, int v1, int v2, int threshInput = 2, int iterationExit = 5){
   reset();
 
   driveTarget = inchesToTicks(distance);
-  int dropDistanceCP = inchesToTicks(dropDistance);
+  int changeDistanceOneCP = inchesToTicks(changeDistanceOne);
   setdriveState(driveStates::drivePID);
   drivePIDOn = true;
 
   //Drive at this speed until this point
-  setMaxSpeed(vi);
+  setMaxSpeed(v1);
   if(distance > 0){
     while(getDrivePos() < dropDistanceCP){
       pros::delay(20);
@@ -259,13 +203,9 @@ void variableDrive(double distance, double dropDistance, int vi, int vf){
     }
   }
 
-  //For 4 iterations, drive forward at high speed, slow down.. would need to implement slew control
-  //for(int i = 0; i < 4; i++){
-  //}
-
   //Drive at a slower speed
-  setMaxSpeed(vf);
-  while(isTurning()) {
+  setMaxSpeed(v2);
+  while(isTurning_encoder(threshInput, iterationExit)) {
     setdriveState(driveStates::drivePID);
     pros::delay(20);
   }
@@ -306,30 +246,41 @@ void task_driveControl(void*){
         int prevError;
 
         while(drivePIDOn){
-          double target = driveTarget;
+          double target = driveTarget * 2.48;
           double current = getEncRotation();
-
           double error = target-current;
           double derivative = error - prevError;
           prevError = error;
-
-          double speed = error*kp + derivative*kd;
+          double speed = error*kpDrive + derivative*kdDrive;
 
           if(speed > maxSpeed)
             speed = maxSpeed;
           if(speed < -maxSpeed)
             speed = -maxSpeed;
 
-          // std::cout << "turnTarget: " << target << std::endl;
+          //Angle Straightening
+          double curAngle = getImuRotation();
+          double angleError = turnTarget - curAngle;
+          double straightenPower = angleError * 1;//1 kP
+           //std::cout << "driveTarget: " << target << std::endl;
           // std::cout << "rotation: " << current << std::endl;
            //std::cout << "error: " << error << std::endl;
-           //std::cout << "speed: " << speed << std::endl;
+           // std::cout << "turnTarget:" << turnTarget << std::endl;
+           // std::cout << "curAngle:" << curAngle << std::endl;
 
 
-          mg_driveL.moveVelocity(speed + yaw);
-          mg_driveR.moveVelocity(speed - yaw);
-          // leftSlew(-speed);
-          // rightSlew(speed);
+           //mg_driveL.moveVelocity(speed + yaw + straightenPower);
+          // mg_driveR.moveVelocity(speed - yaw - straightenPower);
+          leftSlew(speed + yaw + straightenPower);
+          rightSlew(speed - yaw - straightenPower);
+
+          // std::cout << "////////" << std::endl;
+          // std::cout << "yaw: " << yaw << std::endl;
+          // std::cout << "straightenPower:" << straightenPower << std::endl;
+          //  std::cout << "speed: " << speed << std::endl;
+
+          //leftSlew(speed + yaw );
+          //rightSlew(speed - yaw);
           //std::cout << "PID is on!" << std::endl;
           pros::delay(20);
           }
@@ -342,11 +293,9 @@ void task_driveControl(void*){
         while(turnPIDOn){
           double target = turnTarget; //Set in turnTo method
           double current = getImuRotation();
-
           double error = target-current;
           double derivative = error - prevError;
           prevError = error;
-
           double speed = error*kp + derivative*kd;
 
           if(speed > maxSpeed)
@@ -356,8 +305,8 @@ void task_driveControl(void*){
 
           // std::cout << "turnTarget: " << target << std::endl;
           // std::cout << "rotation: " << current << std::endl;
-           std::cout << "error: " << error << std::endl;
-           std::cout << "speed: " << speed << std::endl;
+           //std::cout << "error: " << error << std::endl;
+           //std::cout << "speed: " << speed << std::endl;
 
 
           mg_driveL.moveVelocity(speed);

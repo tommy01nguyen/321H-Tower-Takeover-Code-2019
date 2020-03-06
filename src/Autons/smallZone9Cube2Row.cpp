@@ -4,26 +4,33 @@ using namespace okapi;
 #define red 1
 #define blue -1
 
-void smallZone5Cube1Row(int side){
-  //Starts in 4 cube row, goes forward, picks up the 4 cubes. Goes back and scores. 5 Cubes.
-  //First Row
-  //flipout();
-  setintakeState(intakeStates::on, 12000);
-  drive(40, 70);
-  //pros::delay(200);
+void smallZone9Cube2Row(int side){
+  setintakeState(intakeStates::on,12000);
+  drive(28, 70); //variable drive?
+  setliftState(liftStates::topCube);
+  pros::delay(150);
+  drive(5,50);
+  pros::delay(100);
+  setliftState(liftStates::noTower);
+  pros::delay(300);
 
-  //Back to zone
-  drive(-25, 190);
-  setintakeState(intakeStates::on, 0);
+  drive(13,190); //increase
+
+  if(side == red) turnTo(90, 190);
+  if(side == blue) turnTo(-90, 190);
+  drive(20, 190); //increase
+  if(side == red) turnTo(180, 190);
+  if(side == blue) turnTo(-180, 190);
+  drive(20, 190);
   if(side == red) turnTo(135, 190);
   if(side == blue) turnTo(-135, 190);
+
   setintakeState(intakeStates::toFrontSensor);
-  drive(15, 150);
+  drive(15, 190);
 
   //Score in Zone
   intakeStackMacroOn = true;
   setintakeState(intakeStates::readyToStack);
-  pros::delay(500);
 
   stackMacroOn = true;
   setstackerState(stackerStates::stackMacro);

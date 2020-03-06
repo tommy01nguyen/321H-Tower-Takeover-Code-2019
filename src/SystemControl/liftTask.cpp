@@ -42,7 +42,11 @@ void task_liftControl(void*){ //State Machine Task for Catapult Control
         break;
       }
       case liftStates::noTower:{
-        m_lift.moveAbsolute(0, 150);
+        m_lift.moveAbsolute(0, 200);
+        break;
+      }
+      case liftStates::topCube:{
+        m_lift.moveAbsolute(150, 200);
         break;
       }
       case liftStates::lowTower:{
@@ -52,6 +56,9 @@ void task_liftControl(void*){ //State Machine Task for Catapult Control
       case liftStates::highTower:{
         m_lift.moveAbsolute(625, 200);
         break;
+      }
+      case liftStates::descoreLow:{
+        m_lift.moveAbsolute(450, 200);
       }
       case liftStates::holdBottom:{
         m_lift.setBrakeMode(AbstractMotor::brakeMode::hold);
