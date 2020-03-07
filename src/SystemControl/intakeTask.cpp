@@ -27,10 +27,13 @@ int getBackSensorVal(){
 }
 
 
-int cubeSensValueFront = -40;
-int cubeSensValueBack = -40;
+int cubeSensValueFront = 2850; //-40 when calibrated
+int cubeSensValueBack = 2850;
 bool tare = false;
 bool intakeStackMacroOn = false;
+bool movePassed = false;
+bool lockMacroFinish = true;
+
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
     switch(currentintakeState){
@@ -58,25 +61,15 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       }
       case intakeStates::untilSensed:{ //Meant picking up a cube to score in towers //Tune sensor vals with flipout
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
-        //std::cout << getBackSensorVal() << std:: endl;
-        std::cout << getFrontSensorVal() << std:: endl;
         if(getBackSensorVal() > cubeSensValueBack){ //While the cube is not in the sensor
           mg_intake.moveVoltage(12000);
         }
         else{
           mg_intake.moveVoltage(0);
         }
+
+
         break;
-      }
-      case intakeStates::holdEleventh:{ //Meant for picking up the 11th cube and holding it so it doesn't pop out the back.
-        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
-        //std::cout << getFrontSensorVal() << std:: endl;
-        if(getFrontSensorVal() < cubeSensValueFront){ //while cube is in the sensor, intake in
-          mg_intake.moveVoltage(12000);
-        }
-        else{ //hold when the cube is just outside the sensor
-          mg_intake.moveVoltage(0);
-        }
       }
 
       case intakeStates::toFrontSensor:{
@@ -130,22 +123,31 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         //Assumes cubes are past the back roller
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
         //std::cout << frontSensorVal << std:: endl;
-        if(getFrontSensorVal() > cubeSensValueFront){//cube is not in the sensor
-          mg_intake.moveVelocity(-130); //tune speed
+        pros::delay(0);
+        if((!lockMacroFinished) && (getFrontSensorVal() > cubeSensValueFront)){//cube is not in the sensor
+          mg_intake.moveVelocity(-200); //tune speed
         }
         else{
-        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+          lockMacroFinished = true;
+          mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
           mg_intake.moveVoltage(0);
+        //  setintakeState(intakeStates::on, 0);
         }
         break;
-
       }
       case intakeStates::hold:{
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
         mg_intake.moveVelocity(0);
+        break;
       }
-
-
+      case intakeStates::move:{
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+        if(!movePassed){
+          mg_intake.moveRelative(-700, 200);
+          movePassed = true;
+        }
+        break;
+      }
     }
     pros::delay(20);
   }

@@ -7,6 +7,7 @@ using namespace okapi;
 void smallZone9Cube2Row(int side){
   setintakeState(intakeStates::on,12000);
   drive(28, 70); //variable drive?
+  //variableDrive(28, 25, 180, 70, 2, 5);
   setliftState(liftStates::topCube);
   pros::delay(150);
   drive(5,50);
@@ -31,7 +32,6 @@ void smallZone9Cube2Row(int side){
   //Score in Zone
   intakeStackMacroOn = true;
   setintakeState(intakeStates::readyToStack);
-
   stackMacroOn = true;
   setstackerState(stackerStates::stackMacro);
   while(stackMacroOn){

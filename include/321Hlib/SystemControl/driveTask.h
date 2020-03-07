@@ -18,4 +18,4 @@ void setdriveState(driveStates newState, double requestedPercent);
 
 void turnTo(double newHeading, int speed = 195, int threshInput = 2, int iterationExit = 5);
 void variableDrive(double distance, double changeDistanceOne, int v1, int v2, int threshInput = 2, int iterationExit = 5);
-void drive(double distance, int speed = 195, int yawInput = 0, int threshInput = 2, int iterationExit = 5 );
+void drive(double distance, int speed = 195, int threshInput = 2, int iterationExit = 5, int yawInput = 0 );

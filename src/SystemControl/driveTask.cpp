@@ -44,7 +44,6 @@ double inchesToTicks(double inches){
   return ticks;
 }
 
-
 //slew control
 const int accel_step = 9; //9
 const int deccel_step = 200; // no decel slew
@@ -54,11 +53,12 @@ static int rightSpeed = 0;
 void leftSlew(int leftTarget){
   int step;
 
-  if(abs(leftSpeed) < abs(leftTarget))
+  if(abs(leftSpeed) < abs(leftTarget)){
     step = accel_step;
-  else
+  }
+  else{
     step = deccel_step;
-
+  }
   if(leftTarget > leftSpeed + step)
     leftSpeed += step;
   else if(leftTarget < leftSpeed - step)
@@ -161,7 +161,7 @@ void turnTo(double newHeading, int speed, int threshInput, int iterationExit){ /
 }
 
 
-void drive(double distance, int speed, int yawInput, int threshInput, int iterationExit){//arc  default: 195,0, 2,5
+void drive(double distance, int speed, int threshInput, int iterationExit, int yawInput){//arc  default: 195,0, 2,5 . for fast settle, 2,3
   reset();
   yaw = yawInput;
   setMaxSpeed(speed);
@@ -180,7 +180,7 @@ void drive(double distance, int speed, int yawInput, int threshInput, int iterat
 
 
 //Two speed drive
-void variableDrive(double distance, double changeDistanceOne, int v1, int v2, int threshInput = 2, int iterationExit = 5){
+void variableDrive(double distance, double changeDistanceOne, int v1, int v2, int threshInput, int iterationExit){
   reset();
 
   driveTarget = inchesToTicks(distance);
@@ -191,13 +191,13 @@ void variableDrive(double distance, double changeDistanceOne, int v1, int v2, in
   //Drive at this speed until this point
   setMaxSpeed(v1);
   if(distance > 0){
-    while(getDrivePos() < dropDistanceCP){
+    while(getDrivePos() < changeDistanceOneCP){
       pros::delay(20);
       setdriveState(driveStates::drivePID);
     }
   }
   else{
-    while(getDrivePos() > dropDistanceCP) {
+    while(getDrivePos() > changeDistanceOneCP) {
       pros::delay(20);
       setdriveState(driveStates::drivePID);
     }

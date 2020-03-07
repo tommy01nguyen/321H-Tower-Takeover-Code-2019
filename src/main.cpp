@@ -159,7 +159,7 @@ void autonomous() {
 	//Red 1, -1 blue
 
 	//Pre-sets
-	autonNumber = 5;//4
+	autonNumber = 8;//4
 	autonSide = -1;
 
 	  switch(autonNumber){
@@ -169,7 +169,8 @@ void autonomous() {
 				smallZone6Cube1Row(autonSide);
 	      break;
 	    case 3:
-				largeZone4Cube(autonSide);
+				//largeZone4Cube(autonSide);
+				flexible(autonSide);
 	      break;
 	    case 4:
 			  smallZone5Cube1Row(autonSide);

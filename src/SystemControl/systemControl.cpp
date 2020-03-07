@@ -41,7 +41,7 @@ ControllerButton b_highCubeLockMacroP(ControllerId::partner, ControllerDigital::
 ControllerButton b_lowCubeLockMacroP(ControllerId::partner, ControllerDigital::A);
 ControllerButton b_descoreMacroP(ControllerId::partner ,ControllerDigital::Y);
 
-ControllerButton b_intakeEleventh(ControllerId::partner, ControllerDigital::right);
+ControllerButton b_intakeHold(ControllerId::partner, ControllerDigital::right);
 ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::down);
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
 ControllerButton b_intakeUntilFront(ControllerId::partner, ControllerDigital::left);
@@ -80,8 +80,12 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   else if(b_intakeOutSlow.isPressed()){
     setintakeState(intakeStates::on, -8000);
   }
+  else if(b_intakeHold.isPressed()){
+    setintakeState(intakeStates::hold);
+  }
   else if(b_intakeInP.isPressed() || b_intakeIn.isPressed()){
     setintakeState(intakeStates::on, 12000);
+    //setintakeState(intakeStates::cubeLockMacro);
   }
   else if(b_intakeOutP.isPressed() || b_intakeOut.isPressed()){
     setintakeState(intakeStates::on, -12000);
@@ -94,14 +98,14 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
 
   if(b_highCubeLockMacroP.isPressed() || b_highCubeLockMacro.isPressed()){
     setliftState(liftStates::highTower);
-    setintakeState(intakeStates::cubeLockMacro);//implement waitTime inside ready to Stack?
-    //setintakeState(intakeStates::toFrontSensor);
+    lockMacroFinished = false;
     if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
       setintakeState(intakeStates::cubeLockMacro);
     }
   }
   else if(b_lowCubeLockMacroP.isPressed() || b_lowCubeLockMacro.isPressed()){
     setliftState(liftStates::lowTower);
+    lockMacroFinished = false;
     if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
       setintakeState(intakeStates::cubeLockMacro);
     }
@@ -114,6 +118,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   // }
   else if(b_noTowerMacro.isPressed() || b_noTowerMacroP.isPressed()){
     setliftState(liftStates::noTower);
+    lockMacroFinished = true;
   }
   else if(b_liftUpP.isPressed()){
     setliftState(liftStates::on, 12000);
@@ -152,7 +157,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   //DRIVE
   if(b_driveSlower.isPressed()){
     setdriveState(driveStates::tank, 0.45);
-    drive(20, 180, -90);
+    flipout();
   }
   // else if(b_driveHold.isPressed()){
   //   setdriveState(driveStates::hold);

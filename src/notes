@@ -3,20 +3,13 @@ NOTES
 
 Checklist:
 
-Fix intake sensing, work with flipout and without
-Tune Stacking Macro  (add drive Hold maybe) ( shift key for difference stacking macro)
-tune cube lock macro
-cube lock up and outtake doesnt work at the same time TEST
-hold for 11 cubes TEST
 
-Tune large zone autons
-Make Autons
-Make Prog Skills
+Tune Stacking Macro
 
-make settling customizable
-variable drive
 
+Tune cube lock up and outtake doesnt work at the same time TEST at skills field
+
+Autons, Skills
 Update firmware
-
 
 Hardware:

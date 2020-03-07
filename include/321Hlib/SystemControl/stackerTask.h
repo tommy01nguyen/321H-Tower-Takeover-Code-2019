@@ -10,7 +10,7 @@ enum class stackerStates{
   raisedPreset,
   toBottom,
   stackMacro,
-  bigMacro,
+  autonMacro,
   toBottomQuick,
 };
 
