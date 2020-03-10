@@ -5,8 +5,8 @@ using namespace okapi;
 
 //Master Controller: L trigger does intake, R trigger does drive functions. Right set of buttons is stacking. left set
 //ControllerButton b_debug(ControllerDigital::right);//extern
-
 //ControllerButton b_driveHold(ControllerDigital::left);
+
 ControllerButton b_driveSlower(ControllerDigital::R1);
 ControllerButton b_driveOutOfStack(ControllerDigital::B);//Move to stacker macro side
 
@@ -19,7 +19,10 @@ ControllerButton b_intakeIn(ControllerDigital::L1); //shared
 ControllerButton b_intakeOut(ControllerDigital::L2); //shared
 ControllerButton b_intakeReadyToStack(ControllerDigital::right);
 
-ControllerButton b_noTowerMacro(ControllerDigital::down);
+// ControllerButton b_intakeReadyToStackSmall(ControllerDigital::left);
+// ControllerButton b_stackMacroSmall(ControllerDigital::up);
+
+ControllerButton b_noTowerMacro(ControllerDigital::down); //Up for Delete for more stacking macros
 ControllerButton b_highCubeLockMacro(ControllerDigital::up);
 ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
 
@@ -27,9 +30,6 @@ ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
 // ControllerButton b_test2(ControllerDigital::left);
 
 //Partner Controller: Triggers do intake and towers. Right button set does tower presets, left button set does intake presets
-// ControllerButton b_lowTowerMacroP(ControllerId::partner, ControllerDigital::R2); //Up for deletion
-// ControllerButton b_highTowerMacroP(ControllerId::partner, ControllerDigital::R1); //Up for deletion
-
 ControllerButton b_liftUpP(ControllerId::partner, ControllerDigital::R1);
 ControllerButton b_liftDownP(ControllerId::partner, ControllerDigital::R2);
 
@@ -139,6 +139,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
   else if(b_stackMacro.isPressed()){
     setstackerState(stackerStates::stackMacro);
+    //setstackerState(stackerStates::autonMacro); //testing
     stackMacroOn = true;
   }
   else if(b_stackerRaisedPreset.isPressed()){

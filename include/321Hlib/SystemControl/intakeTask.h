@@ -9,6 +9,7 @@ enum class intakeStates{
   onWait,
   untilSensed,
   readyToStack,
+  readyToStackSmall,
   hold,
   cubeLockMacro,
   toFrontSensor,

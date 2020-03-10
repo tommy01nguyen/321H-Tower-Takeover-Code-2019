@@ -5,13 +5,17 @@ using namespace okapi;
 void skillsPartOne(){
   //Drive through 9 line, score alliance tower, place the stack down
 
-  //flipout();
+  flipout();
   setintakeState(intakeStates::on, 12000);
-  drive(110, 70);
-
+  drive(115,60);
+  //variableDrive(110,70,70,60,2,5);
+  //pros::delay(100);
   //Score in zone
-  turnTo(45, 190);
-  drive(10, 150);
+  turnTo(45, 200);
+  //pros::delay(100);
+  //flipout();
+  setintakeState(intakeStates::toFrontSensor);
+  drive(15, 150);
   stack();
 
 }
@@ -19,23 +23,26 @@ void skillsPartOne(){
 void skillsPartTwo(){
   //Back out, score first high tower, and line up with next cube line
   setintakeState(intakeStates::on, -6000);
-  drive(-15, 150);
+  setstackerState(stackerStates::toBottomQuick);
+  drive(-18, 150);
   setintakeState(intakeStates::untilSensed);
   turnTo(-90, 150);
 
   //To High Tower & Score
-  drive(40, 150);
+  drive(29, 150);
   pros::delay(500);
   setliftState(liftStates::highTower);
-  pros::delay(1000);
+  pros::delay(800);
   //waitForLift(625);
+  drive(4,150);
+
   setintakeState(intakeStates::on, -8000);
   pros::delay(1000);
   setliftState(liftStates::noTower);
   setintakeState(intakeStates::on, 12000);
 
   //Out and line up with wall and cube line
-  drive(-20, 150);
+  drive(-8, 150);
   turnTo(-180, 150);
 }
 
@@ -54,18 +61,19 @@ void skillsPartThree(){
   drive(13,190);
 
   //mid tower
-  turnTo(-225, 150);
   setliftState(liftStates::lowTower);
+  lockMacroFinished = false;
   setintakeState(intakeStates::cubeLockMacro);
-  drive(10, 150);
-  setintakeState(intakeStates::on, -8000);
+  turnTo(-40, 200); //-240
+  drive(6, 150);
+  //setintakeState(intakeStates::on, -8000);
   pros::delay(500);
   setliftState(liftStates::noTower);
-
+  lockMacroFinished = true;
   //Realign, drive through line
   setintakeState(intakeStates::on, -8000);
-  drive(-10, 150);
-  turnTo(-180, 150);
+  drive(-6, 200);
+  turnTo(0, 200); //-180
 
   //2nd L
   drive(23, 150);
@@ -107,7 +115,6 @@ void skillsPartFour(){
   pros::delay(500);
   setliftState(liftStates::noTower);
   setintakeState(intakeStates::on, 12000); //watch out for cube underneath tower
-
   //place stack down
   drive(-20,190);
   turnTo(135, 190);

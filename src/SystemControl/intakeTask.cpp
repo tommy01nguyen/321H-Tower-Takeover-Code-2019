@@ -32,7 +32,7 @@ int cubeSensValueBack = 2850;
 bool tare = false;
 bool intakeStackMacroOn = false;
 bool movePassed = false;
-bool lockMacroFinish = true;
+bool lockMacroFinished = true;
 
 void task_intakeControl(void*){ //State Machine Task for Catapult Control
   while(true){
@@ -91,7 +91,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
             break;
           }
           else if((getFrontSensorVal() > cubeSensValueFront) && (tare == false) ){//cube is not in the sensor
-            mg_intake.moveVelocity(-100);
+            mg_intake.moveVelocity(-150);
             //std::cout << m_intakeR.getPosition() << std::endl;
             //std::cout << "Sensor:" << getFrontSensorVal() << std::endl;
           }
@@ -101,7 +101,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
               m_intakeR.tarePosition();
               tare = true;
             }
-            if(m_intakeR.getPosition() >= -400){
+            if(m_intakeR.getPosition() >= -350){
               //std::cout << "LOOPING"<< std::endl;
               //std::cout << m_intakeR.getPosition() << std::endl;
               m_intakeR.moveVelocity(-30);
@@ -109,6 +109,36 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
             }
             else{
               //std::cout << "END"<< std::endl;
+              tare = false;
+              intakeStackMacroOn = false;
+              mg_intake.moveVoltage(0);
+              mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
+            }
+          }
+          pros::delay(20);
+        }
+        break;
+      }
+      case intakeStates::readyToStackSmall:{ //Tune sensor vals with flipout
+        mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+        while(intakeStackMacroOn){
+
+          if(intakeStackMacroOn == false){
+            break;
+          }
+          else if((getFrontSensorVal() > cubeSensValueFront) && (tare == false) ){//cube is not in the sensor
+            mg_intake.moveVelocity(-100);
+          }
+          else{
+            if(tare == false){
+              m_intakeR.tarePosition();
+              tare = true;
+            }
+            if(m_intakeR.getPosition() >= -400){
+              m_intakeR.moveVelocity(-30);
+              m_intakeL.moveVelocity(-30);
+            }
+            else{
               tare = false;
               intakeStackMacroOn = false;
               mg_intake.moveVoltage(0);

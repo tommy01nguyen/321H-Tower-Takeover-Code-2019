@@ -187,7 +187,7 @@ void variableDrive(double distance, double changeDistanceOne, int v1, int v2, in
   int changeDistanceOneCP = inchesToTicks(changeDistanceOne);
   setdriveState(driveStates::drivePID);
   drivePIDOn = true;
-
+  pros::delay(200);
   //Drive at this speed until this point
   setMaxSpeed(v1);
   if(distance > 0){
@@ -209,6 +209,8 @@ void variableDrive(double distance, double changeDistanceOne, int v1, int v2, in
     setdriveState(driveStates::drivePID);
     pros::delay(20);
   }
+  setdriveState(driveStates::tank);
+  drivePIDOn = false;
 }
 
 /**************************************************/

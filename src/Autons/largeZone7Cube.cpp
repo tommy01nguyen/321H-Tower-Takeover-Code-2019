@@ -11,6 +11,7 @@ void largeZone7Cube(int side){
 //flipout();
 chassisProfile->generatePath({{0_in, 0_in, 0_deg}, {43_in, -15_in, 0_deg}}, "move1");
 pros::delay(500);
+setintakeState(intakeStates::on, 12000);
 chassisProfile->setTarget("move1");
 chassisProfile->waitUntilSettled();
 chassisProfile->removePath("move1");

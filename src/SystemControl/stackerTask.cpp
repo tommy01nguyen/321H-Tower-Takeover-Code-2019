@@ -21,13 +21,13 @@ bool stackMacroOn = false;
 //bool autonStackMacroOn = false;
 
 int cpAutonMacro[] = {240,400,500,700};    //1-9 cubes
-int velAutonMacro[] = {200,150,100,80};
+int velAutonMacro[] = {200,110,70,60};
 //
 // int cpMacro[] = {250,400,500,700}; //7 under Cubes
 // int velMacro[] = {200,150,80,50};
 
 int cpMacro[] = {250,400,500,700}; //5-11 Cubes
-int velMacro[] = {200,90,60,40};
+int velMacro[] = {200,80,60,50};
 
 void task_stackerControl(void*){ //State Machine Task for Stacker Control
   while(true){
