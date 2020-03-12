@@ -166,17 +166,18 @@ void autonomous() {
 			case 1: //Do Nothing
 				break;
 	    case 2:
-				smallZone6Cube1Row(autonSide);
+				smallZone5Cube1Row(autonSide);
 	      break;
 	    case 3:
 				//largeZone4Cube(autonSide);
-				flexible(autonSide);
+				smallZone6Cube1Row(autonSide);
 	      break;
 	    case 4:
-			  smallZone5Cube1Row(autonSide);
+				smallZone7Cube1Row(autonSide);
 	      break;
 	    case 5:
-				smallZone9Cube2Row(autonSide);
+				flexible(autonSide);
+				//smallZone9Cube2Row(autonSide);
 	      break;
 			case 6:
 				largeZone4Cube(autonSide);

@@ -9,7 +9,9 @@
 using namespace okapi;
 
 void resetEncoders();
+void skillFlipout();
 void flipout();
 void outOfStack();
 void stack();
+void stackSmall();
 void waitForLift(int height);

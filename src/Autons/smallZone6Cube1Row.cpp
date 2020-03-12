@@ -25,14 +25,7 @@ setintakeState(intakeStates::toFrontSensor);
 drive(15, 190);
 
 //Score in Zone
-intakeStackMacroOn = true;
-setintakeState(intakeStates::readyToStack);
-
-stackMacroOn = true;
-setstackerState(stackerStates::stackMacro);
-while(stackMacroOn){
-  pros::delay(20);
-}
+stackSmall();
 
 setstackerState(stackerStates::toBottomQuick);
 setintakeState(intakeStates::on, -6000);

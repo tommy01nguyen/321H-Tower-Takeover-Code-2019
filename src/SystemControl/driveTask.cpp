@@ -211,6 +211,7 @@ void variableDrive(double distance, double changeDistanceOne, int v1, int v2, in
   }
   setdriveState(driveStates::tank);
   drivePIDOn = false;
+
 }
 
 /**************************************************/
@@ -283,7 +284,7 @@ void task_driveControl(void*){
 
           //leftSlew(speed + yaw );
           //rightSlew(speed - yaw);
-          //std::cout << "PID is on!" << std::endl;
+          //std::cout << "PID is on" << std::endl;
           pros::delay(20);
           }
 
@@ -305,17 +306,15 @@ void task_driveControl(void*){
           if(speed < -maxSpeed)
             speed = -maxSpeed;
 
-          // std::cout << "turnTarget: " << target << std::endl;
-          // std::cout << "rotation: " << current << std::endl;
+           //std::cout << "turnTarget: " << target << std::endl;
+           //std::cout << "rotation: " << current << std::endl;
            //std::cout << "error: " << error << std::endl;
            //std::cout << "speed: " << speed << std::endl;
-
 
           mg_driveL.moveVelocity(speed);
           mg_driveR.moveVelocity(-speed);
           // leftSlew(-speed);
           // rightSlew(speed);
-          //std::cout << "PID is on!" << std::endl;
           pros::delay(20);
           }
 

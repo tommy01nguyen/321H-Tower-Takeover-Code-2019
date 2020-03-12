@@ -21,15 +21,7 @@ void smallZone5Cube1Row(int side){
   drive(15, 150);
 
   //Score in Zone
-  intakeStackMacroOn = true;
-  setintakeState(intakeStates::readyToStack);
-  pros::delay(500);
-
-  stackMacroOn = true;
-  setstackerState(stackerStates::stackMacro);
-  while(stackMacroOn){
-    pros::delay(20);
-  }
+  stackSmall();
 
   setstackerState(stackerStates::toBottomQuick);
   setintakeState(intakeStates::on, -6000);

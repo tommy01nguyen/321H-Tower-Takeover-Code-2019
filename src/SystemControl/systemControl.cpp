@@ -19,12 +19,12 @@ ControllerButton b_intakeIn(ControllerDigital::L1); //shared
 ControllerButton b_intakeOut(ControllerDigital::L2); //shared
 ControllerButton b_intakeReadyToStack(ControllerDigital::right);
 
-// ControllerButton b_intakeReadyToStackSmall(ControllerDigital::left);
-// ControllerButton b_stackMacroSmall(ControllerDigital::up);
+ControllerButton b_intakeReadyToStackSmall(ControllerDigital::left);
+//ControllerButton b_stackMacroSmall(ControllerDigital::up);
 
 ControllerButton b_noTowerMacro(ControllerDigital::down); //Up for Delete for more stacking macros
 ControllerButton b_highCubeLockMacro(ControllerDigital::up);
-ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
+//ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
 
 // ControllerButton b_test1(ControllerDigital::up);
 // ControllerButton b_test2(ControllerDigital::left);
@@ -44,7 +44,8 @@ ControllerButton b_descoreMacroP(ControllerId::partner ,ControllerDigital::Y);
 ControllerButton b_intakeHold(ControllerId::partner, ControllerDigital::right);
 ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::down);
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
-ControllerButton b_intakeUntilFront(ControllerId::partner, ControllerDigital::left);
+//ControllerButton b_intakeUntilFront(ControllerId::partner, ControllerDigital::left);
+ControllerButton b_flipout(ControllerId::partner, ControllerDigital::left);
 
 // ControllerButton b_test1P(ControllerId::partner, ControllerDigital::left);
 // ControllerButton b_test2P(ControllerId::partner, ControllerDigital::right);
@@ -74,6 +75,10 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setintakeState(intakeStates::readyToStack);
     intakeStackMacroOn = true;
   }
+  else if(b_intakeReadyToStackSmall.isPressed()){
+    setintakeState(intakeStates::readyToStackSmall);
+    intakeStackMacroOn = true;
+  }
   else if(b_intakeUntilSensed.isPressed()){
     setintakeState(intakeStates::untilSensed);
   }
@@ -85,7 +90,6 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
   else if(b_intakeInP.isPressed() || b_intakeIn.isPressed()){
     setintakeState(intakeStates::on, 12000);
-    //setintakeState(intakeStates::cubeLockMacro);
   }
   else if(b_intakeOutP.isPressed() || b_intakeOut.isPressed()){
     setintakeState(intakeStates::on, -12000);
@@ -103,7 +107,14 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
       setintakeState(intakeStates::cubeLockMacro);
     }
   }
-  else if(b_lowCubeLockMacroP.isPressed() || b_lowCubeLockMacro.isPressed()){
+  // else if(b_lowCubeLockMacroP.isPressed() || b_lowCubeLockMacro.isPressed()){
+  //   setliftState(liftStates::lowTower);
+  //   lockMacroFinished = false;
+  //   if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
+  //     setintakeState(intakeStates::cubeLockMacro);
+  //   }
+  // }
+  else if(b_lowCubeLockMacroP.isPressed()){
     setliftState(liftStates::lowTower);
     lockMacroFinished = false;
     if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
@@ -120,6 +131,9 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setliftState(liftStates::noTower);
     lockMacroFinished = true;
   }
+  else if(b_descoreMacroP.isPressed()){
+    setliftState(liftStates::descoreLow);
+  }
   else if(b_liftUpP.isPressed()){
     setliftState(liftStates::on, 12000);
   }
@@ -135,7 +149,6 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
 
   if(b_stackMacro.changedToReleased()){
     stackMacroOn = false;
-    //std::cout << "released" << std::endl;
   }
   else if(b_stackMacro.isPressed()){
     setstackerState(stackerStates::stackMacro);
@@ -158,7 +171,6 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   //DRIVE
   if(b_driveSlower.isPressed()){
     setdriveState(driveStates::tank, 0.45);
-    flipout();
   }
   // else if(b_driveHold.isPressed()){
   //   setdriveState(driveStates::hold);
@@ -168,6 +180,9 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
   else{
     setdriveState(driveStates::tank, 1); //full speed
+  }
+  if(b_flipout.changedToPressed()){
+    skillFlipout();
   }
 
 }

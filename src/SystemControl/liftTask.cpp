@@ -46,7 +46,7 @@ void task_liftControl(void*){ //State Machine Task for Catapult Control
         break;
       }
       case liftStates::topCube:{
-        m_lift.moveAbsolute(150, 200);
+        m_lift.moveAbsolute(140, 200);
         break;
       }
       case liftStates::lowTower:{

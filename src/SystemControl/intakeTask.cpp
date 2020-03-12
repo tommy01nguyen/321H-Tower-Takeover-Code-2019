@@ -101,11 +101,11 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
               m_intakeR.tarePosition();
               tare = true;
             }
-            if(m_intakeR.getPosition() >= -350){
+            if(m_intakeR.getPosition() >= -370){
               //std::cout << "LOOPING"<< std::endl;
               //std::cout << m_intakeR.getPosition() << std::endl;
-              m_intakeR.moveVelocity(-30);
-              m_intakeL.moveVelocity(-30);
+              m_intakeR.moveVelocity(-50);
+              m_intakeL.moveVelocity(-50);
             }
             else{
               //std::cout << "END"<< std::endl;
@@ -127,16 +127,16 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
             break;
           }
           else if((getFrontSensorVal() > cubeSensValueFront) && (tare == false) ){//cube is not in the sensor
-            mg_intake.moveVelocity(-100);
+            mg_intake.moveVelocity(-150);
           }
           else{
             if(tare == false){
               m_intakeR.tarePosition();
               tare = true;
             }
-            if(m_intakeR.getPosition() >= -400){
-              m_intakeR.moveVelocity(-30);
-              m_intakeL.moveVelocity(-30);
+            if(m_intakeR.getPosition() >= -520){
+              m_intakeR.moveVelocity(-70);
+              m_intakeL.moveVelocity(-70);
             }
             else{
               tare = false;

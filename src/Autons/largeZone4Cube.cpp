@@ -10,32 +10,23 @@ void largeZone4Cube(int side){
 //First Row
 //flipout();
 setintakeState(intakeStates::on, 12000);
-drive(30, 150);
-if(side == red) turnTo(-135, 190);
-if(side == blue) turnTo(135, 190);
+drive(25, 150);
+if(side == red) turnTo(-100, 190);
+if(side == blue) turnTo(100, 190);
 
 drive(20,150);
-if(side == red) turnTo(-260, 190);
-if(side == blue) turnTo(260, 190);
-
-drive(35, 150);
-if(side == red) turnTo(-225, 190);
-if(side == blue) turnTo(225, 190);
-
+if(side == red) turnTo(-125, 190);
+if(side == blue) turnTo(125, 190);
 
 setintakeState(intakeStates::toFrontSensor);
-drive(10, 190);
+drive(15, 190);
+
 
 //Score in Zone
-intakeStackMacroOn = true;
-setintakeState(intakeStates::readyToStack);
-stackMacroOn = true;
-setstackerState(stackerStates::stackMacro);
-while(stackMacroOn){
-  pros::delay(20);
-}
+stackSmall();
 
-setstackerState(stackerStates::toBottom);
+setstackerState(stackerStates::toBottomQuick);
+pros::delay(200);
 setintakeState(intakeStates::on, -6000);
 drive(-10, 190);
 

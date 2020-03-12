@@ -1,15 +1,14 @@
 #include "main.h"
 using namespace okapi;
 
-//Ports Broken: 19,20,13,15
-//Ports Broken: 5,7,8,9,3
+//b: 21
 #define port_driveRF 16
 #define port_driveRB 17
 #define port_driveLF 12
 #define port_driveLB 9
 
-#define port_intakeL 11 //Actually right side intake?
-#define port_intakeR 21
+#define port_intakeL 11 //Actually right side intake
+#define port_intakeR 8
 #define port_stacker 6
 #define port_lift 10
 
@@ -42,12 +41,7 @@ MotorGroup mg_intake({-port_intakeL, port_intakeR});
 
 void initializeSensors(){
 	resetEncoders();
-	 // cubeSensValueBack = s_backIntakeSensor.get_value();
-	 // cubeSensValueFront = s_frontIntakeSensor.get_value();
 	 pros::delay(50);
-//	s_backIntakeSensor.calibrate();
-//	s_frontIntakeSensor.calibrate();
-
 
 	s_imu.reset();
 	while (s_imu.is_calibrating()) {
