@@ -1,46 +1,62 @@
 #include "321Hlib/functions.h"
 
 using namespace okapi;
-/*
-double tileToIn(double tiles){ //Converts Tiles to inches (1 Tile = 24inches)
-  double inches = tiles * 24;
-  return inches;
-}
 
-QLength tilesToInches(double tiles){ //Converts Tiles To Inches
-  return tiles*24*inch ;
-}
-*/
-
-// void driveWall(int voltage){ //Drives until it hits a wall
-//   mg_driveR.moveVoltage(voltage);
-//   mg_driveL.moveVoltage(voltage);
-//   while(isDriving()){
-//     pros::delay(20);
-//   }
-//   mg_driveR.moveVoltage(0);
-//   mg_driveL.moveVoltage(0);
-// }
-//
-// void vectorWall(double voltage, double yaw){ //voltage -1 to 1. left + yaw, Right - yaw
-//   pidChassis->getModel()->driveVector(voltage, yaw);
-//   waitUntilStopped(20);
-//   mg_driveR.moveVoltage(0);
-//   mg_driveL.moveVoltage(0);
-// }
 void resetEncoders(){
   m_stacker.tarePosition();
   m_lift.tarePosition();
 }
 
+void skillFlipout(){
+  setliftState(liftStates::highTower);
+  setstackerState(stackerStates::raisedPreset);
+  pros::delay(0);
+  setintakeState(intakeStates::move);
+  pros::delay(200);
+  setstackerState(stackerStates::toBottomQuick);
+  pros::delay(800);
+  setliftState(liftStates::lowTower); //doesnt run becaues its in opcontrol
+}
+
 void flipout(){
   setliftState(liftStates::highTower);
-  pros::delay(1500);
+  setstackerState(stackerStates::raisedPreset);
+  pros::delay(0);
+  setintakeState(intakeStates::move);
+  pros::delay(200);
+  setstackerState(stackerStates::toBottomQuick);
+  pros::delay(800);
   setliftState(liftStates::noTower);
-  pros::delay(1000);
-  setliftState(liftStates::on,0);
+  pros::delay(500);//testing
 }
 
 void stack(){
+  intakeStackMacroOn = true;
+  setintakeState(intakeStates::readyToStack);
+  pros::delay(300); //wait for intake to drop
+  stackMacroOn = true;
+  setstackerState(stackerStates::stackMacro);
+  while(stackMacroOn){
+    pros::delay(20);
+  }
+}
 
+void stackSmall(){
+  intakeStackMacroOn = true;
+  setintakeState(intakeStates::readyToStackSmall);
+  pros::delay(200); //wait for intake to drop
+  stackMacroOn = true;
+  setstackerState(stackerStates::autonMacro);
+  while(stackMacroOn){
+    pros::delay(20);
+  }
+}
+void stackEleven(){
+
+}
+
+void waitForLift(int height){ //625, 490
+  while(m_lift.getPosition() < height){
+    pros::delay(20);
+  }
 }

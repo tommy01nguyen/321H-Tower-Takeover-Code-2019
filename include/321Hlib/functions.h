@@ -9,16 +9,9 @@
 using namespace okapi;
 
 void resetEncoders();
-
-void driveWall(int voltage);
-
-//QLength tilesToInches(double tiles);
-void waitUntilStopped(int thresh);
-bool isStopped(int thresh);
-
-bool isLeftDriving();
-bool isRightDriving();
-void vectorWall(double voltage, double yaw);
-
+void skillFlipout();
 void flipout();
+void outOfStack();
 void stack();
+void stackSmall();
+void waitForLift(int height);

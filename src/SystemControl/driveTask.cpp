@@ -13,42 +13,52 @@ void setdriveState(driveStates newState, double requestedPercent){
   drivePercent = requestedPercent;
 }
 /**************************************************/
-//IMU PID
-//Dear 574C, thank you.
-double kp = .1;
+
+bool drivePIDOn = false;
+double kpDrive = .3;
+double kdDrive = .5;
+static double driveTarget;
+
+bool turnPIDOn = false;
+double kp = .98;
 double kd = .1;
 static double turnTarget;
-static double maxSpeed = 200;
 
-double getImuValue(){
-  return 2.0;
+static double maxSpeed = 195;
+static int yaw = 0; //Used for arcing
+
+double getImuRotation(){ //(-infinity, infinity)
+  return s_imu.get_rotation();
 }
 
-void reset(){
-  turnTarget = 0;
-  maxSpeed = 200;
-  m_driveLF.tarePosition();
-  m_driveLB.tarePosition();
-  m_driveRF.tarePosition();
-  m_driveRB.tarePosition();
-  mg_driveR.moveVelocity(0);
-  mg_driveL.moveVelocity(0);
+double getEncRotation(){
+  return m_driveRB.getPosition();
+}
+
+double getDrivePos(){
+  return (m_driveRB.getPosition() + m_driveLB.getPosition())/2;
+}
+double inchesToTicks(double inches){
+  double rev = inches/3.1415/4;
+  double ticks = rev * 360;
+  return ticks;
 }
 
 //slew control
 const int accel_step = 9;
-const int deccel_step = 256; // no decel slew
+const int deccel_step = 200; // no decel slew
 static int leftSpeed = 0;
 static int rightSpeed = 0;
 
 void leftSlew(int leftTarget){
   int step;
 
-  if(abs(leftSpeed) < abs(leftTarget))
+  if(abs(leftSpeed) < abs(leftTarget)){
     step = accel_step;
-  else
+  }
+  else{
     step = deccel_step;
-
+  }
   if(leftTarget > leftSpeed + step)
     leftSpeed += step;
   else if(leftTarget < leftSpeed - step)
@@ -76,51 +86,125 @@ void rightSlew(int rightTarget){
 
   mg_driveR.moveVelocity(rightSpeed);
 }
-
-void setSpeed(int speed){
+void reset(){
+  //turnTarget = 0;
+  //driveTarget = 0;
+  yaw = 0;
+  maxSpeed = 195;
+  leftSpeed = 0;
+  rightSpeed = 0;
+  m_driveLF.tarePosition();
+  m_driveLB.tarePosition();
+  m_driveRF.tarePosition();
+  m_driveRB.tarePosition();
+  mg_driveR.moveVelocity(0);
+  mg_driveL.moveVelocity(0);
+}
+void setMaxSpeed(int speed){
   maxSpeed = speed;
 }
+bool isTurning_encoder(int threshInput, int iterationExit){ //isMoving, different inputs for thresh and iteration (2,5)
+  static int iteration = 0;
+  static double lastPos = 0;
+  static double lastTarget = 0;
+  static int thresh = threshInput;
 
-bool isTurning(){
-  static int count = 0;
-  static int lastAngle = 0;
-  static int lastTarget = 0;
-
-  int curAngle = getImuValue(); //CHANGE TO IMU VALUES************
-  int target = turnTarget;
-
-  if(abs(lastAngle-curAngle) < 3) //3 degree encoder unit threshold for change in Angle NEEDS TUNING
-    count++;
-  else
-    count = 0;
-
-  if(target != lastTarget) //If changing target, restart iterating
-    count = 0;
+  double curPos = getEncRotation();
+  double target = turnTarget;
+  if(currentdriveState == driveStates::drivePID){
+    target = driveTarget;
+  }
+  if(abs(lastPos-curPos) < thresh){
+    iteration++;
+  }
+  else{
+    iteration = 0;
+  }
+  if(target != lastTarget){ //If changing target, restart iterating
+    iteration = 0;
+  }
 
   lastTarget = target;
-  lastAngle = curAngle;
+  lastPos = curPos;
 
-  if(count > 4) //If iterated 4 times
+  if(iteration >= iterationExit){ //If iterated iterationExit times
     return false; //Not Turning
-  else
+  }
+  else{
     return true; //Turning
+  }
 }
 
-double headingToTarget(double heading){//Turn heading(degrees) into angle needed to travel
-  return heading;
-}
-
-void turnTo(double newHeading){ //Heading in degrees
+void turnTo(double newHeading, int speed, int threshInput, int iterationExit){ // default: 195,2,5
     reset();
-    turnTarget = headingToTarget(newHeading);
+    setMaxSpeed(speed);
+    turnTarget = newHeading;
     setdriveState(driveStates::turnPID);
+    turnPIDOn = true;
 
-    pros::delay(300); //Assuming no super short turns
-    while(isTurning()){ //Wait until settled
+    pros::delay(200); //Assuming no super short turns
+    while(isTurning_encoder(threshInput, iterationExit)){ //Wait until settled
+      setdriveState(driveStates::turnPID);
       pros::delay(20);
     }
+
     //Movement over
     setdriveState(driveStates::tank);
+    turnPIDOn = false;
+}
+
+
+void drive(double distance, int speed, int threshInput, int iterationExit, int yawInput){//default: 195,0, 2,5. for fast settle, 2,3
+  reset();
+  yaw = yawInput;
+  setMaxSpeed(speed);
+  driveTarget = inchesToTicks(distance);
+  setdriveState(driveStates::drivePID);
+  drivePIDOn = true;
+  pros::delay(200);
+  while(isTurning_encoder(threshInput, iterationExit)){
+    setdriveState(driveStates::drivePID);
+    pros::delay(20);
+  }
+  setdriveState(driveStates::tank);
+  drivePIDOn = false;
+}
+
+
+
+//Two speed drive
+void variableDrive(double distance, double changeDistanceOne, int v1, int v2, int threshInput, int iterationExit){
+  reset();
+
+  driveTarget = inchesToTicks(distance);
+  int changeDistanceOneCP = inchesToTicks(changeDistanceOne);
+  setdriveState(driveStates::drivePID);
+  drivePIDOn = true;
+  pros::delay(200);
+  //Drive at this speed until this point
+  setMaxSpeed(v1);
+  if(distance > 0){
+    while(getDrivePos() < changeDistanceOneCP){
+      pros::delay(20);
+      setdriveState(driveStates::drivePID);
+    }
+  }
+  else{
+    while(getDrivePos() > changeDistanceOneCP) {
+      pros::delay(20);
+      setdriveState(driveStates::drivePID);
+    }
+  }
+
+  //Drive at a slower speed
+  setMaxSpeed(v2);
+  while(isTurning_encoder(threshInput, iterationExit)) {
+    setdriveState(driveStates::drivePID);
+    pros::delay(20);
+  }
+  setdriveState(driveStates::tank);
+  drivePIDOn = false;
+
 }
 
 /**************************************************/
@@ -135,8 +219,8 @@ void task_driveControl(void*){
           mg_driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
           mg_driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
         }
-        pidChassis->getModel()->tank(j_master.getAnalog(ControllerAnalog::leftY),
-                                     j_master.getAnalog(ControllerAnalog::rightY));//Add threshold?
+        pidChassis->getModel()->tank(j_master.getAnalog(ControllerAnalog::leftY)*drivePercent,
+                                     j_master.getAnalog(ControllerAnalog::rightY)*drivePercent);//Add threshold?
         break;
       }
 
@@ -147,21 +231,51 @@ void task_driveControl(void*){
         mg_driveL.moveVelocity(0);
         break;
       }
+      case driveStates::outOfStack:{
+          mg_driveR.setBrakeMode(AbstractMotor::brakeMode::coast);
+          mg_driveL.setBrakeMode(AbstractMotor::brakeMode::coast);
+          setintakeState(intakeStates::on,-12000);
+          mg_driveR.moveVelocity(-30);
+          mg_driveL.moveVelocity(-30);
+      }
+      case driveStates::drivePID:{
+        int prevError;
+
+        while(drivePIDOn){
+          double target = driveTarget * 2.48;
+          double current = getEncRotation();
+          double error = target-current;
+          double derivative = error - prevError;
+          prevError = error;
+          double speed = error*kpDrive + derivative*kdDrive;
+
+          if(speed > maxSpeed)
+            speed = maxSpeed;
+          if(speed < -maxSpeed)
+            speed = -maxSpeed;
+
+          //Angle Straightening
+          double curAngle = getImuRotation();
+          double angleError = turnTarget - curAngle;
+          double straightenPower = angleError * 1;//1 kP
+
+          leftSlew(speed + yaw + straightenPower);
+          rightSlew(speed - yaw - straightenPower);
+
+          pros::delay(20);
+          }
+
+      }
 
       case driveStates::turnPID:{
         int prevError;
 
-        while(1){
-          double pv = turnTarget; //Process Variable  //Currently, PV and SV are not in the same units
-
-          //convert pv into sv units or other way around
-
-          double sv = getImuValue(); //Set Point Variable
-
-          double error = pv-sv;
+        while(turnPIDOn){
+          double target = turnTarget; //Set in turnTo method
+          double current = getImuRotation();
+          double error = target-current;
           double derivative = error - prevError;
           prevError = error;
-
           double speed = error*kp + derivative*kd;
 
           if(speed > maxSpeed)
@@ -169,10 +283,9 @@ void task_driveControl(void*){
           if(speed < -maxSpeed)
             speed = -maxSpeed;
 
-          mg_driveL.moveVelocity(-speed);
-          mg_driveR.moveVelocity(speed);
-          // leftSlew(-speed);
-          // rightSlew(speed);
+
+          mg_driveL.moveVelocity(speed);
+          mg_driveR.moveVelocity(-speed);
           pros::delay(20);
           }
 

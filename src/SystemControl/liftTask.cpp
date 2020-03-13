@@ -18,11 +18,13 @@ void setliftState(liftStates newState, int requestedWaitTime, int requestedVolta
 }
 
 void task_liftControl(void*){ //State Machine Task for Catapult Control
+  m_lift.setBrakeMode(AbstractMotor::brakeMode::hold);
   while(true){
 
     switch(currentliftState){
 
       case liftStates::on:{  //lift at velocity
+        m_lift.setBrakeMode(AbstractMotor::brakeMode::hold);
         m_lift.moveVoltage(liftVoltage);
         break;
       }
@@ -40,16 +42,27 @@ void task_liftControl(void*){ //State Machine Task for Catapult Control
         break;
       }
       case liftStates::noTower:{
-        m_lift.moveAbsolute(0, 150);
+        m_lift.moveAbsolute(0, 200);
+        break;
+      }
+      case liftStates::topCube:{
+        m_lift.moveAbsolute(140, 200);
         break;
       }
       case liftStates::lowTower:{
-        m_lift.moveAbsolute(600, 200);
+        m_lift.moveAbsolute(490, 200);
         break;
       }
       case liftStates::highTower:{
-        m_lift.moveAbsolute(650, 200);
+        m_lift.moveAbsolute(625, 200);
         break;
+      }
+      case liftStates::descoreLow:{
+        m_lift.moveAbsolute(450, 200);
+      }
+      case liftStates::holdBottom:{
+        m_lift.setBrakeMode(AbstractMotor::brakeMode::hold);
+        m_lift.moveVelocity(0);
       }
     }
     pros::delay(20);

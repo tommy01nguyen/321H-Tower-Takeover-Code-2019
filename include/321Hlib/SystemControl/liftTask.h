@@ -10,6 +10,9 @@ enum class liftStates{
   lowTower,
   highTower,
   noTower,
+  holdBottom,
+  descoreLow,
+  topCube,
 };
 
 extern int liftWaitTime;

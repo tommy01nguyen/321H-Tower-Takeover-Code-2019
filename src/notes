@@ -1,16 +1,4 @@
 NOTES
 
-NEED TO DO, highest priority on top
 
-
-Tune Lift Preset Control
-Better Macro for stacker
-Code preset for tray
-Line Follower on intake, create macros for towers
-Better controls for opcontrol
-
-Test Auton Selector
-Motion Profiling, PID
-
-Implement IMU PID
-  Test to see if it inteferes with pidChassis and Motion profiling Chassis
+Checklist:
