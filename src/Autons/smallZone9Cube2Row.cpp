@@ -11,11 +11,10 @@ void smallZone9Cube2Row(int side){
   setliftState(liftStates::topCube);
   pros::delay(150);
   drive(5,100);
-  //pros::delay(50);
   setliftState(liftStates::noTower);
   pros::delay(200);
 
-  drive(14,190); //increase
+  drive(14,190);
 
   if(side == red) turnTo(90, 190);
   if(side == blue) turnTo(-90, 190);

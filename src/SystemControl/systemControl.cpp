@@ -81,11 +81,10 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setintakeState(intakeStates::on, -12000);
   }
   else{
-    setintakeState(intakeStates::on, 0); //Off
+    setintakeState(intakeStates::on, 0);
   }
 
   //LIFT
-
   if(b_highCubeLockMacroP.isPressed() || b_highCubeLockMacro.isPressed()){
     setliftState(liftStates::highTower);
     lockMacroFinished = false;
@@ -135,7 +134,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setstackerState(stackerStates::on, -12000);
   }
   else{
-    setstackerState(stackerStates::on, 0); 
+    setstackerState(stackerStates::on, 0);
   }
 
   //DRIVE

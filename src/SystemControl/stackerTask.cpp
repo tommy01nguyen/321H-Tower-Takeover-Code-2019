@@ -19,21 +19,15 @@ void setstackerState(stackerStates newState, int requestedWaitTime, int requeste
 
 bool stackMacroOn = false;
 
-int cpAutonMacro[] = {240,400,500,700};    //1-9 cubes
+int cpAutonMacro[] = {240,400,500,700};//1-9 cubes
 int velAutonMacro[] = {200,110,70,60};
-//
+
 // int cpMacro[] = {250,400,500,700}; //7 under Cubes
 // int velMacro[] = {200,150,80,50};
 
 int cpMacro[] = {250,400,500,700}; //5-11 Cubes
 int velMacro[] = {200,100,40,30};
 
-//OLD 11 one, a little bit too fast- inconsistent.
-// int cpMacro[] = {250,400,500,700}; //5-11 Cubes
-// int velMacro[] = {200,80,60,50};
-
-// int cpSlowMacro[] = {250,400,500,700}; //5-11 Cubes
-// int velSlowlMacro[] = {200,70,50,40};
 
 void task_stackerControl(void*){ //State Machine Task for Stacker Control
   while(true){

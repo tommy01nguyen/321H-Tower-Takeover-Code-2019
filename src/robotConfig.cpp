@@ -1,13 +1,12 @@
 #include "main.h"
 using namespace okapi;
 
-//b: 21
 #define port_driveRF 16
 #define port_driveRB 17
 #define port_driveLF 12
 #define port_driveLB 9
 
-#define port_intakeL 11 //Actually right side intake
+#define port_intakeL 11
 #define port_intakeR 8
 #define port_stacker 6
 #define port_lift 10
@@ -28,7 +27,6 @@ Motor m_intakeL(port_intakeL, true, AbstractMotor::gearset::red , AbstractMotor:
 Motor m_intakeR(port_intakeR, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
 Motor m_stacker(port_stacker, false, AbstractMotor::gearset::red , AbstractMotor::encoderUnits::degrees);
 Motor m_lift(port_lift, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-
 
 pros::ADILineSensor s_backIntakeSensor('C');
 pros::ADILineSensor s_frontIntakeSensor('D');

@@ -46,7 +46,7 @@ double inchesToTicks(double inches){
 
 //slew control
 const int accel_step = 9;
-const int deccel_step = 200; // no decel slew
+const int deccel_step = 200; //no decel slew, enough deceleration from PID
 static int leftSpeed = 0;
 static int rightSpeed = 0;
 

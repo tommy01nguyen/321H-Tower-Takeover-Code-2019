@@ -15,7 +15,6 @@ Color Chooser: Back, Red, Blue
 
 autonNumber = page
 */
-
 void displayPage(int page){
 
 	if(page != 11){ //Assuming no more than 10 different autons
@@ -154,10 +153,8 @@ void competition_initialize() {}
 
 void autonomous() {
 	//Red 1, -1 blue
-
-	//Pre-sets
-	autonNumber = 8;//4
-	autonSide = 1;
+	// autonNumber = 8;//4
+	// autonSide = 1;
 
 	  switch(autonNumber){
 			case 1: //Do Nothing
@@ -188,7 +185,7 @@ void autonomous() {
 
 
  void opcontrol() {
-	 setdriveState(driveStates::tank);//change from turning in auton to tank;
+	 setdriveState(driveStates::tank); //backup
 
  	while (true) {
 		systemControl(); //Runs subsystem Controls
