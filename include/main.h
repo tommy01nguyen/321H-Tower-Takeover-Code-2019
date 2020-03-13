@@ -36,10 +36,6 @@
 
 #include "api.h"
 
-
-
-
-//#include "robotConfig.h"
 /**
  * You should add more #includes here
  */
@@ -47,10 +43,6 @@
 #include <cstdlib> //For maths like abs
 //#include "pros/api_legacy.h"
 #include "display/lvgl.h"
-
-//#include <cmath>
-//#include <math.h>
-//#include <functional>
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -60,9 +52,6 @@
  * concurrently! The okapi namespace will export all symbols inside the pros
  * namespace.
  */
-// using namespace pros;
-// using namespace pros::literals;
-//using namespace okapi;
 
 /**
  * Prototypes for the competition control tasks are redefined here to ensure
