@@ -8,21 +8,21 @@ using namespace okapi;
 //ControllerButton b_driveHold(ControllerDigital::left);
 
 ControllerButton b_driveSlower(ControllerDigital::R1);
-ControllerButton b_driveOutOfStack(ControllerDigital::B);//Move to stacker macro side
+ControllerButton b_driveOutOfStack(ControllerDigital::B);
 
 ControllerButton b_stackerUpSlow(ControllerDigital::X);
-ControllerButton b_stackerDown(ControllerDigital::R2); //shared
-ControllerButton b_stackMacro(ControllerDigital::Y); //extern
+ControllerButton b_stackerDown(ControllerDigital::R2);
+ControllerButton b_stackMacro(ControllerDigital::Y);
 ControllerButton b_stackerRaisedPreset(ControllerDigital::A); //Up for deletion
 
-ControllerButton b_intakeIn(ControllerDigital::L1); //shared
-ControllerButton b_intakeOut(ControllerDigital::L2); //shared
+ControllerButton b_intakeIn(ControllerDigital::L1);
+ControllerButton b_intakeOut(ControllerDigital::L2);
 ControllerButton b_intakeReadyToStack(ControllerDigital::right);
 
 ControllerButton b_intakeReadyToStackSmall(ControllerDigital::left);
 //ControllerButton b_stackMacroSmall(ControllerDigital::up);
 
-ControllerButton b_noTowerMacro(ControllerDigital::down); //Up for Delete for more stacking macros
+ControllerButton b_noTowerMacro(ControllerDigital::down); //Up for Deletion for more stacking macros
 ControllerButton b_highCubeLockMacro(ControllerDigital::up);
 //ControllerButton b_lowCubeLockMacro(ControllerDigital::left);
 
@@ -44,31 +44,17 @@ ControllerButton b_descoreMacroP(ControllerId::partner ,ControllerDigital::Y);
 ControllerButton b_intakeHold(ControllerId::partner, ControllerDigital::right);
 ControllerButton b_intakeUntilSensed(ControllerId::partner, ControllerDigital::down);
 ControllerButton b_intakeOutSlow(ControllerId::partner, ControllerDigital::up);
-//ControllerButton b_intakeUntilFront(ControllerId::partner, ControllerDigital::left);
 ControllerButton b_flipout(ControllerId::partner, ControllerDigital::left);
 
 // ControllerButton b_test1P(ControllerId::partner, ControllerDigital::left);
 // ControllerButton b_test2P(ControllerId::partner, ControllerDigital::right);
 
 
-void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop
-  //TESTING
+void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Loop | Prioritizes inputs towards the end of the loop
 
-  // if(b_test1.isPressed()){
-  //   //turnTo(0);
-  //   drive(20, 190);
-  //   //pros::delay(500);
-  //   //drive(10, 150);
-  //   // turnTo(90);
-  //   // pros::delay(500);
-  //   // turnTo(0);
-  //   // drive(5, 150);
-  //
-  // }
-  // else if(b_test2.isPressed()){
-  //   drive(5, 190);
-  //   //turnTo(90);
-  // }
+  if(b_flipout.changedToPressed()){
+    skillFlipout();
+  }
 
   //INTAKE
   if(b_intakeReadyToStack.isPressed()){
@@ -107,13 +93,6 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
       setintakeState(intakeStates::cubeLockMacro);
     }
   }
-  // else if(b_lowCubeLockMacroP.isPressed() || b_lowCubeLockMacro.isPressed()){
-  //   setliftState(liftStates::lowTower);
-  //   lockMacroFinished = false;
-  //   if(!((b_intakeOutSlow.isPressed() || b_intakeOutP.isPressed()))){
-  //     setintakeState(intakeStates::cubeLockMacro);
-  //   }
-  // }
   else if(b_lowCubeLockMacroP.isPressed()){
     setliftState(liftStates::lowTower);
     lockMacroFinished = false;
@@ -121,12 +100,6 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
       setintakeState(intakeStates::cubeLockMacro);
     }
   }
-  // else if(b_lowTowerMacroP.isPressed()){
-  //   setliftState(liftStates::lowTower);
-  // }
-  // else if(b_highTowerMacroP.isPressed()){
-  //   setliftState(liftStates::highTower);
-  // }
   else if(b_noTowerMacro.isPressed() || b_noTowerMacroP.isPressed()){
     setliftState(liftStates::noTower);
     lockMacroFinished = true;
@@ -142,17 +115,14 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   }
   else{
     setliftState(liftStates::holdBottom);
-  //  setliftState(liftStates::on, 0); //Off
   }
 
   //STACKER
-
   if(b_stackMacro.changedToReleased()){
     stackMacroOn = false;
   }
   else if(b_stackMacro.isPressed()){
     setstackerState(stackerStates::stackMacro);
-    //setstackerState(stackerStates::autonMacro); //testing
     stackMacroOn = true;
   }
   else if(b_stackerRaisedPreset.isPressed()){
@@ -165,7 +135,7 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
     setstackerState(stackerStates::on, -12000);
   }
   else{
-    setstackerState(stackerStates::on, 0); //Off
+    setstackerState(stackerStates::on, 0); 
   }
 
   //DRIVE
@@ -181,8 +151,4 @@ void systemControl(){ //State Machine for all Subsystems | In Opcontrol While Lo
   else{
     setdriveState(driveStates::tank, 1); //full speed
   }
-  if(b_flipout.changedToPressed()){
-    skillFlipout();
-  }
-
 }

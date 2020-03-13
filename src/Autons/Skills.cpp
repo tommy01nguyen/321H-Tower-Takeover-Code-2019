@@ -114,7 +114,7 @@ void skillsPartFour(){ //starts at offset -90 (adding +- 90 to all turns)
   setliftState(liftStates::lowTower); //slightly lwer? or lower intake speed
   setintakeState(intakeStates::cubeLockMacro);
   lockMacroFinished = false;
-  turnTo(150, 200); //60 //tune angle
+  turnTo(60, 200); //60 //tune angle
 
   //alliance tower
   drive(17, 190); //decrease?
@@ -125,7 +125,7 @@ void skillsPartFour(){ //starts at offset -90 (adding +- 90 to all turns)
   lockMacroFinished = true;
   setintakeState(intakeStates::on, 12000);
 
-  turnTo(205, 200); //115
+  turnTo(115, 200); //115
   setintakeState(intakeStates::toFrontSensor);
   drive(25,150);
   stackSmall();
@@ -139,9 +139,9 @@ void skillsPartFour(){ //starts at offset -90 (adding +- 90 to all turns)
 
 void skills(){
   //Starts at Red, 4 line
-  //skillsPartOne();
-  //skillsPartTwo();
-  //skillsPartThree();
-  skillsPartFour(); //run 4 by itself
+  skillsPartOne();
+  skillsPartTwo();
+  skillsPartThree();
+  skillsPartFour(); 
 
 }

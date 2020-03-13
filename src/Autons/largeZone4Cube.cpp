@@ -8,7 +8,7 @@ void largeZone4Cube(int side){
 //start at protect zone cube, get 4 cubes
 
 //First Row
-//flipout();
+flipout();
 setintakeState(intakeStates::on, 12000);
 drive(25, 150);
 if(side == red) turnTo(-100, 190);

@@ -9,19 +9,17 @@ void resetEncoders(){
 
 void skillFlipout(){
   setliftState(liftStates::highTower);
-  //setintakeState(intakeStates::cubeLockMacro); //rotate
   setstackerState(stackerStates::raisedPreset);
   pros::delay(0);
   setintakeState(intakeStates::move);
   pros::delay(200);
   setstackerState(stackerStates::toBottomQuick);
   pros::delay(800);
-  setliftState(liftStates::lowTower);
+  setliftState(liftStates::lowTower); //doesnt run becaues its in opcontrol
 }
 
 void flipout(){
   setliftState(liftStates::highTower);
-  //setintakeState(intakeStates::cubeLockMacro); //rotate
   setstackerState(stackerStates::raisedPreset);
   pros::delay(0);
   setintakeState(intakeStates::move);

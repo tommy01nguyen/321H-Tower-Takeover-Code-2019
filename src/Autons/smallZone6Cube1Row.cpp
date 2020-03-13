@@ -10,7 +10,6 @@ flipout();
 //First Row
 setintakeState(intakeStates::on, 12000);
 drive(40, 70);
-//pros::delay(200);
 
 //Back to zone
 if(side == red) turnTo(-30, 200);

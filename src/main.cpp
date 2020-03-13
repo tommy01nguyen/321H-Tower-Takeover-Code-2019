@@ -95,9 +95,6 @@ void rightButtonClicked(){
 	displayPage(page);
 }
 
-
-
-
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -169,7 +166,6 @@ void autonomous() {
 				smallZone5Cube1Row(autonSide);
 	      break;
 	    case 3:
-				//largeZone4Cube(autonSide);
 				smallZone6Cube1Row(autonSide);
 	      break;
 	    case 4:
@@ -177,11 +173,9 @@ void autonomous() {
 	      break;
 	    case 5:
 				flexible(autonSide);
-				//smallZone9Cube2Row(autonSide);
 	      break;
 			case 6:
 				largeZone4Cube(autonSide);
-				//smallZone7Cube1Row(autonSide);
 				break;
 			case 7:
 				largeZone7Cube(autonSide);
@@ -195,6 +189,7 @@ void autonomous() {
 
  void opcontrol() {
 	 setdriveState(driveStates::tank);//change from turning in auton to tank;
+
  	while (true) {
 		systemControl(); //Runs subsystem Controls
  		pros::delay(20);

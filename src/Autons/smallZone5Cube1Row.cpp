@@ -7,10 +7,9 @@ using namespace okapi;
 void smallZone5Cube1Row(int side){
   //Starts in 4 cube row, goes forward, picks up the 4 cubes. Goes back and scores. 5 Cubes.
   //First Row
-  //flipout();
+  flipout();
   setintakeState(intakeStates::on, 12000);
   drive(40, 70);
-  //pros::delay(200);
 
   //Back to zone
   drive(-25, 190);

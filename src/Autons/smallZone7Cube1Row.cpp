@@ -12,7 +12,6 @@ setintakeState(intakeStates::on, 12000);
 drive(45, 105);
 drive(13, 150);
 drive(-18, 190);
-//pros::delay(200);
 
 //Back to zone
 if(side == red) turnTo(-30, 200);

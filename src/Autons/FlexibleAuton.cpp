@@ -11,7 +11,7 @@ void flexible(int side){ //Flexible Unused, can be used for testing
     // turnTo(90,200);
     // pros::delay(1000);
     // turnTo(180,200);
-    drive(20,170);
+    //drive(20,170);
     //pros::delay(100);
     //drive(-20,200);
   }

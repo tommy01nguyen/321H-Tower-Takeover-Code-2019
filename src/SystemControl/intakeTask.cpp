@@ -27,7 +27,7 @@ int getBackSensorVal(){
 }
 
 
-int cubeSensValueFront = 2850; //-40 when calibrated
+int cubeSensValueFront = 2850;
 int cubeSensValueBack = 2850;
 bool tare = false;
 bool intakeStackMacroOn = false;
@@ -41,12 +41,10 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       case intakeStates::on:{  //intake at velocity
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::coast);
         mg_intake.moveVoltage(intakeVoltage);
-        //std::cout << "Sensor:" << frontSensorVal << std::endl;
         break;
       }
       case intakeStates::waitOn:{ //Wait and then intake
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::coast);
-        //intake off?
         pros::delay(intakeWaitTime);
         setintakeState(intakeStates::on);
         break;
@@ -59,7 +57,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         setintakeState(intakeStates::on, 0);
         break;
       }
-      case intakeStates::untilSensed:{ //Meant picking up a cube to score in towers //Tune sensor vals with flipout
+      case intakeStates::untilSensed:{ //Meant picking up a cube to score in towers
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
         if(getBackSensorVal() > cubeSensValueBack){ //While the cube is not in the sensor
           mg_intake.moveVoltage(12000);
@@ -67,14 +65,11 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         else{
           mg_intake.moveVoltage(0);
         }
-
-
         break;
       }
 
       case intakeStates::toFrontSensor:{
           mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
-          //std::cout << getFrontSensorVal() << std:: endl;
           if(getFrontSensorVal() > cubeSensValueFront){
             mg_intake.moveVelocity(-80);
           }
@@ -83,7 +78,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
           }
         break;
       }
-      case intakeStates::readyToStack:{ //Tune sensor vals with flipout
+      case intakeStates::readyToStack:{
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
         while(intakeStackMacroOn){
 
@@ -92,23 +87,17 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
           }
           else if((getFrontSensorVal() > cubeSensValueFront) && (tare == false) ){//cube is not in the sensor
             mg_intake.moveVelocity(-150);
-            //std::cout << m_intakeR.getPosition() << std::endl;
-            //std::cout << "Sensor:" << getFrontSensorVal() << std::endl;
           }
           else{
             if(tare == false){
-              //std::cout << "TARED"<< std::endl;
               m_intakeR.tarePosition();
               tare = true;
             }
             if(m_intakeR.getPosition() >= -370){
-              //std::cout << "LOOPING"<< std::endl;
-              //std::cout << m_intakeR.getPosition() << std::endl;
               m_intakeR.moveVelocity(-50);
               m_intakeL.moveVelocity(-50);
             }
             else{
-              //std::cout << "END"<< std::endl;
               tare = false;
               intakeStackMacroOn = false;
               mg_intake.moveVoltage(0);
@@ -119,7 +108,7 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
         }
         break;
       }
-      case intakeStates::readyToStackSmall:{ //Tune sensor vals with flipout
+      case intakeStates::readyToStackSmall:{
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
         while(intakeStackMacroOn){
 
@@ -152,16 +141,14 @@ void task_intakeControl(void*){ //State Machine Task for Catapult Control
       case intakeStates::cubeLockMacro:{
         //Assumes cubes are past the back roller
         mg_intake.setBrakeMode(AbstractMotor::brakeMode::brake);
-        //std::cout << frontSensorVal << std:: endl;
         pros::delay(0);
         if((!lockMacroFinished) && (getFrontSensorVal() > cubeSensValueFront)){//cube is not in the sensor
-          mg_intake.moveVelocity(-200); //tune speed
+          mg_intake.moveVelocity(-200); 
         }
         else{
           lockMacroFinished = true;
           mg_intake.setBrakeMode(AbstractMotor::brakeMode::hold);
           mg_intake.moveVoltage(0);
-        //  setintakeState(intakeStates::on, 0);
         }
         break;
       }

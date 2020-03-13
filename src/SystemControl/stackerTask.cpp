@@ -18,7 +18,6 @@ void setstackerState(stackerStates newState, int requestedWaitTime, int requeste
 }
 
 bool stackMacroOn = false;
-//bool autonStackMacroOn = false;
 
 int cpAutonMacro[] = {240,400,500,700};    //1-9 cubes
 int velAutonMacro[] = {200,110,70,60};
@@ -43,24 +42,21 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
       case stackerStates::stackMacro:{
 
         while(stackMacroOn){
-          //std::cout << stackMacroOn << std::endl;
+          m_stacker.setBrakeMode(AbstractMotor::brakeMode::coast);
           if(stackMacroOn == false){
             break;
           }
           else if(m_stacker.getPosition() <= cpMacro[0]){
             m_stacker.moveVelocity(velMacro[0]);
             setintakeState(intakeStates::hold);
-            //setintakeState(intakeStates::on, 4000);
           }
           else if((m_stacker.getPosition() <= cpMacro[1]) && m_stacker.getPosition() > cpMacro[0]) {
             m_stacker.moveVelocity(velMacro[1]);
             setintakeState(intakeStates::hold);
-              //setintakeState(intakeStates::on, 6000);
           }
           else if((m_stacker.getPosition() <= cpMacro[2]) && m_stacker.getPosition() > cpMacro[1]) {
             m_stacker.moveVelocity(velMacro[2]);
            setintakeState(intakeStates::hold);
-             //setintakeState(intakeStates::on, 12000);
           }
           else if((m_stacker.getPosition() <= cpMacro[3]) && m_stacker.getPosition() > cpMacro[2]) {
             m_stacker.moveVelocity(velMacro[3]);
@@ -75,26 +71,22 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
         break;
       }
       case stackerStates::autonMacro:{
-
+              m_stacker.setBrakeMode(AbstractMotor::brakeMode::coast);
               while(stackMacroOn){
-                //std::cout << stackMacroOn << std::endl;
                 if(stackMacroOn == false){
                   break;
                 }
                 else if(m_stacker.getPosition() <= cpAutonMacro[0]){
                   m_stacker.moveVelocity(velAutonMacro[0]);
                   setintakeState(intakeStates::hold);
-                  //setintakeState(intakeStates::on, 4000);
                 }
                 else if((m_stacker.getPosition() <= cpAutonMacro[1]) && m_stacker.getPosition() > cpAutonMacro[0]) {
                   m_stacker.moveVelocity(velAutonMacro[1]);
                   setintakeState(intakeStates::hold);
-                    //setintakeState(intakeStates::on, 6000);
                 }
                 else if((m_stacker.getPosition() <= cpAutonMacro[2]) && m_stacker.getPosition() > cpAutonMacro[1]) {
                   m_stacker.moveVelocity(velAutonMacro[2]);
                  setintakeState(intakeStates::hold);
-                   //setintakeState(intakeStates::on, 12000);
                 }
                 else if((m_stacker.getPosition() <= cpAutonMacro[3]) && m_stacker.getPosition() > cpAutonMacro[2]) {
                   m_stacker.moveVelocity(velAutonMacro[3]);
@@ -110,9 +102,9 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
             }
 
       case stackerStates::on:{  //stacker at velocity
+        m_stacker.setBrakeMode(AbstractMotor::brakeMode::coast);
         m_stacker.moveVoltage(stackerVoltage);
         stackMacroOn = false;
-        //std::cout << stackerVoltage << std::endl;
         break;
       }
 
@@ -130,16 +122,18 @@ void task_stackerControl(void*){ //State Machine Task for Stacker Control
         stackMacroOn = false;
         break;
       }
-      case stackerStates::raisedPreset:{ //Rename
+      case stackerStates::raisedPreset:{
         m_stacker.setBrakeMode(AbstractMotor::brakeMode::hold);
         m_stacker.moveAbsolute(200, 100);
         break;
       }
-      case stackerStates::toBottom:{//Rename
+      case stackerStates::toBottom:{
+        m_stacker.setBrakeMode(AbstractMotor::brakeMode::coast);
         m_stacker.moveAbsolute(0, 30);
         break;
       }
       case stackerStates::toBottomQuick:{
+        m_stacker.setBrakeMode(AbstractMotor::brakeMode::coast);
         m_stacker.moveAbsolute(0, 190);
       }
 
